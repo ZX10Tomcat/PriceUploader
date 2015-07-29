@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LAny", "LAny\LAny.csproj", "{4507A4DE-467F-41B4-9D13-BC4144B064EA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LOffice", "LOffice\LOffice.csproj", "{7575303E-1EA2-4338-9F89-D8E6AFF44A3D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PriceUploader", "PriceUploader\PriceUploader.csproj", "{232FFCD3-D289-4CB4-A813-52C4A61DC10A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4507A4DE-467F-41B4-9D13-BC4144B064EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4507A4DE-467F-41B4-9D13-BC4144B064EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4507A4DE-467F-41B4-9D13-BC4144B064EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4507A4DE-467F-41B4-9D13-BC4144B064EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7575303E-1EA2-4338-9F89-D8E6AFF44A3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7575303E-1EA2-4338-9F89-D8E6AFF44A3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7575303E-1EA2-4338-9F89-D8E6AFF44A3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7575303E-1EA2-4338-9F89-D8E6AFF44A3D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{232FFCD3-D289-4CB4-A813-52C4A61DC10A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{232FFCD3-D289-4CB4-A813-52C4A61DC10A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{232FFCD3-D289-4CB4-A813-52C4A61DC10A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{232FFCD3-D289-4CB4-A813-52C4A61DC10A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
