@@ -113,12 +113,7 @@
     <Compile Include="cDate.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="cLogs.cs" />
     <Compile Include="cSysMutex.cs" />
-    <Compile Include="cSysPing.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="cSysScan.cs" />
     <Compile Include="cStr.cs">
       <SubType>Code</SubType>
     </Compile>

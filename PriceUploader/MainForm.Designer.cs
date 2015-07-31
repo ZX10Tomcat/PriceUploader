@@ -36,7 +36,6 @@
             this.tcMain = new System.Windows.Forms.TabControl();
             this.tpImport = new System.Windows.Forms.TabPage();
             this.tpSettings = new System.Windows.Forms.TabPage();
-            this.testToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.tcMain.SuspendLayout();
             this.SuspendLayout();
@@ -45,8 +44,7 @@
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.smiWork,
-            this.smiExit,
-            this.testToolStripMenuItem});
+            this.smiExit});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(715, 24);
@@ -114,13 +112,6 @@
             this.tpSettings.Text = "Настройки";
             this.tpSettings.UseVisualStyleBackColor = true;
             // 
-            // testToolStripMenuItem
-            // 
-            this.testToolStripMenuItem.Name = "testToolStripMenuItem";
-            this.testToolStripMenuItem.Size = new System.Drawing.Size(41, 20);
-            this.testToolStripMenuItem.Text = "Test";
-            this.testToolStripMenuItem.Click += new System.EventHandler(this.testToolStripMenuItem_Click);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -149,6 +140,5 @@
         private System.Windows.Forms.TabControl tcMain;
         private System.Windows.Forms.TabPage tpImport;
         private System.Windows.Forms.TabPage tpSettings;
-        private System.Windows.Forms.ToolStripMenuItem testToolStripMenuItem;
     }
 }
