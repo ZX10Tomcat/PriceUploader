@@ -1,1 +1,2 @@
 C:\Users\b_sam_000\OneDrive\Documents\PriceUploader\PriceUploader\bin\Debug\PriceUploader.exe.config
+D:\Work\PriceUploader\PriceUploader\bin\Debug\PriceUploader.exe.config
