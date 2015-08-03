@@ -10,11 +10,11 @@ using System.Windows.Forms;
 
 namespace PriceUploader
 {
-    public partial class formSetDatabase : Form
+    public partial class FormSetDatabase : Form
     {
         private PriceModel priceModel = null;
 
-        public formSetDatabase()
+        public FormSetDatabase()
         {
             InitializeComponent();
         }
@@ -23,11 +23,11 @@ namespace PriceUploader
         {
             this.priceModel = priceModel;
 
-            this.textBoxDatabase.Text = this.priceModel.GetDatabase();
-            this.textBoxPassword.Text = this.priceModel.GetPass();
-            this.textBoxPort.Text = this.priceModel.GetPort();
-            this.textBoxServer.Text = this.priceModel.GetServer();
-            this.textBoxUserID.Text = this.priceModel.GetUserId();
+            this.textBoxDatabase.Text = this.priceModel.StrDatabase;
+            this.textBoxPassword.Text = this.priceModel.StrPassword;
+            this.textBoxPort.Text = this.priceModel.StrPort;
+            this.textBoxServer.Text = this.priceModel.StrServer;
+            this.textBoxUserID.Text = this.priceModel.StrUserId;
         }
 
         private void buttonClose_Click(object sender, EventArgs e)
@@ -37,15 +37,13 @@ namespace PriceUploader
 
         private void buttonSave_Click(object sender, EventArgs e)
         {
-            this.priceModel.GetStrConn( 
-                this.textBoxServer.Text,
-                this.textBoxUserID.Text,
-                this.textBoxPassword.Text,
-                this.textBoxPort.Text);
-
-            this.priceModel.GetStrDataBase( this.textBoxDatabase.Text);
-
-            this.priceModel.SaveDatabasSettings();
+            this.priceModel.StrDatabase = this.textBoxDatabase.Text;
+            this.priceModel.StrPassword = this.textBoxPassword.Text;
+            this.priceModel.StrPort = this.textBoxPort.Text;
+            this.priceModel.StrServer = this.textBoxServer.Text;
+            this.priceModel.StrUserId = this.textBoxUserID.Text;
+            
+            this.priceModel.SaveDatabaseSettings();
             
             this.Close();
         }

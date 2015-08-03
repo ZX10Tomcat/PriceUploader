@@ -71,7 +71,6 @@ namespace PriceUploader
                 TableImportSettings = res.Result;
                 Debug.WriteLine("           TableImportSettings: " + TableImportSettings.Rows.Count.ToString());
 
-
                 dataGridView2.DataSource = TableImportSettings;
             });
 
@@ -131,7 +130,7 @@ namespace PriceUploader
 
         private void OpenSetDatabaseDialog()
         {
-            formSetDatabase formSetDatabase = new formSetDatabase();
+            FormSetDatabase formSetDatabase = new FormSetDatabase();
             formSetDatabase.Init(ref Model);
             formSetDatabase.ShowDialog();
         }

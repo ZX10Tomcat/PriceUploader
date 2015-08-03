@@ -1,6 +1,6 @@
 ﻿namespace PriceUploader
 {
-    partial class formSetDatabase
+    partial class FormSetDatabase
     {
         /// <summary>
         /// Required designer variable.
