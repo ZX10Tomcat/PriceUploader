@@ -317,6 +317,7 @@
             this.buttonDatabaseSettings.TabIndex = 22;
             this.buttonDatabaseSettings.Text = "Настройки доступа к БД";
             this.buttonDatabaseSettings.UseVisualStyleBackColor = true;
+            this.buttonDatabaseSettings.Click += new System.EventHandler(this.buttonDatabaseSettings_Click);
             // 
             // textBoxActuality
             // 
@@ -501,6 +502,7 @@
             this.ClientSize = new System.Drawing.Size(1186, 627);
             this.Controls.Add(this.tabControlMain);
             this.Controls.Add(this.menuStrip1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "MainForm";
             this.Text = "Импорт прайс-листов";

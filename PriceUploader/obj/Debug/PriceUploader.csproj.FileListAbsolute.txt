@@ -20,3 +20,4 @@ D:\Work\PriceUploader\PriceUploader\obj\Debug\PriceUploader.MainForm.resources
 D:\Work\PriceUploader\PriceUploader\obj\Debug\PriceUploader.Properties.Resources.resources
 D:\Work\PriceUploader\PriceUploader\obj\Debug\PriceUploader.csproj.GenerateResource.Cache
 D:\Work\PriceUploader\PriceUploader\obj\Debug\PriceUploader.formSetDatabase.resources
+C:\Users\b_sam_000\Documents\GitHub\PriceUploader\PriceUploader\obj\Debug\PriceUploader.formSetDatabase.resources

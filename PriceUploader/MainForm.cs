@@ -70,6 +70,9 @@ namespace PriceUploader
             {
                 TableImportSettings = res.Result;
                 Debug.WriteLine("           TableImportSettings: " + TableImportSettings.Rows.Count.ToString());
+
+
+                dataGridView2.DataSource = TableImportSettings;
             });
 
             Model.Load_price_category().ContinueWith(res =>
@@ -116,6 +119,17 @@ namespace PriceUploader
         }
 
         private void toolStripMenuItemDatabaseSettings_Click(object sender, EventArgs e)
+        {
+            OpenSetDatabaseDialog();
+        }
+
+       
+        private void buttonDatabaseSettings_Click(object sender, EventArgs e)
+        {
+            OpenSetDatabaseDialog();
+        }
+
+        private void OpenSetDatabaseDialog()
         {
             formSetDatabase formSetDatabase = new formSetDatabase();
             formSetDatabase.Init(ref Model);
