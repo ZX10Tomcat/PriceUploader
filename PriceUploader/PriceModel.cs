@@ -12,6 +12,12 @@ namespace PriceUploader
     public class PriceModel
     {
         private string strConn = string.Empty;
+        private string strDatabase = string.Empty;
+        private string server = "78.46.43.211";
+        private string userId = "akara_tomcat";
+        private string password = "tomcat";
+        private string port= "3306";
+
         private MySqlConnection conn;
         private MySqlDataAdapter dataAdapter;
         private MySqlCommandBuilder commandBuilder;
@@ -19,13 +25,84 @@ namespace PriceUploader
 
         public PriceModel() 
         {
+            this.GetStrConn();
+            this.GetStrDataBase();
             this.conn = GetConn();
         }
 
-        public string GetStrConn()
-        { 
+        //public string GetStrConn()
+        //{ 
+        //    System.Configuration.AppSettingsReader cas = new System.Configuration.AppSettingsReader();
+        //    strConn = cas.GetValue("strConn", typeof(string)).ToString();
+        //    return strConn;
+        //}
+
+        //public string GetStrDataBase()
+        //{
+        //    System.Configuration.AppSettingsReader cas = new System.Configuration.AppSettingsReader();
+        //    strDatabase = cas.GetValue("dataBase", typeof(string)).ToString();
+        //    return strDatabase;
+        //}
+
+        public string GetStrConn(string server ="78.46.43.211",
+            string userId = "akara_tomcat",
+            string password = "tomcat",
+            string port = "3306")
+        {
+            this.server = server;
+            this.userId = userId;
+            this.password = password;
+            this.port = port;
+
+            strConn = string.Format("server={0};user id={1};password={2};port={3};",
+                this.server,
+                this.userId,
+                this.password,
+                this.port);
+
+            return strConn;
+        }
+
+        public string GetStrDataBase(string database = "akara_inteamtest")
+        {
+            strDatabase = database;
+            return strDatabase;
+        }
+
+        public string GetServer()
+        {
             System.Configuration.AppSettingsReader cas = new System.Configuration.AppSettingsReader();
-            return cas.GetValue("strConn", typeof(string)).ToString();
+            return cas.GetValue("server", typeof(string)).ToString();
+        }
+
+        public string GetUserId()
+        {
+            System.Configuration.AppSettingsReader cas = new System.Configuration.AppSettingsReader();
+            return cas.GetValue("userId", typeof(string)).ToString();
+        }
+        
+        public string GetPass()
+        {
+            System.Configuration.AppSettingsReader cas = new System.Configuration.AppSettingsReader();
+            return cas.GetValue("password", typeof(string)).ToString();
+        }
+
+
+        public string GetPort()
+        {
+            System.Configuration.AppSettingsReader cas = new System.Configuration.AppSettingsReader();
+            return cas.GetValue("port", typeof(string)).ToString();
+        }
+
+        public string GetDatabase()
+        {
+            System.Configuration.AppSettingsReader cas = new System.Configuration.AppSettingsReader();
+            return cas.GetValue("database", typeof(string)).ToString();
+        }
+
+        public int SaveDatabasSettings()
+        {
+            return 0;
         }
 
 
@@ -33,13 +110,10 @@ namespace PriceUploader
         {
 			try 
 			{
-                strConn = GetStrConn(); 
-    
                 conn = new MySqlConnection(strConn);
 				conn.Open();
 
-                System.Configuration.AppSettingsReader cas = new System.Configuration.AppSettingsReader();
-                conn.ChangeDatabase(cas.GetValue("dataBase", typeof(string)).ToString());	
+                conn.ChangeDatabase(strDatabase);	
 			}
 			catch  
 			{

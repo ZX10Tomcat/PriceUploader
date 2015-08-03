@@ -29,20 +29,20 @@ namespace PriceUploader
             Init();
         }
 
-        private void smiExit_Click(object sender, EventArgs e)
+        private void toolStripMenuItemExit_Click(object sender, EventArgs e)
         {
             Application.ExitThread();
         }
 
-        private void smiSettings_Click(object sender, EventArgs e)
+        private void toolStripMenuItemSettings_Click(object sender, EventArgs e)
         {
-            this.tcMain.SelectedIndex = 1;
+            this.tabControlMain.SelectedIndex = 1;
             
         }
 
-        private void smiImportPrices_Click(object sender, EventArgs e)
+        private void toolStripMenuItemImportPrices_Click(object sender, EventArgs e)
         {
-            this.tcMain.SelectedIndex = 0;
+            this.tabControlMain.SelectedIndex = 0;
         }
 
         public void Init()
@@ -113,6 +113,13 @@ namespace PriceUploader
 
             Debug.WriteLine("time data loaded: " + timeout.ToString());
             return;
+        }
+
+        private void toolStripMenuItemDatabaseSettings_Click(object sender, EventArgs e)
+        {
+            formSetDatabase formSetDatabase = new formSetDatabase();
+            formSetDatabase.Init(ref Model);
+            formSetDatabase.ShowDialog();
         }
 
     }
