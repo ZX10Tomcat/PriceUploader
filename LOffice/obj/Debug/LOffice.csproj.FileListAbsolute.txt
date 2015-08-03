@@ -1,7 +1,0 @@
-D:\Work\PriceUploader\LOffice\bin\Debug\LOffice2.dll
-D:\Work\PriceUploader\LOffice\bin\Debug\LOffice2.pdb
-D:\Work\PriceUploader\LOffice\bin\Debug\LAny2.dll
-D:\Work\PriceUploader\LOffice\bin\Debug\LAny2.pdb
-D:\Work\PriceUploader\LOffice\obj\Debug\LOffice.csprojResolveAssemblyReference.cache
-D:\Work\PriceUploader\LOffice\obj\Debug\LOffice2.dll
-D:\Work\PriceUploader\LOffice\obj\Debug\LOffice2.pdb
