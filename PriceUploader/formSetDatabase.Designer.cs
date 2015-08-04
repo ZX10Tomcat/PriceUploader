@@ -143,7 +143,7 @@
             this.buttonClose.UseVisualStyleBackColor = true;
             this.buttonClose.Click += new System.EventHandler(this.buttonClose_Click);
             // 
-            // formSetDatabase
+            // FormSetDatabase
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(433, 193);
@@ -164,10 +164,10 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "formSetDatabase";
+            this.Name = "FormSetDatabase";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Настройка соединения с БД";
+            this.Text = "Настройки доступа к БД";
             this.ResumeLayout(false);
             this.PerformLayout();
 

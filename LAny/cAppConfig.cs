@@ -15,7 +15,6 @@ namespace LAny
             return (cas.GetValue(key, typeof(string)).ToString());
         }
 
-
         public static void UpdateAppSetting(string key, string value)
         {
             Configuration configuration = ConfigurationManager.OpenExeConfiguration(Assembly.GetExecutingAssembly().Location);
@@ -24,7 +23,6 @@ namespace LAny
 
             ConfigurationManager.RefreshSection("appSettings");
         }
-
 
     }
 }

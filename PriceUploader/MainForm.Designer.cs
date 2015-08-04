@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.toolStripMenuItemWork = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemImportPrices = new System.Windows.Forms.ToolStripMenuItem();
@@ -48,7 +49,22 @@
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.tabPageSettings = new System.Windows.Forms.TabPage();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.dataGridView2 = new System.Windows.Forms.DataGridView();
+            this.dataGrid_import_settings = new System.Windows.Forms.DataGridView();
+            this.bindingSource__import_settings = new System.Windows.Forms.BindingSource(this.components);
+            this.dataSet = new System.Data.DataSet();
+            this.dataTable_import_settings = new System.Data.DataTable();
+            this.dataColumn1 = new System.Data.DataColumn();
+            this.dataColumn2 = new System.Data.DataColumn();
+            this.dataColumn3 = new System.Data.DataColumn();
+            this.dataColumn4 = new System.Data.DataColumn();
+            this.dataColumn5 = new System.Data.DataColumn();
+            this.dataColumn6 = new System.Data.DataColumn();
+            this.dataColumn7 = new System.Data.DataColumn();
+            this.dataColumn8 = new System.Data.DataColumn();
+            this.dataColumn9 = new System.Data.DataColumn();
+            this.dataColumn10 = new System.Data.DataColumn();
+            this.dataColumn11 = new System.Data.DataColumn();
+            this.dataColumn12 = new System.Data.DataColumn();
             this.buttonDatabaseSettings = new System.Windows.Forms.Button();
             this.textBoxActuality = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
@@ -72,6 +88,18 @@
             this.label2 = new System.Windows.Forms.Label();
             this.textBoxName = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.isidDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.isnameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.isstartrowDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.iscodecolDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ispricecolDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.isnamecolDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.isactualityDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ispresense1colDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ispresense2colDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ispresensesymbolDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.iscurrencycolDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.isuahflagDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.menuStrip1.SuspendLayout();
             this.tabControlMain.SuspendLayout();
             this.tabPageImport.SuspendLayout();
@@ -81,7 +109,10 @@
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGrid_import_settings)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bindingSource__import_settings)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataSet)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataTable_import_settings)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -108,22 +139,22 @@
             // toolStripMenuItemImportPrices
             // 
             this.toolStripMenuItemImportPrices.Name = "toolStripMenuItemImportPrices";
-            this.toolStripMenuItemImportPrices.Size = new System.Drawing.Size(228, 22);
+            this.toolStripMenuItemImportPrices.Size = new System.Drawing.Size(207, 22);
             this.toolStripMenuItemImportPrices.Text = "Импорт прайсов";
             this.toolStripMenuItemImportPrices.Click += new System.EventHandler(this.toolStripMenuItemImportPrices_Click);
             // 
             // toolStripMenuItemSettings
             // 
             this.toolStripMenuItemSettings.Name = "toolStripMenuItemSettings";
-            this.toolStripMenuItemSettings.Size = new System.Drawing.Size(228, 22);
+            this.toolStripMenuItemSettings.Size = new System.Drawing.Size(207, 22);
             this.toolStripMenuItemSettings.Text = "Hастройки импорта";
             this.toolStripMenuItemSettings.Click += new System.EventHandler(this.toolStripMenuItemSettings_Click);
             // 
             // toolStripMenuItemDatabaseSettings
             // 
             this.toolStripMenuItemDatabaseSettings.Name = "toolStripMenuItemDatabaseSettings";
-            this.toolStripMenuItemDatabaseSettings.Size = new System.Drawing.Size(228, 22);
-            this.toolStripMenuItemDatabaseSettings.Text = "Настройка соединения с БД";
+            this.toolStripMenuItemDatabaseSettings.Size = new System.Drawing.Size(207, 22);
+            this.toolStripMenuItemDatabaseSettings.Text = "Настройки доступа к БД";
             this.toolStripMenuItemDatabaseSettings.Click += new System.EventHandler(this.toolStripMenuItemDatabaseSettings_Click);
             // 
             // toolStripMenuItemExit
@@ -270,7 +301,7 @@
             // 
             // splitContainer1.Panel1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.dataGridView2);
+            this.splitContainer1.Panel1.Controls.Add(this.dataGrid_import_settings);
             // 
             // splitContainer1.Panel2
             // 
@@ -301,13 +332,122 @@
             this.splitContainer1.SplitterDistance = 885;
             this.splitContainer1.TabIndex = 0;
             // 
-            // dataGridView2
+            // dataGrid_import_settings
             // 
-            this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView2.Location = new System.Drawing.Point(3, 3);
-            this.dataGridView2.Name = "dataGridView2";
-            this.dataGridView2.Size = new System.Drawing.Size(879, 563);
-            this.dataGridView2.TabIndex = 0;
+            this.dataGrid_import_settings.AutoGenerateColumns = false;
+            this.dataGrid_import_settings.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGrid_import_settings.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.isidDataGridViewTextBoxColumn,
+            this.isnameDataGridViewTextBoxColumn,
+            this.isstartrowDataGridViewTextBoxColumn,
+            this.iscodecolDataGridViewTextBoxColumn,
+            this.ispricecolDataGridViewTextBoxColumn,
+            this.isnamecolDataGridViewTextBoxColumn,
+            this.isactualityDataGridViewTextBoxColumn,
+            this.ispresense1colDataGridViewTextBoxColumn,
+            this.ispresense2colDataGridViewTextBoxColumn,
+            this.ispresensesymbolDataGridViewTextBoxColumn,
+            this.iscurrencycolDataGridViewTextBoxColumn,
+            this.isuahflagDataGridViewTextBoxColumn});
+            this.dataGrid_import_settings.DataSource = this.bindingSource__import_settings;
+            this.dataGrid_import_settings.Location = new System.Drawing.Point(3, 3);
+            this.dataGrid_import_settings.Name = "dataGrid_import_settings";
+            this.dataGrid_import_settings.Size = new System.Drawing.Size(879, 563);
+            this.dataGrid_import_settings.TabIndex = 0;
+            this.dataGrid_import_settings.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGrid_import_settings_RowEnter);
+            // 
+            // bindingSource__import_settings
+            // 
+            this.bindingSource__import_settings.DataMember = "Table_import_settings";
+            this.bindingSource__import_settings.DataSource = this.dataSet;
+            this.bindingSource__import_settings.CurrentChanged += new System.EventHandler(this.bindingSource__import_settings_CurrentChanged);
+            // 
+            // dataSet
+            // 
+            this.dataSet.DataSetName = "dataSet";
+            this.dataSet.Tables.AddRange(new System.Data.DataTable[] {
+            this.dataTable_import_settings});
+            // 
+            // dataTable_import_settings
+            // 
+            this.dataTable_import_settings.Columns.AddRange(new System.Data.DataColumn[] {
+            this.dataColumn1,
+            this.dataColumn2,
+            this.dataColumn3,
+            this.dataColumn4,
+            this.dataColumn5,
+            this.dataColumn6,
+            this.dataColumn7,
+            this.dataColumn8,
+            this.dataColumn9,
+            this.dataColumn10,
+            this.dataColumn11,
+            this.dataColumn12});
+            this.dataTable_import_settings.TableName = "Table_import_settings";
+            // 
+            // dataColumn1
+            // 
+            this.dataColumn1.AllowDBNull = false;
+            this.dataColumn1.Caption = "is_id";
+            this.dataColumn1.ColumnName = "is_id";
+            this.dataColumn1.DataType = typeof(int);
+            // 
+            // dataColumn2
+            // 
+            this.dataColumn2.Caption = "is_name";
+            this.dataColumn2.ColumnName = "is_name";
+            // 
+            // dataColumn3
+            // 
+            this.dataColumn3.Caption = "is_start_row";
+            this.dataColumn3.ColumnName = "is_start_row";
+            this.dataColumn3.DataType = typeof(int);
+            // 
+            // dataColumn4
+            // 
+            this.dataColumn4.Caption = "is_code_col";
+            this.dataColumn4.ColumnName = "is_code_col";
+            // 
+            // dataColumn5
+            // 
+            this.dataColumn5.Caption = "is_price_col";
+            this.dataColumn5.ColumnName = "is_price_col";
+            // 
+            // dataColumn6
+            // 
+            this.dataColumn6.Caption = "is_name_col";
+            this.dataColumn6.ColumnName = "is_name_col";
+            // 
+            // dataColumn7
+            // 
+            this.dataColumn7.Caption = "is_actuality";
+            this.dataColumn7.ColumnName = "is_actuality";
+            this.dataColumn7.DataType = typeof(int);
+            // 
+            // dataColumn8
+            // 
+            this.dataColumn8.Caption = "is_presense1_col";
+            this.dataColumn8.ColumnName = "is_presense1_col";
+            // 
+            // dataColumn9
+            // 
+            this.dataColumn9.Caption = "is_presense2_col";
+            this.dataColumn9.ColumnName = "is_presense2_col";
+            // 
+            // dataColumn10
+            // 
+            this.dataColumn10.Caption = "is_presense_symbol";
+            this.dataColumn10.ColumnName = "is_presense_symbol";
+            // 
+            // dataColumn11
+            // 
+            this.dataColumn11.Caption = "is_currency_col";
+            this.dataColumn11.ColumnName = "is_currency_col";
+            // 
+            // dataColumn12
+            // 
+            this.dataColumn12.Caption = "is_uah_flag";
+            this.dataColumn12.ColumnName = "is_uah_flag";
             // 
             // buttonDatabaseSettings
             // 
@@ -495,6 +635,92 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Название";
             // 
+            // isidDataGridViewTextBoxColumn
+            // 
+            this.isidDataGridViewTextBoxColumn.DataPropertyName = "is_id";
+            this.isidDataGridViewTextBoxColumn.FillWeight = 5F;
+            this.isidDataGridViewTextBoxColumn.HeaderText = "is_id";
+            this.isidDataGridViewTextBoxColumn.Name = "isidDataGridViewTextBoxColumn";
+            this.isidDataGridViewTextBoxColumn.Visible = false;
+            this.isidDataGridViewTextBoxColumn.Width = 5;
+            // 
+            // isnameDataGridViewTextBoxColumn
+            // 
+            this.isnameDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.isnameDataGridViewTextBoxColumn.DataPropertyName = "is_name";
+            this.isnameDataGridViewTextBoxColumn.HeaderText = "Имена форматов";
+            this.isnameDataGridViewTextBoxColumn.Name = "isnameDataGridViewTextBoxColumn";
+            // 
+            // isstartrowDataGridViewTextBoxColumn
+            // 
+            this.isstartrowDataGridViewTextBoxColumn.DataPropertyName = "is_start_row";
+            this.isstartrowDataGridViewTextBoxColumn.HeaderText = "is_start_row";
+            this.isstartrowDataGridViewTextBoxColumn.Name = "isstartrowDataGridViewTextBoxColumn";
+            this.isstartrowDataGridViewTextBoxColumn.Visible = false;
+            // 
+            // iscodecolDataGridViewTextBoxColumn
+            // 
+            this.iscodecolDataGridViewTextBoxColumn.DataPropertyName = "is_code_col";
+            this.iscodecolDataGridViewTextBoxColumn.HeaderText = "is_code_col";
+            this.iscodecolDataGridViewTextBoxColumn.Name = "iscodecolDataGridViewTextBoxColumn";
+            this.iscodecolDataGridViewTextBoxColumn.Visible = false;
+            // 
+            // ispricecolDataGridViewTextBoxColumn
+            // 
+            this.ispricecolDataGridViewTextBoxColumn.DataPropertyName = "is_price_col";
+            this.ispricecolDataGridViewTextBoxColumn.HeaderText = "is_price_col";
+            this.ispricecolDataGridViewTextBoxColumn.Name = "ispricecolDataGridViewTextBoxColumn";
+            this.ispricecolDataGridViewTextBoxColumn.Visible = false;
+            // 
+            // isnamecolDataGridViewTextBoxColumn
+            // 
+            this.isnamecolDataGridViewTextBoxColumn.DataPropertyName = "is_name_col";
+            this.isnamecolDataGridViewTextBoxColumn.HeaderText = "is_name_col";
+            this.isnamecolDataGridViewTextBoxColumn.Name = "isnamecolDataGridViewTextBoxColumn";
+            this.isnamecolDataGridViewTextBoxColumn.Visible = false;
+            // 
+            // isactualityDataGridViewTextBoxColumn
+            // 
+            this.isactualityDataGridViewTextBoxColumn.DataPropertyName = "is_actuality";
+            this.isactualityDataGridViewTextBoxColumn.HeaderText = "is_actuality";
+            this.isactualityDataGridViewTextBoxColumn.Name = "isactualityDataGridViewTextBoxColumn";
+            this.isactualityDataGridViewTextBoxColumn.Visible = false;
+            // 
+            // ispresense1colDataGridViewTextBoxColumn
+            // 
+            this.ispresense1colDataGridViewTextBoxColumn.DataPropertyName = "is_presense1_col";
+            this.ispresense1colDataGridViewTextBoxColumn.HeaderText = "is_presense1_col";
+            this.ispresense1colDataGridViewTextBoxColumn.Name = "ispresense1colDataGridViewTextBoxColumn";
+            this.ispresense1colDataGridViewTextBoxColumn.Visible = false;
+            // 
+            // ispresense2colDataGridViewTextBoxColumn
+            // 
+            this.ispresense2colDataGridViewTextBoxColumn.DataPropertyName = "is_presense2_col";
+            this.ispresense2colDataGridViewTextBoxColumn.HeaderText = "is_presense2_col";
+            this.ispresense2colDataGridViewTextBoxColumn.Name = "ispresense2colDataGridViewTextBoxColumn";
+            this.ispresense2colDataGridViewTextBoxColumn.Visible = false;
+            // 
+            // ispresensesymbolDataGridViewTextBoxColumn
+            // 
+            this.ispresensesymbolDataGridViewTextBoxColumn.DataPropertyName = "is_presense_symbol";
+            this.ispresensesymbolDataGridViewTextBoxColumn.HeaderText = "is_presense_symbol";
+            this.ispresensesymbolDataGridViewTextBoxColumn.Name = "ispresensesymbolDataGridViewTextBoxColumn";
+            this.ispresensesymbolDataGridViewTextBoxColumn.Visible = false;
+            // 
+            // iscurrencycolDataGridViewTextBoxColumn
+            // 
+            this.iscurrencycolDataGridViewTextBoxColumn.DataPropertyName = "is_currency_col";
+            this.iscurrencycolDataGridViewTextBoxColumn.HeaderText = "is_currency_col";
+            this.iscurrencycolDataGridViewTextBoxColumn.Name = "iscurrencycolDataGridViewTextBoxColumn";
+            this.iscurrencycolDataGridViewTextBoxColumn.Visible = false;
+            // 
+            // isuahflagDataGridViewTextBoxColumn
+            // 
+            this.isuahflagDataGridViewTextBoxColumn.DataPropertyName = "is_uah_flag";
+            this.isuahflagDataGridViewTextBoxColumn.HeaderText = "is_uah_flag";
+            this.isuahflagDataGridViewTextBoxColumn.Name = "isuahflagDataGridViewTextBoxColumn";
+            this.isuahflagDataGridViewTextBoxColumn.Visible = false;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -518,7 +744,10 @@
             this.splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGrid_import_settings)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bindingSource__import_settings)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataSet)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataTable_import_settings)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -536,7 +765,7 @@
         private System.Windows.Forms.TabPage tabPageSettings;
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.SplitContainer splitContainer1;
-        private System.Windows.Forms.DataGridView dataGridView2;
+        private System.Windows.Forms.DataGridView dataGrid_import_settings;
         private System.Windows.Forms.TextBox textBoxActuality;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.TextBox textBoxPriceGrn;
@@ -570,5 +799,32 @@
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemDatabaseSettings;
+        private System.Windows.Forms.BindingSource bindingSource__import_settings;
+        private System.Data.DataSet dataSet;
+        private System.Data.DataTable dataTable_import_settings;
+        private System.Data.DataColumn dataColumn1;
+        private System.Data.DataColumn dataColumn2;
+        private System.Data.DataColumn dataColumn3;
+        private System.Data.DataColumn dataColumn4;
+        private System.Data.DataColumn dataColumn5;
+        private System.Data.DataColumn dataColumn6;
+        private System.Data.DataColumn dataColumn7;
+        private System.Data.DataColumn dataColumn8;
+        private System.Data.DataColumn dataColumn9;
+        private System.Data.DataColumn dataColumn10;
+        private System.Data.DataColumn dataColumn11;
+        private System.Data.DataColumn dataColumn12;
+        private System.Windows.Forms.DataGridViewTextBoxColumn isidDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn isnameDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn isstartrowDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn iscodecolDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ispricecolDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn isnamecolDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn isactualityDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ispresense1colDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ispresense2colDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ispresensesymbolDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn iscurrencycolDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn isuahflagDataGridViewTextBoxColumn;
     }
 }

@@ -15,7 +15,7 @@ namespace PriceUploader
     {
         private PriceModel Model = null;
         private DataTable TableCategoryCharge = null; 
-        private DataTable TableImportSettings = null;
+        //private DataTable TableImportSettings = null;
         private DataTable TablePriceCategory = null;
         private DataTable TableProduct = null;
         private DataTable TableProductAlias = null;
@@ -68,10 +68,7 @@ namespace PriceUploader
 
             Model.Load_import_settings().ContinueWith(res =>
             {
-                TableImportSettings = res.Result;
-                Debug.WriteLine("           TableImportSettings: " + TableImportSettings.Rows.Count.ToString());
-
-                dataGridView2.DataSource = TableImportSettings;
+                SetDataTableByRows(res, "Table_import_settings");
             });
 
             Model.Load_price_category().ContinueWith(res =>
@@ -117,6 +114,21 @@ namespace PriceUploader
             return;
         }
 
+        private void SetDataTableByRows(Task<DataTable> res, string tableName)
+        {
+            dataSet.Tables[tableName].Clear();
+            for (int i = 0; i < res.Result.Rows.Count; i++)
+            {
+                DataRow dr = dataSet.Tables[tableName].NewRow();
+                for (int n = 0; n < dr.ItemArray.ToList().Count; n++)
+                    dr[n] = res.Result.Rows[i].ItemArray[n];
+
+                dataSet.Tables[tableName].Rows.Add(dr);
+            }
+        }
+
+
+
         private void toolStripMenuItemDatabaseSettings_Click(object sender, EventArgs e)
         {
             OpenSetDatabaseDialog();
@@ -134,6 +146,24 @@ namespace PriceUploader
             formSetDatabase.Init(ref Model);
             formSetDatabase.ShowDialog();
         }
+
+        private void bindingSource__import_settings_CurrentChanged(object sender, EventArgs e)
+        {
+
+        }
+
+
+        private void dataGrid_import_settings_RowEnter(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e != null)
+            {
+                var v = dataSet.Tables["Table_import_settings"].Rows[e.RowIndex];
+                var vv = v.ItemArray;
+            }
+            
+            return;
+        }
+
 
     }
 }
