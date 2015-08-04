@@ -88,7 +88,6 @@
             this.label2 = new System.Windows.Forms.Label();
             this.textBoxName = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.isidDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.isnameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.isstartrowDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.iscodecolDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -100,6 +99,8 @@
             this.ispresensesymbolDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.iscurrencycolDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.isuahflagDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.isidDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.buttonSave = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.tabControlMain.SuspendLayout();
             this.tabPageImport.SuspendLayout();
@@ -305,6 +306,7 @@
             // 
             // splitContainer1.Panel2
             // 
+            this.splitContainer1.Panel2.Controls.Add(this.buttonSave);
             this.splitContainer1.Panel2.Controls.Add(this.buttonDatabaseSettings);
             this.splitContainer1.Panel2.Controls.Add(this.textBoxActuality);
             this.splitContainer1.Panel2.Controls.Add(this.label11);
@@ -337,7 +339,6 @@
             this.dataGrid_import_settings.AutoGenerateColumns = false;
             this.dataGrid_import_settings.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGrid_import_settings.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.isidDataGridViewTextBoxColumn,
             this.isnameDataGridViewTextBoxColumn,
             this.isstartrowDataGridViewTextBoxColumn,
             this.iscodecolDataGridViewTextBoxColumn,
@@ -348,7 +349,8 @@
             this.ispresense2colDataGridViewTextBoxColumn,
             this.ispresensesymbolDataGridViewTextBoxColumn,
             this.iscurrencycolDataGridViewTextBoxColumn,
-            this.isuahflagDataGridViewTextBoxColumn});
+            this.isuahflagDataGridViewTextBoxColumn,
+            this.isidDataGridViewTextBoxColumn});
             this.dataGrid_import_settings.DataSource = this.bindingSource__import_settings;
             this.dataGrid_import_settings.Location = new System.Drawing.Point(3, 3);
             this.dataGrid_import_settings.Name = "dataGrid_import_settings";
@@ -635,15 +637,6 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Название";
             // 
-            // isidDataGridViewTextBoxColumn
-            // 
-            this.isidDataGridViewTextBoxColumn.DataPropertyName = "is_id";
-            this.isidDataGridViewTextBoxColumn.FillWeight = 5F;
-            this.isidDataGridViewTextBoxColumn.HeaderText = "is_id";
-            this.isidDataGridViewTextBoxColumn.Name = "isidDataGridViewTextBoxColumn";
-            this.isidDataGridViewTextBoxColumn.Visible = false;
-            this.isidDataGridViewTextBoxColumn.Width = 5;
-            // 
             // isnameDataGridViewTextBoxColumn
             // 
             this.isnameDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
@@ -720,6 +713,26 @@
             this.isuahflagDataGridViewTextBoxColumn.HeaderText = "is_uah_flag";
             this.isuahflagDataGridViewTextBoxColumn.Name = "isuahflagDataGridViewTextBoxColumn";
             this.isuahflagDataGridViewTextBoxColumn.Visible = false;
+            // 
+            // isidDataGridViewTextBoxColumn
+            // 
+            this.isidDataGridViewTextBoxColumn.DataPropertyName = "is_id";
+            this.isidDataGridViewTextBoxColumn.FillWeight = 5F;
+            this.isidDataGridViewTextBoxColumn.HeaderText = "is_id";
+            this.isidDataGridViewTextBoxColumn.Name = "isidDataGridViewTextBoxColumn";
+            this.isidDataGridViewTextBoxColumn.ReadOnly = true;
+            this.isidDataGridViewTextBoxColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.isidDataGridViewTextBoxColumn.Visible = false;
+            this.isidDataGridViewTextBoxColumn.Width = 5;
+            // 
+            // buttonSave
+            // 
+            this.buttonSave.Location = new System.Drawing.Point(12, 517);
+            this.buttonSave.Name = "buttonSave";
+            this.buttonSave.Size = new System.Drawing.Size(259, 23);
+            this.buttonSave.TabIndex = 23;
+            this.buttonSave.Text = "Сохранить";
+            this.buttonSave.UseVisualStyleBackColor = true;
             // 
             // MainForm
             // 
@@ -814,7 +827,6 @@
         private System.Data.DataColumn dataColumn10;
         private System.Data.DataColumn dataColumn11;
         private System.Data.DataColumn dataColumn12;
-        private System.Windows.Forms.DataGridViewTextBoxColumn isidDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn isnameDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn isstartrowDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn iscodecolDataGridViewTextBoxColumn;
@@ -826,5 +838,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn ispresensesymbolDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn iscurrencycolDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn isuahflagDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn isidDataGridViewTextBoxColumn;
+        private System.Windows.Forms.Button buttonSave;
     }
 }

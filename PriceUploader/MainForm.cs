@@ -68,7 +68,7 @@ namespace PriceUploader
 
             Model.Load_import_settings().ContinueWith(res =>
             {
-                SetDataTableByRows(res, "Table_import_settings");
+                SetDataTableByRows(res, "Table_import_settings");                
             });
 
             Model.Load_price_category().ContinueWith(res =>
@@ -157,8 +157,19 @@ namespace PriceUploader
         {
             if (e != null)
             {
-                var v = dataSet.Tables["Table_import_settings"].Rows[e.RowIndex];
-                var vv = v.ItemArray;
+                var v = dataSet.Tables["Table_import_settings"].Rows[e.RowIndex];                
+                textBoxFirstRow.Text = v.ItemArray[0].ToString();
+                textBoxName.Text = v.ItemArray[1].ToString();
+                textBoxCode.Text = v.ItemArray[2].ToString();
+                textBoxPrice.Text = v.ItemArray[3].ToString();
+                textBoxProductName.Text = v.ItemArray[4].ToString();
+                textBoxAvailability1.Text = v.ItemArray[5].ToString();
+                textBoxAvailability2.Text = v.ItemArray[6].ToString();
+                textBoxCurrency.Text = v.ItemArray[7].ToString();
+                textBoxAvailSign.Text = v.ItemArray[8].ToString();
+                textBoxPriceGrn.Text = v.ItemArray[9].ToString();
+                textBoxActuality.Text = v.ItemArray[10].ToString();
+
             }
             
             return;
