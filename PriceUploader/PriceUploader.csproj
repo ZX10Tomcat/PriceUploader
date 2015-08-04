@@ -128,6 +128,16 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LAny\LAny.csproj">
+      <Project>{4507a4de-467f-41b4-9d13-bc4144b064ea}</Project>
+      <Name>LAny</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LOffice\LOffice.csproj">
+      <Project>{7575303e-1ea2-4338-9f89-d8e6aff44a3d}</Project>
+      <Name>LOffice</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

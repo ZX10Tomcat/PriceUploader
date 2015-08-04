@@ -1,4 +1,5 @@
-﻿using MySql.Data.MySqlClient;
+﻿using LAny;
+using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -93,11 +94,11 @@ namespace PriceUploader
 
         public PriceModel() 
         {
-            this.strServer = GetValueFromConfig("server");
-            this.strUserId = GetValueFromConfig("userId");
-            this.strPassword = GetValueFromConfig("password");
-            this.strPort = GetValueFromConfig("port");
-            this.strDatabase = GetValueFromConfig("database");
+            this.strServer = cAppConfig.GetAppSettings("server");
+            this.strUserId = cAppConfig.GetAppSettings("userId");
+            this.strPassword = cAppConfig.GetAppSettings("password");
+            this.strPort = cAppConfig.GetAppSettings("port");
+            this.strDatabase = cAppConfig.GetAppSettings("database");
 
             this.GetStrConn();
             this.conn = GetConn();
@@ -112,43 +113,17 @@ namespace PriceUploader
             return strConn;
         }
 
-        
-        public string GetValueFromConfig(string name)
-        {
-            System.Configuration.AppSettingsReader cas = new System.Configuration.AppSettingsReader();
-            return (cas.GetValue(name, typeof(string)).ToString());
-        }
-
 
         public int SaveDatabaseSettings()
         {
-            UpdateSetting("database", strDatabase);
-            UpdateSetting("server", strServer);
-            UpdateSetting("userId", strUserId);
-            UpdateSetting("password", strPassword);
-            UpdateSetting("port", strPort);
+            cAppConfig.UpdateAppSetting("database", strDatabase);
+            cAppConfig.UpdateAppSetting("server", strServer);
+            cAppConfig.UpdateAppSetting("userId", strUserId);
+            cAppConfig.UpdateAppSetting("password", strPassword);
+            cAppConfig.UpdateAppSetting("port", strPort);
             return 0;
         }
 
-
-        //private static void UpdateSetting(string key, string value)
-        //{
-        //    Configuration configuration = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-        //    configuration.AppSettings.Settings[key].Value = value;
-        //    configuration.Save();
-
-        //    ConfigurationManager.RefreshSection("appSettings");
-        //}
-
-
-        private void UpdateSetting(string key, string value)
-        {
-            Configuration configuration = ConfigurationManager.OpenExeConfiguration(Assembly.GetExecutingAssembly().Location);
-            configuration.AppSettings.Settings[key].Value = value;
-            configuration.Save();
-
-            ConfigurationManager.RefreshSection("appSettings");
-        }
 
         public MySqlConnection GetConn()
         {
