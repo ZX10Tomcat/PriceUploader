@@ -227,6 +227,7 @@ namespace PriceUploader
             });
         }
 
+        private MySqlDataAdapter da_import_settings = null;
         public Task<DataTable> Load_import_settings()
         {
             return Task<DataTable>.Factory.StartNew(() =>
@@ -239,14 +240,25 @@ namespace PriceUploader
                         con.Open();
                         System.Configuration.AppSettingsReader cas = new System.Configuration.AppSettingsReader();
                         con.ChangeDatabase(cas.GetValue("dataBase", typeof(string)).ToString());
-                        MySqlDataAdapter da = new MySqlDataAdapter("SELECT * FROM import_settings", con);
-                        commandBuilder = new MySqlCommandBuilder(da);
-                        da.Fill(dt);
+                        da_import_settings = new MySqlDataAdapter("SELECT * FROM import_settings", con);
+                        commandBuilder = new MySqlCommandBuilder(da_import_settings);
+                        da_import_settings.Fill(dt);
                     }
                 }
-                return dt;
+                return (dt);
             });
         }
+
+        public void Update_import_settings(ref DataTable dt)
+        {
+            DataTable changes = dt.GetChanges();
+            if (changes != null)
+            {
+                da_import_settings.Update(changes);
+                dt.AcceptChanges();
+            }
+        }
+
 
         public Task<DataTable> Load_price_category()
         {
@@ -376,5 +388,12 @@ namespace PriceUploader
 
 
 
+    }
+
+    public class DataObject
+    {
+        public DataTable dataTable;
+        public MySqlDataAdapter mySqlDataAdapter; 
+    
     }
 }

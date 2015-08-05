@@ -45,6 +45,7 @@ namespace PriceUploader
             this.tabControlMain.SelectedIndex = 0;
         }
 
+        
         public void Init()
         {
             Model = new PriceModel();
@@ -68,7 +69,8 @@ namespace PriceUploader
 
             Model.Load_import_settings().ContinueWith(res =>
             {
-                SetDataTableByRows(res, "Table_import_settings");                
+                SetDataTableByRows(res, "Table_import_settings");
+                SetDataBindings();
             });
 
             Model.Load_price_category().ContinueWith(res =>
@@ -117,6 +119,7 @@ namespace PriceUploader
         private void SetDataTableByRows(Task<DataTable> res, string tableName)
         {
             dataSet.Tables[tableName].Clear();
+
             for (int i = 0; i < res.Result.Rows.Count; i++)
             {
                 DataRow dr = dataSet.Tables[tableName].NewRow();
@@ -125,8 +128,7 @@ namespace PriceUploader
 
                 dataSet.Tables[tableName].Rows.Add(dr);
             }
-
-            SetDataBindings();
+            dataSet.Tables[tableName].AcceptChanges();
         }
 
         private void SetDataBindings()
@@ -189,6 +191,66 @@ namespace PriceUploader
 
             }
             
+            return;
+        }
+
+
+        private static object _lock = new object();
+        public delegate void MyDelegate(DataGridView datagrid);
+        
+        private void buttonSave_Click(object sender, EventArgs e)
+        {
+            var v = dataSet.Tables["Table_import_settings"];
+            Model.Update_import_settings(ref v);
+
+            Model.Load_import_settings().ContinueWith(res =>
+            {
+                SetDataTableByRows(res, "Table_import_settings");
+                lock (this)
+                {
+                    v.Clear();
+        
+                    //this.dataGrid_import_settings.DataSource = null;
+                    //this.dataGrid_import_settings.Rows.Clear();
+                    //this.dataGrid_import_settings.DataSource = bindingSource__import_settings;
+                    //this.dataGrid_import_settings.Refresh();
+
+                    //this.dataGrid_import_settings.BeginInvoke(new MyDelegate(DelegateMethod));
+
+                }
+                
+            });
+        }
+
+
+        public void DelegateMethod(DataGridView datagrid)
+        {
+            datagrid.DataSource = null;
+            datagrid.Rows.Clear();
+            datagrid.DataSource = bindingSource__import_settings;
+            datagrid.Refresh();
+        }
+
+        
+
+
+
+        private void dataGrid_import_settings_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
+        {
+            var v = sender as DataGridView;
+            if (v != null && v.CurrentRow != null)
+            {
+                var viewRow = v.CurrentRow.DataBoundItem as DataRowView;
+                if (viewRow != null && viewRow.IsNew && viewRow.Row != null)
+                    v.CurrentRow.Cells[11].Value = 0;
+            }
+            
+            
+        }
+
+        private void buttonDelete_Click(object sender, EventArgs e)
+        {
+            this.dataGrid_import_settings.Refresh();
             return;
         }
 

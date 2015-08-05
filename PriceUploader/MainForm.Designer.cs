@@ -49,6 +49,9 @@
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.tabPageSettings = new System.Windows.Forms.TabPage();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.buttonDelete = new System.Windows.Forms.Button();
+            this.buttonDatabaseSettings = new System.Windows.Forms.Button();
+            this.buttonAdd = new System.Windows.Forms.Button();
             this.dataGrid_import_settings = new System.Windows.Forms.DataGridView();
             this.isnameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.isstartrowDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -77,7 +80,7 @@
             this.dataColumn10 = new System.Data.DataColumn();
             this.dataColumn11 = new System.Data.DataColumn();
             this.dataColumn12 = new System.Data.DataColumn();
-            this.buttonDatabaseSettings = new System.Windows.Forms.Button();
+            this.buttonSave = new System.Windows.Forms.Button();
             this.textBoxActuality = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
             this.textBoxPriceGrn = new System.Windows.Forms.TextBox();
@@ -100,9 +103,6 @@
             this.label2 = new System.Windows.Forms.Label();
             this.textBoxName = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.buttonSave = new System.Windows.Forms.Button();
-            this.buttonAdd = new System.Windows.Forms.Button();
-            this.buttonDelete = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.tabControlMain.SuspendLayout();
             this.tabPageImport.SuspendLayout();
@@ -193,7 +193,7 @@
             this.tabPageImport.Location = new System.Drawing.Point(4, 22);
             this.tabPageImport.Name = "tabPageImport";
             this.tabPageImport.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageImport.Size = new System.Drawing.Size(1178, 577);
+            this.tabPageImport.Size = new System.Drawing.Size(1178, 578);
             this.tabPageImport.TabIndex = 0;
             this.tabPageImport.Text = "Импорт";
             this.tabPageImport.UseVisualStyleBackColor = true;
@@ -338,6 +338,35 @@
             this.splitContainer1.SplitterDistance = 885;
             this.splitContainer1.TabIndex = 0;
             // 
+            // buttonDelete
+            // 
+            this.buttonDelete.Location = new System.Drawing.Point(270, 6);
+            this.buttonDelete.Name = "buttonDelete";
+            this.buttonDelete.Size = new System.Drawing.Size(259, 23);
+            this.buttonDelete.TabIndex = 25;
+            this.buttonDelete.Text = "Удалить";
+            this.buttonDelete.UseVisualStyleBackColor = true;
+            this.buttonDelete.Click += new System.EventHandler(this.buttonDelete_Click);
+            // 
+            // buttonDatabaseSettings
+            // 
+            this.buttonDatabaseSettings.Location = new System.Drawing.Point(623, 6);
+            this.buttonDatabaseSettings.Name = "buttonDatabaseSettings";
+            this.buttonDatabaseSettings.Size = new System.Drawing.Size(259, 23);
+            this.buttonDatabaseSettings.TabIndex = 22;
+            this.buttonDatabaseSettings.Text = "Настройки доступа к БД";
+            this.buttonDatabaseSettings.UseVisualStyleBackColor = true;
+            this.buttonDatabaseSettings.Click += new System.EventHandler(this.buttonDatabaseSettings_Click);
+            // 
+            // buttonAdd
+            // 
+            this.buttonAdd.Location = new System.Drawing.Point(3, 6);
+            this.buttonAdd.Name = "buttonAdd";
+            this.buttonAdd.Size = new System.Drawing.Size(259, 23);
+            this.buttonAdd.TabIndex = 24;
+            this.buttonAdd.Text = "Добавить";
+            this.buttonAdd.UseVisualStyleBackColor = true;
+            // 
             // dataGrid_import_settings
             // 
             this.dataGrid_import_settings.AutoGenerateColumns = false;
@@ -361,6 +390,7 @@
             this.dataGrid_import_settings.Size = new System.Drawing.Size(879, 531);
             this.dataGrid_import_settings.TabIndex = 0;
             this.dataGrid_import_settings.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGrid_import_settings_RowEnter);
+            this.dataGrid_import_settings.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.dataGrid_import_settings_RowsAdded);
             // 
             // isnameDataGridViewTextBoxColumn
             // 
@@ -543,15 +573,15 @@
             this.dataColumn12.Caption = "is_uah_flag";
             this.dataColumn12.ColumnName = "is_uah_flag";
             // 
-            // buttonDatabaseSettings
+            // buttonSave
             // 
-            this.buttonDatabaseSettings.Location = new System.Drawing.Point(623, 6);
-            this.buttonDatabaseSettings.Name = "buttonDatabaseSettings";
-            this.buttonDatabaseSettings.Size = new System.Drawing.Size(259, 23);
-            this.buttonDatabaseSettings.TabIndex = 22;
-            this.buttonDatabaseSettings.Text = "Настройки доступа к БД";
-            this.buttonDatabaseSettings.UseVisualStyleBackColor = true;
-            this.buttonDatabaseSettings.Click += new System.EventHandler(this.buttonDatabaseSettings_Click);
+            this.buttonSave.Location = new System.Drawing.Point(12, 516);
+            this.buttonSave.Name = "buttonSave";
+            this.buttonSave.Size = new System.Drawing.Size(259, 50);
+            this.buttonSave.TabIndex = 23;
+            this.buttonSave.Text = "Сохранить";
+            this.buttonSave.UseVisualStyleBackColor = true;
+            this.buttonSave.Click += new System.EventHandler(this.buttonSave_Click);
             // 
             // textBoxActuality
             // 
@@ -728,33 +758,6 @@
             this.label1.Size = new System.Drawing.Size(57, 13);
             this.label1.TabIndex = 0;
             this.label1.Text = "Название";
-            // 
-            // buttonSave
-            // 
-            this.buttonSave.Location = new System.Drawing.Point(12, 516);
-            this.buttonSave.Name = "buttonSave";
-            this.buttonSave.Size = new System.Drawing.Size(259, 50);
-            this.buttonSave.TabIndex = 23;
-            this.buttonSave.Text = "Сохранить";
-            this.buttonSave.UseVisualStyleBackColor = true;
-            // 
-            // buttonAdd
-            // 
-            this.buttonAdd.Location = new System.Drawing.Point(3, 6);
-            this.buttonAdd.Name = "buttonAdd";
-            this.buttonAdd.Size = new System.Drawing.Size(259, 23);
-            this.buttonAdd.TabIndex = 24;
-            this.buttonAdd.Text = "Добавить";
-            this.buttonAdd.UseVisualStyleBackColor = true;
-            // 
-            // buttonDelete
-            // 
-            this.buttonDelete.Location = new System.Drawing.Point(270, 6);
-            this.buttonDelete.Name = "buttonDelete";
-            this.buttonDelete.Size = new System.Drawing.Size(259, 23);
-            this.buttonDelete.TabIndex = 25;
-            this.buttonDelete.Text = "Удалить";
-            this.buttonDelete.UseVisualStyleBackColor = true;
             // 
             // MainForm
             // 
