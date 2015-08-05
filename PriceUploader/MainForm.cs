@@ -125,6 +125,23 @@ namespace PriceUploader
 
                 dataSet.Tables[tableName].Rows.Add(dr);
             }
+
+            SetDataBindings();
+        }
+
+        private void SetDataBindings()
+        {
+            textBoxFirstRow.DataBindings.Add(new System.Windows.Forms.Binding("Text", bindingSource__import_settings, "is_start_row", true));
+            textBoxName.DataBindings.Add(new System.Windows.Forms.Binding("Text", bindingSource__import_settings, "is_name", true));
+            textBoxCode.DataBindings.Add(new System.Windows.Forms.Binding("Text", bindingSource__import_settings, "is_code_col", true));
+            textBoxPrice.DataBindings.Add(new System.Windows.Forms.Binding("Text", bindingSource__import_settings, "is_price_col", true));
+            textBoxProductName.DataBindings.Add(new System.Windows.Forms.Binding("Text", bindingSource__import_settings, "is_price_col", true));
+            textBoxAvailability1.DataBindings.Add(new System.Windows.Forms.Binding("Text", bindingSource__import_settings, "is_presense1_col", true));
+            textBoxAvailability2.DataBindings.Add(new System.Windows.Forms.Binding("Text", bindingSource__import_settings, "is_presense2_col", true));
+            textBoxCurrency.DataBindings.Add(new System.Windows.Forms.Binding("Text", bindingSource__import_settings, "is_currency_col", true));
+            textBoxAvailSign.DataBindings.Add(new System.Windows.Forms.Binding("Text", bindingSource__import_settings, "is_presense_symbol", true));
+            textBoxPriceGrn.DataBindings.Add(new System.Windows.Forms.Binding("Text", bindingSource__import_settings, "is_uah_flag", true));
+            textBoxActuality.DataBindings.Add(new System.Windows.Forms.Binding("Text", bindingSource__import_settings, "is_actuality", true));
         }
 
 
@@ -157,18 +174,18 @@ namespace PriceUploader
         {
             if (e != null)
             {
-                var v = dataSet.Tables["Table_import_settings"].Rows[e.RowIndex];                
-                textBoxFirstRow.Text = v.ItemArray[0].ToString();
-                textBoxName.Text = v.ItemArray[1].ToString();
-                textBoxCode.Text = v.ItemArray[2].ToString();
-                textBoxPrice.Text = v.ItemArray[3].ToString();
-                textBoxProductName.Text = v.ItemArray[4].ToString();
-                textBoxAvailability1.Text = v.ItemArray[5].ToString();
-                textBoxAvailability2.Text = v.ItemArray[6].ToString();
-                textBoxCurrency.Text = v.ItemArray[7].ToString();
-                textBoxAvailSign.Text = v.ItemArray[8].ToString();
-                textBoxPriceGrn.Text = v.ItemArray[9].ToString();
-                textBoxActuality.Text = v.ItemArray[10].ToString();
+                //var v = dataSet.Tables["Table_import_settings"].Rows[e.RowIndex];                
+                //textBoxFirstRow.Text = v.ItemArray[2].ToString();
+                //textBoxName.Text = v.ItemArray[1].ToString();
+                //textBoxCode.Text = v.ItemArray[3].ToString();
+                //textBoxPrice.Text = v.ItemArray[4].ToString();
+                //textBoxProductName.Text = v.ItemArray[5].ToString();
+                //textBoxAvailability1.Text = v.ItemArray[7].ToString();
+                //textBoxAvailability2.Text = v.ItemArray[8].ToString();
+                //textBoxCurrency.Text = v.ItemArray[10].ToString();
+                //textBoxAvailSign.Text = v.ItemArray[9].ToString();
+                //textBoxPriceGrn.Text = v.ItemArray[11].ToString();
+                //textBoxActuality.Text = v.ItemArray[6].ToString();
 
             }
             

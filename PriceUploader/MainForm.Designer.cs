@@ -50,6 +50,18 @@
             this.tabPageSettings = new System.Windows.Forms.TabPage();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.dataGrid_import_settings = new System.Windows.Forms.DataGridView();
+            this.isnameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.isstartrowDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.iscodecolDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ispricecolDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.isnamecolDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.isactualityDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ispresense1colDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ispresense2colDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ispresensesymbolDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.iscurrencycolDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.isuahflagDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.isidDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.bindingSource__import_settings = new System.Windows.Forms.BindingSource(this.components);
             this.dataSet = new System.Data.DataSet();
             this.dataTable_import_settings = new System.Data.DataTable();
@@ -88,19 +100,9 @@
             this.label2 = new System.Windows.Forms.Label();
             this.textBoxName = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.isnameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.isstartrowDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.iscodecolDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ispricecolDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.isnamecolDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.isactualityDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ispresense1colDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ispresense2colDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ispresensesymbolDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.iscurrencycolDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.isuahflagDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.isidDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.buttonSave = new System.Windows.Forms.Button();
+            this.buttonAdd = new System.Windows.Forms.Button();
+            this.buttonDelete = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.tabControlMain.SuspendLayout();
             this.tabPageImport.SuspendLayout();
@@ -173,7 +175,7 @@
             this.tabControlMain.Location = new System.Drawing.Point(0, 24);
             this.tabControlMain.Name = "tabControlMain";
             this.tabControlMain.SelectedIndex = 0;
-            this.tabControlMain.Size = new System.Drawing.Size(1186, 603);
+            this.tabControlMain.Size = new System.Drawing.Size(1186, 604);
             this.tabControlMain.TabIndex = 1;
             // 
             // tabPageImport
@@ -289,7 +291,7 @@
             this.tabPageSettings.Location = new System.Drawing.Point(4, 22);
             this.tabPageSettings.Name = "tabPageSettings";
             this.tabPageSettings.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageSettings.Size = new System.Drawing.Size(1178, 577);
+            this.tabPageSettings.Size = new System.Drawing.Size(1178, 578);
             this.tabPageSettings.TabIndex = 1;
             this.tabPageSettings.Text = "Настройки";
             this.tabPageSettings.UseVisualStyleBackColor = true;
@@ -302,12 +304,14 @@
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.buttonDelete);
+            this.splitContainer1.Panel1.Controls.Add(this.buttonDatabaseSettings);
+            this.splitContainer1.Panel1.Controls.Add(this.buttonAdd);
             this.splitContainer1.Panel1.Controls.Add(this.dataGrid_import_settings);
             // 
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.buttonSave);
-            this.splitContainer1.Panel2.Controls.Add(this.buttonDatabaseSettings);
             this.splitContainer1.Panel2.Controls.Add(this.textBoxActuality);
             this.splitContainer1.Panel2.Controls.Add(this.label11);
             this.splitContainer1.Panel2.Controls.Add(this.textBoxPriceGrn);
@@ -330,7 +334,7 @@
             this.splitContainer1.Panel2.Controls.Add(this.label2);
             this.splitContainer1.Panel2.Controls.Add(this.textBoxName);
             this.splitContainer1.Panel2.Controls.Add(this.label1);
-            this.splitContainer1.Size = new System.Drawing.Size(1172, 571);
+            this.splitContainer1.Size = new System.Drawing.Size(1172, 572);
             this.splitContainer1.SplitterDistance = 885;
             this.splitContainer1.TabIndex = 0;
             // 
@@ -352,11 +356,99 @@
             this.isuahflagDataGridViewTextBoxColumn,
             this.isidDataGridViewTextBoxColumn});
             this.dataGrid_import_settings.DataSource = this.bindingSource__import_settings;
-            this.dataGrid_import_settings.Location = new System.Drawing.Point(3, 3);
+            this.dataGrid_import_settings.Location = new System.Drawing.Point(3, 35);
             this.dataGrid_import_settings.Name = "dataGrid_import_settings";
-            this.dataGrid_import_settings.Size = new System.Drawing.Size(879, 563);
+            this.dataGrid_import_settings.Size = new System.Drawing.Size(879, 531);
             this.dataGrid_import_settings.TabIndex = 0;
             this.dataGrid_import_settings.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGrid_import_settings_RowEnter);
+            // 
+            // isnameDataGridViewTextBoxColumn
+            // 
+            this.isnameDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.isnameDataGridViewTextBoxColumn.DataPropertyName = "is_name";
+            this.isnameDataGridViewTextBoxColumn.HeaderText = "Имена форматов";
+            this.isnameDataGridViewTextBoxColumn.Name = "isnameDataGridViewTextBoxColumn";
+            // 
+            // isstartrowDataGridViewTextBoxColumn
+            // 
+            this.isstartrowDataGridViewTextBoxColumn.DataPropertyName = "is_start_row";
+            this.isstartrowDataGridViewTextBoxColumn.HeaderText = "is_start_row";
+            this.isstartrowDataGridViewTextBoxColumn.Name = "isstartrowDataGridViewTextBoxColumn";
+            this.isstartrowDataGridViewTextBoxColumn.Visible = false;
+            // 
+            // iscodecolDataGridViewTextBoxColumn
+            // 
+            this.iscodecolDataGridViewTextBoxColumn.DataPropertyName = "is_code_col";
+            this.iscodecolDataGridViewTextBoxColumn.HeaderText = "is_code_col";
+            this.iscodecolDataGridViewTextBoxColumn.Name = "iscodecolDataGridViewTextBoxColumn";
+            this.iscodecolDataGridViewTextBoxColumn.Visible = false;
+            // 
+            // ispricecolDataGridViewTextBoxColumn
+            // 
+            this.ispricecolDataGridViewTextBoxColumn.DataPropertyName = "is_price_col";
+            this.ispricecolDataGridViewTextBoxColumn.HeaderText = "is_price_col";
+            this.ispricecolDataGridViewTextBoxColumn.Name = "ispricecolDataGridViewTextBoxColumn";
+            this.ispricecolDataGridViewTextBoxColumn.Visible = false;
+            // 
+            // isnamecolDataGridViewTextBoxColumn
+            // 
+            this.isnamecolDataGridViewTextBoxColumn.DataPropertyName = "is_name_col";
+            this.isnamecolDataGridViewTextBoxColumn.HeaderText = "is_name_col";
+            this.isnamecolDataGridViewTextBoxColumn.Name = "isnamecolDataGridViewTextBoxColumn";
+            this.isnamecolDataGridViewTextBoxColumn.Visible = false;
+            // 
+            // isactualityDataGridViewTextBoxColumn
+            // 
+            this.isactualityDataGridViewTextBoxColumn.DataPropertyName = "is_actuality";
+            this.isactualityDataGridViewTextBoxColumn.HeaderText = "is_actuality";
+            this.isactualityDataGridViewTextBoxColumn.Name = "isactualityDataGridViewTextBoxColumn";
+            this.isactualityDataGridViewTextBoxColumn.Visible = false;
+            // 
+            // ispresense1colDataGridViewTextBoxColumn
+            // 
+            this.ispresense1colDataGridViewTextBoxColumn.DataPropertyName = "is_presense1_col";
+            this.ispresense1colDataGridViewTextBoxColumn.HeaderText = "is_presense1_col";
+            this.ispresense1colDataGridViewTextBoxColumn.Name = "ispresense1colDataGridViewTextBoxColumn";
+            this.ispresense1colDataGridViewTextBoxColumn.Visible = false;
+            // 
+            // ispresense2colDataGridViewTextBoxColumn
+            // 
+            this.ispresense2colDataGridViewTextBoxColumn.DataPropertyName = "is_presense2_col";
+            this.ispresense2colDataGridViewTextBoxColumn.HeaderText = "is_presense2_col";
+            this.ispresense2colDataGridViewTextBoxColumn.Name = "ispresense2colDataGridViewTextBoxColumn";
+            this.ispresense2colDataGridViewTextBoxColumn.Visible = false;
+            // 
+            // ispresensesymbolDataGridViewTextBoxColumn
+            // 
+            this.ispresensesymbolDataGridViewTextBoxColumn.DataPropertyName = "is_presense_symbol";
+            this.ispresensesymbolDataGridViewTextBoxColumn.HeaderText = "is_presense_symbol";
+            this.ispresensesymbolDataGridViewTextBoxColumn.Name = "ispresensesymbolDataGridViewTextBoxColumn";
+            this.ispresensesymbolDataGridViewTextBoxColumn.Visible = false;
+            // 
+            // iscurrencycolDataGridViewTextBoxColumn
+            // 
+            this.iscurrencycolDataGridViewTextBoxColumn.DataPropertyName = "is_currency_col";
+            this.iscurrencycolDataGridViewTextBoxColumn.HeaderText = "is_currency_col";
+            this.iscurrencycolDataGridViewTextBoxColumn.Name = "iscurrencycolDataGridViewTextBoxColumn";
+            this.iscurrencycolDataGridViewTextBoxColumn.Visible = false;
+            // 
+            // isuahflagDataGridViewTextBoxColumn
+            // 
+            this.isuahflagDataGridViewTextBoxColumn.DataPropertyName = "is_uah_flag";
+            this.isuahflagDataGridViewTextBoxColumn.HeaderText = "is_uah_flag";
+            this.isuahflagDataGridViewTextBoxColumn.Name = "isuahflagDataGridViewTextBoxColumn";
+            this.isuahflagDataGridViewTextBoxColumn.Visible = false;
+            // 
+            // isidDataGridViewTextBoxColumn
+            // 
+            this.isidDataGridViewTextBoxColumn.DataPropertyName = "is_id";
+            this.isidDataGridViewTextBoxColumn.FillWeight = 5F;
+            this.isidDataGridViewTextBoxColumn.HeaderText = "is_id";
+            this.isidDataGridViewTextBoxColumn.Name = "isidDataGridViewTextBoxColumn";
+            this.isidDataGridViewTextBoxColumn.ReadOnly = true;
+            this.isidDataGridViewTextBoxColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.isidDataGridViewTextBoxColumn.Visible = false;
+            this.isidDataGridViewTextBoxColumn.Width = 5;
             // 
             // bindingSource__import_settings
             // 
@@ -453,7 +545,7 @@
             // 
             // buttonDatabaseSettings
             // 
-            this.buttonDatabaseSettings.Location = new System.Drawing.Point(12, 543);
+            this.buttonDatabaseSettings.Location = new System.Drawing.Point(623, 6);
             this.buttonDatabaseSettings.Name = "buttonDatabaseSettings";
             this.buttonDatabaseSettings.Size = new System.Drawing.Size(259, 23);
             this.buttonDatabaseSettings.TabIndex = 22;
@@ -463,7 +555,7 @@
             // 
             // textBoxActuality
             // 
-            this.textBoxActuality.Location = new System.Drawing.Point(12, 493);
+            this.textBoxActuality.Location = new System.Drawing.Point(12, 490);
             this.textBoxActuality.Name = "textBoxActuality";
             this.textBoxActuality.Size = new System.Drawing.Size(259, 20);
             this.textBoxActuality.TabIndex = 21;
@@ -471,7 +563,7 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(9, 476);
+            this.label11.Location = new System.Drawing.Point(9, 473);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(139, 13);
             this.label11.TabIndex = 20;
@@ -479,7 +571,7 @@
             // 
             // textBoxPriceGrn
             // 
-            this.textBoxPriceGrn.Location = new System.Drawing.Point(12, 443);
+            this.textBoxPriceGrn.Location = new System.Drawing.Point(12, 442);
             this.textBoxPriceGrn.Name = "textBoxPriceGrn";
             this.textBoxPriceGrn.Size = new System.Drawing.Size(259, 20);
             this.textBoxPriceGrn.TabIndex = 19;
@@ -487,7 +579,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(9, 426);
+            this.label10.Location = new System.Drawing.Point(9, 425);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(132, 13);
             this.label10.TabIndex = 18;
@@ -637,108 +729,38 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Название";
             // 
-            // isnameDataGridViewTextBoxColumn
-            // 
-            this.isnameDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.isnameDataGridViewTextBoxColumn.DataPropertyName = "is_name";
-            this.isnameDataGridViewTextBoxColumn.HeaderText = "Имена форматов";
-            this.isnameDataGridViewTextBoxColumn.Name = "isnameDataGridViewTextBoxColumn";
-            // 
-            // isstartrowDataGridViewTextBoxColumn
-            // 
-            this.isstartrowDataGridViewTextBoxColumn.DataPropertyName = "is_start_row";
-            this.isstartrowDataGridViewTextBoxColumn.HeaderText = "is_start_row";
-            this.isstartrowDataGridViewTextBoxColumn.Name = "isstartrowDataGridViewTextBoxColumn";
-            this.isstartrowDataGridViewTextBoxColumn.Visible = false;
-            // 
-            // iscodecolDataGridViewTextBoxColumn
-            // 
-            this.iscodecolDataGridViewTextBoxColumn.DataPropertyName = "is_code_col";
-            this.iscodecolDataGridViewTextBoxColumn.HeaderText = "is_code_col";
-            this.iscodecolDataGridViewTextBoxColumn.Name = "iscodecolDataGridViewTextBoxColumn";
-            this.iscodecolDataGridViewTextBoxColumn.Visible = false;
-            // 
-            // ispricecolDataGridViewTextBoxColumn
-            // 
-            this.ispricecolDataGridViewTextBoxColumn.DataPropertyName = "is_price_col";
-            this.ispricecolDataGridViewTextBoxColumn.HeaderText = "is_price_col";
-            this.ispricecolDataGridViewTextBoxColumn.Name = "ispricecolDataGridViewTextBoxColumn";
-            this.ispricecolDataGridViewTextBoxColumn.Visible = false;
-            // 
-            // isnamecolDataGridViewTextBoxColumn
-            // 
-            this.isnamecolDataGridViewTextBoxColumn.DataPropertyName = "is_name_col";
-            this.isnamecolDataGridViewTextBoxColumn.HeaderText = "is_name_col";
-            this.isnamecolDataGridViewTextBoxColumn.Name = "isnamecolDataGridViewTextBoxColumn";
-            this.isnamecolDataGridViewTextBoxColumn.Visible = false;
-            // 
-            // isactualityDataGridViewTextBoxColumn
-            // 
-            this.isactualityDataGridViewTextBoxColumn.DataPropertyName = "is_actuality";
-            this.isactualityDataGridViewTextBoxColumn.HeaderText = "is_actuality";
-            this.isactualityDataGridViewTextBoxColumn.Name = "isactualityDataGridViewTextBoxColumn";
-            this.isactualityDataGridViewTextBoxColumn.Visible = false;
-            // 
-            // ispresense1colDataGridViewTextBoxColumn
-            // 
-            this.ispresense1colDataGridViewTextBoxColumn.DataPropertyName = "is_presense1_col";
-            this.ispresense1colDataGridViewTextBoxColumn.HeaderText = "is_presense1_col";
-            this.ispresense1colDataGridViewTextBoxColumn.Name = "ispresense1colDataGridViewTextBoxColumn";
-            this.ispresense1colDataGridViewTextBoxColumn.Visible = false;
-            // 
-            // ispresense2colDataGridViewTextBoxColumn
-            // 
-            this.ispresense2colDataGridViewTextBoxColumn.DataPropertyName = "is_presense2_col";
-            this.ispresense2colDataGridViewTextBoxColumn.HeaderText = "is_presense2_col";
-            this.ispresense2colDataGridViewTextBoxColumn.Name = "ispresense2colDataGridViewTextBoxColumn";
-            this.ispresense2colDataGridViewTextBoxColumn.Visible = false;
-            // 
-            // ispresensesymbolDataGridViewTextBoxColumn
-            // 
-            this.ispresensesymbolDataGridViewTextBoxColumn.DataPropertyName = "is_presense_symbol";
-            this.ispresensesymbolDataGridViewTextBoxColumn.HeaderText = "is_presense_symbol";
-            this.ispresensesymbolDataGridViewTextBoxColumn.Name = "ispresensesymbolDataGridViewTextBoxColumn";
-            this.ispresensesymbolDataGridViewTextBoxColumn.Visible = false;
-            // 
-            // iscurrencycolDataGridViewTextBoxColumn
-            // 
-            this.iscurrencycolDataGridViewTextBoxColumn.DataPropertyName = "is_currency_col";
-            this.iscurrencycolDataGridViewTextBoxColumn.HeaderText = "is_currency_col";
-            this.iscurrencycolDataGridViewTextBoxColumn.Name = "iscurrencycolDataGridViewTextBoxColumn";
-            this.iscurrencycolDataGridViewTextBoxColumn.Visible = false;
-            // 
-            // isuahflagDataGridViewTextBoxColumn
-            // 
-            this.isuahflagDataGridViewTextBoxColumn.DataPropertyName = "is_uah_flag";
-            this.isuahflagDataGridViewTextBoxColumn.HeaderText = "is_uah_flag";
-            this.isuahflagDataGridViewTextBoxColumn.Name = "isuahflagDataGridViewTextBoxColumn";
-            this.isuahflagDataGridViewTextBoxColumn.Visible = false;
-            // 
-            // isidDataGridViewTextBoxColumn
-            // 
-            this.isidDataGridViewTextBoxColumn.DataPropertyName = "is_id";
-            this.isidDataGridViewTextBoxColumn.FillWeight = 5F;
-            this.isidDataGridViewTextBoxColumn.HeaderText = "is_id";
-            this.isidDataGridViewTextBoxColumn.Name = "isidDataGridViewTextBoxColumn";
-            this.isidDataGridViewTextBoxColumn.ReadOnly = true;
-            this.isidDataGridViewTextBoxColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.isidDataGridViewTextBoxColumn.Visible = false;
-            this.isidDataGridViewTextBoxColumn.Width = 5;
-            // 
             // buttonSave
             // 
-            this.buttonSave.Location = new System.Drawing.Point(12, 517);
+            this.buttonSave.Location = new System.Drawing.Point(12, 516);
             this.buttonSave.Name = "buttonSave";
-            this.buttonSave.Size = new System.Drawing.Size(259, 23);
+            this.buttonSave.Size = new System.Drawing.Size(259, 50);
             this.buttonSave.TabIndex = 23;
             this.buttonSave.Text = "Сохранить";
             this.buttonSave.UseVisualStyleBackColor = true;
+            // 
+            // buttonAdd
+            // 
+            this.buttonAdd.Location = new System.Drawing.Point(3, 6);
+            this.buttonAdd.Name = "buttonAdd";
+            this.buttonAdd.Size = new System.Drawing.Size(259, 23);
+            this.buttonAdd.TabIndex = 24;
+            this.buttonAdd.Text = "Добавить";
+            this.buttonAdd.UseVisualStyleBackColor = true;
+            // 
+            // buttonDelete
+            // 
+            this.buttonDelete.Location = new System.Drawing.Point(270, 6);
+            this.buttonDelete.Name = "buttonDelete";
+            this.buttonDelete.Size = new System.Drawing.Size(259, 23);
+            this.buttonDelete.TabIndex = 25;
+            this.buttonDelete.Text = "Удалить";
+            this.buttonDelete.UseVisualStyleBackColor = true;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1186, 627);
+            this.ClientSize = new System.Drawing.Size(1186, 628);
             this.Controls.Add(this.tabControlMain);
             this.Controls.Add(this.menuStrip1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
@@ -839,6 +861,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn iscurrencycolDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn isuahflagDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn isidDataGridViewTextBoxColumn;
+        private System.Windows.Forms.Button buttonDelete;
+        private System.Windows.Forms.Button buttonAdd;
         private System.Windows.Forms.Button buttonSave;
     }
 }
