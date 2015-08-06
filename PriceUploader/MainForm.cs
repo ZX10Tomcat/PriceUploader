@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LOffice;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -21,7 +22,8 @@ namespace PriceUploader
         private DataTable TableProductAlias = null;
         private DataTable TableProductCategory = null;
         private DataTable TableProductPrice = null;
-        private DataTable TableSupplier = null; 
+        private DataTable TableSupplier = null;
+        private DataTable TableExcelData = null; 
 
         public MainForm()
         {
@@ -128,6 +130,7 @@ namespace PriceUploader
 
                 dataSet.Tables[tableName].Rows.Add(dr);
             }
+            
             dataSet.Tables[tableName].AcceptChanges();
         }
 
@@ -231,9 +234,6 @@ namespace PriceUploader
             datagrid.Refresh();
         }
 
-        
-
-
 
         private void dataGrid_import_settings_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
         {
@@ -244,8 +244,6 @@ namespace PriceUploader
                 if (viewRow != null && viewRow.IsNew && viewRow.Row != null)
                     v.CurrentRow.Cells[11].Value = 0;
             }
-            
-            
         }
 
         private void buttonDelete_Click(object sender, EventArgs e)
@@ -253,6 +251,59 @@ namespace PriceUploader
             this.dataGrid_import_settings.Refresh();
             return;
         }
+
+        private void buttonOpenExcel_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            
+            openFileDialog.InitialDirectory = "c:\\";
+            openFileDialog.Filter = "Excel files (*.xls)|*.xls|All files (*.*)|*.*";
+            openFileDialog.FilterIndex = 1;
+            openFileDialog.RestoreDirectory = true;
+
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    string fileName = openFileDialog.FileName;
+                    DataTable dt = new DataTable();
+                    int res = this.Model.ImportExcel(fileName, ref dt);
+                    if (res > 0)
+                    {
+                        string tableName = "Table_import_excel";
+                        dataSet.Tables[tableName].Clear();
+
+                        this.dataGrid_import_excel.DataSource = null;
+                        this.dataGrid_import_excel.Rows.Clear();
+                        this.dataGrid_import_excel.DataSource = this.bindingSource_import_excel;
+
+                        int[] colIndex = new int[3];
+                        colIndex[0] = 3;
+                        colIndex[1] = 4;
+                        colIndex[2] = 6;
+
+                        for (int i = 0; i < dt.Rows.Count; i++)
+                        {
+                            DataRow dr = dataSet.Tables[tableName].NewRow();
+                            dr[0] = dt.Rows[i].ItemArray.GetValue(3);
+                            dr[1] = dt.Rows[i].ItemArray.GetValue(4);
+                            dr[2] = dt.Rows[i].ItemArray.GetValue(6);
+                            dr[3] = i;
+                            dataSet.Tables[tableName].Rows.Add(dr);
+                        }
+                        dataSet.Tables[tableName].AcceptChanges();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error: " + ex.Message);
+                }
+            }
+
+
+
+        }
+
 
 
     }

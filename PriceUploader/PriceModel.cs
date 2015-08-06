@@ -1,4 +1,5 @@
 ﻿using LAny;
+using LOffice;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
@@ -240,7 +241,7 @@ namespace PriceUploader
                         con.Open();
                         System.Configuration.AppSettingsReader cas = new System.Configuration.AppSettingsReader();
                         con.ChangeDatabase(cas.GetValue("dataBase", typeof(string)).ToString());
-                        da_import_settings = new MySqlDataAdapter("SELECT * FROM import_settings", con);
+                        da_import_settings = new MySqlDataAdapter("SELECT * FROM import_settings order by is_name", con);
                         commandBuilder = new MySqlCommandBuilder(da_import_settings);
                         da_import_settings.Fill(dt);
                     }
@@ -387,6 +388,16 @@ namespace PriceUploader
         }
 
 
+
+        public int ImportExcel(string fileName, ref DataTable data)
+        {
+            cExcelObj exl = new cExcelObj();
+
+            data = new DataTable();
+            int res = exl.readExcelFileSQL(fileName, ref data);
+            return res;
+
+        }
 
     }
 

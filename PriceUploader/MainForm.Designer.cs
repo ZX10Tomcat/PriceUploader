@@ -37,9 +37,10 @@
             this.toolStripMenuItemExit = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControlMain = new System.Windows.Forms.TabControl();
             this.tabPageImport = new System.Windows.Forms.TabPage();
+            this.dataGrid_import_excel = new System.Windows.Forms.DataGridView();
             this.label15 = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.buttonOpenExcel = new System.Windows.Forms.Button();
             this.comboBox3 = new System.Windows.Forms.ComboBox();
             this.label14 = new System.Windows.Forms.Label();
             this.comboBox2 = new System.Windows.Forms.ComboBox();
@@ -103,9 +104,20 @@
             this.label2 = new System.Windows.Forms.Label();
             this.textBoxName = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.bindingSource_import_excel = new System.Windows.Forms.BindingSource(this.components);
+            this.dataTable_import_excel = new System.Data.DataTable();
+            this.dataColumn13 = new System.Data.DataColumn();
+            this.dataColumn14 = new System.Data.DataColumn();
+            this.dataColumn15 = new System.Data.DataColumn();
+            this.dataColumn16 = new System.Data.DataColumn();
+            this.prodrewritenameoldDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.prodnameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.prodincomepriceDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.numberDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.menuStrip1.SuspendLayout();
             this.tabControlMain.SuspendLayout();
             this.tabPageImport.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGrid_import_excel)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.tabPageSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -116,6 +128,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource__import_settings)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataSet)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataTable_import_settings)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bindingSource_import_excel)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataTable_import_excel)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -180,9 +194,10 @@
             // 
             // tabPageImport
             // 
+            this.tabPageImport.Controls.Add(this.dataGrid_import_excel);
             this.tabPageImport.Controls.Add(this.label15);
             this.tabPageImport.Controls.Add(this.button2);
-            this.tabPageImport.Controls.Add(this.button1);
+            this.tabPageImport.Controls.Add(this.buttonOpenExcel);
             this.tabPageImport.Controls.Add(this.comboBox3);
             this.tabPageImport.Controls.Add(this.label14);
             this.tabPageImport.Controls.Add(this.comboBox2);
@@ -197,6 +212,24 @@
             this.tabPageImport.TabIndex = 0;
             this.tabPageImport.Text = "Импорт";
             this.tabPageImport.UseVisualStyleBackColor = true;
+            // 
+            // dataGrid_import_excel
+            // 
+            this.dataGrid_import_excel.AllowUserToAddRows = false;
+            this.dataGrid_import_excel.AllowUserToDeleteRows = false;
+            this.dataGrid_import_excel.AutoGenerateColumns = false;
+            this.dataGrid_import_excel.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGrid_import_excel.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.prodrewritenameoldDataGridViewTextBoxColumn,
+            this.prodnameDataGridViewTextBoxColumn,
+            this.prodincomepriceDataGridViewTextBoxColumn,
+            this.numberDataGridViewTextBoxColumn});
+            this.dataGrid_import_excel.DataSource = this.bindingSource_import_excel;
+            this.dataGrid_import_excel.Location = new System.Drawing.Point(8, 36);
+            this.dataGrid_import_excel.Name = "dataGrid_import_excel";
+            this.dataGrid_import_excel.ReadOnly = true;
+            this.dataGrid_import_excel.Size = new System.Drawing.Size(1167, 536);
+            this.dataGrid_import_excel.TabIndex = 10;
             // 
             // label15
             // 
@@ -216,14 +249,15 @@
             this.button2.Text = "Загрузить файл";
             this.button2.UseVisualStyleBackColor = true;
             // 
-            // button1
+            // buttonOpenExcel
             // 
-            this.button1.Location = new System.Drawing.Point(652, 6);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 7;
-            this.button1.Text = "Файл";
-            this.button1.UseVisualStyleBackColor = true;
+            this.buttonOpenExcel.Location = new System.Drawing.Point(652, 6);
+            this.buttonOpenExcel.Name = "buttonOpenExcel";
+            this.buttonOpenExcel.Size = new System.Drawing.Size(75, 23);
+            this.buttonOpenExcel.TabIndex = 7;
+            this.buttonOpenExcel.Text = "Файл";
+            this.buttonOpenExcel.UseVisualStyleBackColor = true;
+            this.buttonOpenExcel.Click += new System.EventHandler(this.buttonOpenExcel_Click);
             // 
             // comboBox3
             // 
@@ -280,7 +314,7 @@
             // 
             this.dataGridView1.AllowUserToOrderColumns = true;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(6, 36);
+            this.dataGridView1.Location = new System.Drawing.Point(6, 35);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.Size = new System.Drawing.Size(1169, 538);
             this.dataGridView1.TabIndex = 0;
@@ -490,7 +524,8 @@
             // 
             this.dataSet.DataSetName = "dataSet";
             this.dataSet.Tables.AddRange(new System.Data.DataTable[] {
-            this.dataTable_import_settings});
+            this.dataTable_import_settings,
+            this.dataTable_import_excel});
             // 
             // dataTable_import_settings
             // 
@@ -759,6 +794,74 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Название";
             // 
+            // bindingSource_import_excel
+            // 
+            this.bindingSource_import_excel.DataMember = "Table_import_excel";
+            this.bindingSource_import_excel.DataSource = this.dataSet;
+            // 
+            // dataTable_import_excel
+            // 
+            this.dataTable_import_excel.Columns.AddRange(new System.Data.DataColumn[] {
+            this.dataColumn13,
+            this.dataColumn14,
+            this.dataColumn15,
+            this.dataColumn16});
+            this.dataTable_import_excel.TableName = "Table_import_excel";
+            // 
+            // dataColumn13
+            // 
+            this.dataColumn13.Caption = "prod_name";
+            this.dataColumn13.ColumnName = "prod_name";
+            // 
+            // dataColumn14
+            // 
+            this.dataColumn14.Caption = "prod_rewrite_name_old";
+            this.dataColumn14.ColumnName = "prod_rewrite_name_old";
+            // 
+            // dataColumn15
+            // 
+            this.dataColumn15.Caption = "prod_income_price";
+            this.dataColumn15.ColumnName = "prod_income_price";
+            // 
+            // dataColumn16
+            // 
+            this.dataColumn16.Caption = "number";
+            this.dataColumn16.ColumnName = "number";
+            // 
+            // prodrewritenameoldDataGridViewTextBoxColumn
+            // 
+            this.prodrewritenameoldDataGridViewTextBoxColumn.DataPropertyName = "prod_rewrite_name_old";
+            this.prodrewritenameoldDataGridViewTextBoxColumn.FillWeight = 200F;
+            this.prodrewritenameoldDataGridViewTextBoxColumn.HeaderText = "prod_rewrite_name_old";
+            this.prodrewritenameoldDataGridViewTextBoxColumn.Name = "prodrewritenameoldDataGridViewTextBoxColumn";
+            this.prodrewritenameoldDataGridViewTextBoxColumn.ReadOnly = true;
+            this.prodrewritenameoldDataGridViewTextBoxColumn.Width = 200;
+            // 
+            // prodnameDataGridViewTextBoxColumn
+            // 
+            this.prodnameDataGridViewTextBoxColumn.DataPropertyName = "prod_name";
+            this.prodnameDataGridViewTextBoxColumn.FillWeight = 600F;
+            this.prodnameDataGridViewTextBoxColumn.HeaderText = "prod_name";
+            this.prodnameDataGridViewTextBoxColumn.Name = "prodnameDataGridViewTextBoxColumn";
+            this.prodnameDataGridViewTextBoxColumn.ReadOnly = true;
+            this.prodnameDataGridViewTextBoxColumn.Width = 600;
+            // 
+            // prodincomepriceDataGridViewTextBoxColumn
+            // 
+            this.prodincomepriceDataGridViewTextBoxColumn.DataPropertyName = "prod_income_price";
+            this.prodincomepriceDataGridViewTextBoxColumn.FillWeight = 150F;
+            this.prodincomepriceDataGridViewTextBoxColumn.HeaderText = "prod_income_price";
+            this.prodincomepriceDataGridViewTextBoxColumn.Name = "prodincomepriceDataGridViewTextBoxColumn";
+            this.prodincomepriceDataGridViewTextBoxColumn.ReadOnly = true;
+            this.prodincomepriceDataGridViewTextBoxColumn.Width = 150;
+            // 
+            // numberDataGridViewTextBoxColumn
+            // 
+            this.numberDataGridViewTextBoxColumn.DataPropertyName = "number";
+            this.numberDataGridViewTextBoxColumn.HeaderText = "number";
+            this.numberDataGridViewTextBoxColumn.Name = "numberDataGridViewTextBoxColumn";
+            this.numberDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -775,6 +878,7 @@
             this.tabControlMain.ResumeLayout(false);
             this.tabPageImport.ResumeLayout(false);
             this.tabPageImport.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGrid_import_excel)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.tabPageSettings.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
@@ -786,6 +890,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource__import_settings)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataSet)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataTable_import_settings)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bindingSource_import_excel)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataTable_import_excel)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -830,7 +936,7 @@
         private System.Windows.Forms.Button buttonDatabaseSettings;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button buttonOpenExcel;
         private System.Windows.Forms.ComboBox comboBox3;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.ComboBox comboBox2;
@@ -867,5 +973,16 @@
         private System.Windows.Forms.Button buttonDelete;
         private System.Windows.Forms.Button buttonAdd;
         private System.Windows.Forms.Button buttonSave;
+        private System.Windows.Forms.DataGridView dataGrid_import_excel;
+        private System.Windows.Forms.BindingSource bindingSource_import_excel;
+        private System.Data.DataTable dataTable_import_excel;
+        private System.Data.DataColumn dataColumn13;
+        private System.Data.DataColumn dataColumn14;
+        private System.Data.DataColumn dataColumn15;
+        private System.Data.DataColumn dataColumn16;
+        private System.Windows.Forms.DataGridViewTextBoxColumn prodrewritenameoldDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn prodnameDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn prodincomepriceDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn numberDataGridViewTextBoxColumn;
     }
 }

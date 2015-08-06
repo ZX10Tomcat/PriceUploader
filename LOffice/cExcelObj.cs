@@ -1,6 +1,9 @@
 using System;
 using System.Runtime.InteropServices;
 using System.Reflection;
+using System.IO;
+using System.Data.OleDb;
+using System.Data;
 
 
 namespace LOffice
@@ -8,8 +11,8 @@ namespace LOffice
 	/// <summary>
     /// Summary description for cExcelObj.
 	/// </summary>
-	public class cExcelObj
-	{
+    public class cExcelObj
+    {
         /*
         protected object oExcelApp = null;
         protected object oWorkbooks = null;
@@ -21,9 +24,9 @@ namespace LOffice
 
         protected int typeAdd = -1;
 
-        public enum typeDataVal{str, num, dbl, date};
+        public enum typeDataVal { str, num, dbl, date };
 
-		public cExcelObj(){ }
+        public cExcelObj() { }
 
         protected void exceptMsg(ref Exception except)
         {
@@ -35,21 +38,56 @@ namespace LOffice
         }
 
 
+        public int readExcelFileSQL(string pathFileDoc, ref DataTable data)
+        {
+            object oExcelApp = null;
+            object oWorkbooks = null;
+            object oWorkbook = null;
+            object oWorksheets = null;
+            object oWorksheet = null;
+            object oRange = null;
+
+            int r = initObj(ref oRange, ref oWorksheet, ref oWorksheets, ref oWorkbook, ref oWorkbooks, ref oExcelApp, pathFileDoc);
+            if (r < 0)
+                return r;
+
+            string connectionString = string.Empty;
+
+            string ext = Path.GetExtension(pathFileDoc);
+
+            ext = ext.Replace(".", "");
+            ext = ext.Trim();
+
+            if (ext.ToLower() == "xlsx".ToLower())
+                connectionString = string.Format("Provider=Microsoft.ACE.OLEDB.12.0;Data Source={0}; Extended Properties=Excel 12.0;", pathFileDoc);
+            else
+                connectionString = string.Format("Provider=Microsoft.Jet.OLEDB.4.0; data source={0}; Extended Properties=Excel 8.0;", pathFileDoc);
+
+            string workSheetName = getWorksheetName(ref oWorksheets, 1);
+            killExcel(ref oRange, ref oWorksheet, ref oWorksheets, ref oWorkbook, ref oWorkbooks, ref oExcelApp);
+
+            var adapter = new OleDbDataAdapter(string.Format("SELECT * FROM [{0}$]", workSheetName), connectionString);
+            adapter.Fill(data);
+
+            return data != null ? data.Rows.Count : -1;
+        }
+
+
         #region public Static Function
 
 
         private static System.Globalization.CultureInfo cultInfo()
-		{
-			//"ru-RU" "en-US"
-			System.Globalization.CultureInfo ci = new System.Globalization.CultureInfo("en-US");
-			ci.NumberFormat.CurrencyDecimalSeparator = ".";
-			ci.DateTimeFormat.DateSeparator = ".";
-			ci.DateTimeFormat.FirstDayOfWeek = System.DayOfWeek.Monday;
-			ci.DateTimeFormat.ShortDatePattern = "dd.MM.yyyy";
-			ci.DateTimeFormat.ShortTimePattern = "HH:mm";
+        {
+            //"ru-RU" "en-US"
+            System.Globalization.CultureInfo ci = new System.Globalization.CultureInfo("en-US");
+            ci.NumberFormat.CurrencyDecimalSeparator = ".";
+            ci.DateTimeFormat.DateSeparator = ".";
+            ci.DateTimeFormat.FirstDayOfWeek = System.DayOfWeek.Monday;
+            ci.DateTimeFormat.ShortDatePattern = "dd.MM.yyyy";
+            ci.DateTimeFormat.ShortTimePattern = "HH:mm";
 
-			return 	ci;
-		}
+            return ci;
+        }
 
 
         public static void createExcelApplication(ref object oExcelApp)
@@ -66,205 +104,205 @@ namespace LOffice
         }
 
 
-		public static string getWorksheetName(
-            ref object in_oWorksheets, 
+        public static string getWorksheetName(
+            ref object in_oWorksheets,
             int numberSheet)
-		{
-			try
-			{
-				object worksheet = null;
-				getWorksheet(ref in_oWorksheets, ref worksheet, numberSheet);
-				object name = worksheet.GetType().InvokeMember("Name", BindingFlags.GetProperty, null, worksheet, null, cultInfo());
-				string retVal = name.ToString(); 
-				worksheet = null;
-				name = null;
-				return retVal;
-			}
-			catch
-			{
-				return null;
-			}
-		}
+        {
+            try
+            {
+                object worksheet = null;
+                getWorksheet(ref in_oWorksheets, ref worksheet, numberSheet);
+                object name = worksheet.GetType().InvokeMember("Name", BindingFlags.GetProperty, null, worksheet, null, cultInfo());
+                string retVal = name.ToString();
+                worksheet = null;
+                name = null;
+                return retVal;
+            }
+            catch
+            {
+                return null;
+            }
+        }
 
 
-		public static int getWorksheetIndex(
-            ref object in_oWorksheets, 
+        public static int getWorksheetIndex(
+            ref object in_oWorksheets,
             string nameSheet)
-		{
-			try
-			{
-				object worksheet = null;
-				getWorksheet(ref in_oWorksheets, ref worksheet, nameSheet);
-				object tmp = getWorksheetIndex(ref worksheet); 
-				int indexSht = int.Parse(tmp.ToString()); 
-				worksheet = null;
-				return indexSht;
-			}
-			catch
-			{
-				return -1;
-			}
-		}
+        {
+            try
+            {
+                object worksheet = null;
+                getWorksheet(ref in_oWorksheets, ref worksheet, nameSheet);
+                object tmp = getWorksheetIndex(ref worksheet);
+                int indexSht = int.Parse(tmp.ToString());
+                worksheet = null;
+                return indexSht;
+            }
+            catch
+            {
+                return -1;
+            }
+        }
 
 
-		public static int getWorksheetIndex(ref object in_oWorksheet)
-		{
-			try
-			{
-				object tmp = in_oWorksheet.GetType().InvokeMember("Index", BindingFlags.GetProperty, null, in_oWorksheet, null, cultInfo());
-				int indexSht = int.Parse(tmp.ToString()); 
-				return indexSht;
-			}
-			catch
-			{
-				return -1;
-			}
-		}
+        public static int getWorksheetIndex(ref object in_oWorksheet)
+        {
+            try
+            {
+                object tmp = in_oWorksheet.GetType().InvokeMember("Index", BindingFlags.GetProperty, null, in_oWorksheet, null, cultInfo());
+                int indexSht = int.Parse(tmp.ToString());
+                return indexSht;
+            }
+            catch
+            {
+                return -1;
+            }
+        }
 
 
-		public static int getWorksheetsCount(ref object in_oWorksheets)
-		{
-			object [] args = new object[1];
-			args = null;
-			int cnt = -1;
-			
-			try
-			{
-				object tmp = null;
-				tmp = in_oWorksheets.GetType().InvokeMember("Count", BindingFlags.GetProperty, null, in_oWorksheets, args, cultInfo());
-				cnt = int.Parse(tmp.ToString()); 
-				return cnt;
-			}
-			catch
-			{
-				return -1;
-			}
-		}
+        public static int getWorksheetsCount(ref object in_oWorksheets)
+        {
+            object[] args = new object[1];
+            args = null;
+            int cnt = -1;
+
+            try
+            {
+                object tmp = null;
+                tmp = in_oWorksheets.GetType().InvokeMember("Count", BindingFlags.GetProperty, null, in_oWorksheets, args, cultInfo());
+                cnt = int.Parse(tmp.ToString());
+                return cnt;
+            }
+            catch
+            {
+                return -1;
+            }
+        }
 
 
-		public static void getWorksheetDelete(
-            ref object in_oWorksheets, 
+        public static void getWorksheetDelete(
+            ref object in_oWorksheets,
             int index)
-		{
-			//((Excel.Worksheet)objBook.Sheets.get_Item(2)).Delete(); 
-			
-			object [] args = new object[1];
-			args[0] = null;
+        {
+            //((Excel.Worksheet)objBook.Sheets.get_Item(2)).Delete(); 
 
-			try
-			{
-				object worksheet = null;
-				getWorksheet(ref in_oWorksheets, ref worksheet, index);
-				worksheet.GetType().InvokeMember("Delete", BindingFlags.GetProperty, null, worksheet, args, cultInfo());
-			}
-			catch
-			{
-				return;
-			}
-		}
+            object[] args = new object[1];
+            args[0] = null;
 
-        		
-		public static void getCell(
-            ref object in_oWorksheet, 
-            ref object oRange, 
-            int row, 
+            try
+            {
+                object worksheet = null;
+                getWorksheet(ref in_oWorksheets, ref worksheet, index);
+                worksheet.GetType().InvokeMember("Delete", BindingFlags.GetProperty, null, worksheet, args, cultInfo());
+            }
+            catch
+            {
+                return;
+            }
+        }
+
+
+        public static void getCell(
+            ref object in_oWorksheet,
+            ref object oRange,
+            int row,
             int col)
-		{
-			object [] args = new object[2];
-			args[0] = row;
-			args[1] = col;
+        {
+            object[] args = new object[2];
+            args[0] = row;
+            args[1] = col;
 
-			oRange = in_oWorksheet.GetType().InvokeMember("Cells", BindingFlags.GetProperty, null, in_oWorksheet, args, cultInfo());
-		}
+            oRange = in_oWorksheet.GetType().InvokeMember("Cells", BindingFlags.GetProperty, null, in_oWorksheet, args, cultInfo());
+        }
 
 
-		public static void findCell(
-            string findVal, 
-            ref object in_oWorksheet, 
+        public static void findCell(
+            string findVal,
+            ref object in_oWorksheet,
             ref object oRange)
-		{
-			object tmpRangeFnd = null;
-			//object range = null; 
-			//getCell(ref in_oWorksheet, ref oRange, 1, 1);		
+        {
+            object tmpRangeFnd = null;
+            //object range = null; 
+            //getCell(ref in_oWorksheet, ref oRange, 1, 1);		
 
-			int Excel_XlFindLookIn_xlValues = -4163;
-			int Excel_XlLookAt_xlPart = 2;
+            int Excel_XlFindLookIn_xlValues = -4163;
+            int Excel_XlLookAt_xlPart = 2;
             int Excel_XlSearchOrder_xlByRows = 1;
             int Excel_XlSearchOrder_xlByColumns = 2;
-			int Excel_XlSearchDirection_xlNext = 1;
+            int Excel_XlSearchDirection_xlNext = 1;
 
-        
+
             object[] args = new object[6];
-			args[0] = findVal;
-			args[1] = Missing.Value;
-			args[2] = Excel_XlFindLookIn_xlValues;
-			args[3] = Excel_XlLookAt_xlPart;
+            args[0] = findVal;
+            args[1] = Missing.Value;
+            args[2] = Excel_XlFindLookIn_xlValues;
+            args[3] = Excel_XlLookAt_xlPart;
             args[4] = Excel_XlSearchOrder_xlByRows;         //Excel_XlSearchOrder_xlByColumns;
-			args[5] = Excel_XlSearchDirection_xlNext;
+            args[5] = Excel_XlSearchDirection_xlNext;
 
-			tmpRangeFnd = oRange.GetType().InvokeMember("Find", BindingFlags.InvokeMethod, null, oRange, args, cultInfo());
+            tmpRangeFnd = oRange.GetType().InvokeMember("Find", BindingFlags.InvokeMethod, null, oRange, args, cultInfo());
 
-			try
-			{
-				while(tmpRangeFnd == null)
-				{
-					args = new object[1];
-					args[0] = tmpRangeFnd;
+            try
+            {
+                while (tmpRangeFnd == null)
+                {
+                    args = new object[1];
+                    args[0] = tmpRangeFnd;
 
-					tmpRangeFnd = oRange.GetType().InvokeMember("FindNext", BindingFlags.InvokeMethod, null, oRange, args, cultInfo());
-				}
-			}
-			catch
-			{
-				tmpRangeFnd = null;
-				oRange = null;
-			}
+                    tmpRangeFnd = oRange.GetType().InvokeMember("FindNext", BindingFlags.InvokeMethod, null, oRange, args, cultInfo());
+                }
+            }
+            catch
+            {
+                tmpRangeFnd = null;
+                oRange = null;
+            }
 
-			oRange = tmpRangeFnd;
-		}
+            oRange = tmpRangeFnd;
+        }
 
-		
-		public static void getWorkbook(
-            ref object in_oWorkbooks, 
-            ref object oWorkbook, 
+
+        public static void getWorkbook(
+            ref object in_oWorkbooks,
+            ref object oWorkbook,
             string fileName)
-		{
-			try
-			{
-				object[] args = new object[1];
-				args[0] = fileName;
+        {
+            try
+            {
+                object[] args = new object[1];
+                args[0] = fileName;
 
-				oWorkbook = in_oWorkbooks.GetType().InvokeMember("Open", BindingFlags.InvokeMethod, null, in_oWorkbooks, args, cultInfo());
-			}
-			catch
-			{
-				return;
-			}
-		}
-		
+                oWorkbook = in_oWorkbooks.GetType().InvokeMember("Open", BindingFlags.InvokeMethod, null, in_oWorkbooks, args, cultInfo());
+            }
+            catch
+            {
+                return;
+            }
+        }
 
-		public static void saveAs(
-            ref object in_oWorkbook, 
+
+        public static void saveAs(
+            ref object in_oWorkbook,
             string fileName)
-		{
-			try
-			{
-				object[] args = new object[1];
-				args[0] = fileName;
+        {
+            try
+            {
+                object[] args = new object[1];
+                args[0] = fileName;
 
-				in_oWorkbook.GetType().InvokeMember("SaveAs", BindingFlags.InvokeMethod, null, in_oWorkbook, args, cultInfo());
-			}
-			catch
-			{
-				return;
-			}
-		}
-		
+                in_oWorkbook.GetType().InvokeMember("SaveAs", BindingFlags.InvokeMethod, null, in_oWorkbook, args, cultInfo());
+            }
+            catch
+            {
+                return;
+            }
+        }
 
-		public static void save(ref object in_oWorkbook)
-		{
-			in_oWorkbook.GetType().InvokeMember("Save", BindingFlags.InvokeMethod, null, in_oWorkbook, null, cultInfo());
-		}
+
+        public static void save(ref object in_oWorkbook)
+        {
+            in_oWorkbook.GetType().InvokeMember("Save", BindingFlags.InvokeMethod, null, in_oWorkbook, null, cultInfo());
+        }
 
 
         public static string getRangeValue(
@@ -280,243 +318,243 @@ namespace LOffice
             return val != null ? val.ToString() : null;
         }
 
-		public static void getRangeValue(
+        public static void getRangeValue(
             ref object in_oRange,
             ref string cellVal)
-		{
+        {
             object[] args = new object[1];
             args[0] = Missing.Value;
 
-			object tmp = in_oRange.GetType().InvokeMember("Value", BindingFlags.GetProperty, null, in_oRange, null, cultInfo());
-			
-			try
-			{
-				cellVal = tmp.ToString();
-			}
-			catch
-			{
-				cellVal = null;
-			}
-		}
+            object tmp = in_oRange.GetType().InvokeMember("Value", BindingFlags.GetProperty, null, in_oRange, null, cultInfo());
+
+            try
+            {
+                cellVal = tmp.ToString();
+            }
+            catch
+            {
+                cellVal = null;
+            }
+        }
 
 
-		public static void setRangeValue(
+        public static void setRangeValue(
             ref object in_oRange,
             string cellVal)
-		{
-			object[] args = new object[1];
-			args[0] = cellVal;
+        {
+            object[] args = new object[1];
+            args[0] = cellVal;
 
-			in_oRange.GetType().InvokeMember("Value", BindingFlags.SetProperty, null, in_oRange, args, cultInfo());
-		}
+            in_oRange.GetType().InvokeMember("Value", BindingFlags.SetProperty, null, in_oRange, args, cultInfo());
+        }
 
 
-		public static void setRangeValue(
-            ref object in_oWorksheet, 
+        public static void setRangeValue(
+            ref object in_oWorksheet,
             ref object in_oRange,
             string cellAdr,
             string cellVal)
-		{
-			object[] args = new object[2];
+        {
+            object[] args = new object[2];
             args[0] = cellAdr;
-			args[1] = Missing.Value;
-			
-			in_oRange = in_oWorksheet.GetType().InvokeMember("Range", BindingFlags.GetProperty, null, in_oWorksheet, args, cultInfo());
+            args[1] = Missing.Value;
 
-			args = new object[1];
-			args[0] = cellVal;
-			in_oRange.GetType().InvokeMember("Value", BindingFlags.SetProperty, null, in_oRange, args, cultInfo());
-		}
+            in_oRange = in_oWorksheet.GetType().InvokeMember("Range", BindingFlags.GetProperty, null, in_oWorksheet, args, cultInfo());
 
-		
-		public static void getRange(
-            ref object in_oWorksheet, 
+            args = new object[1];
+            args[0] = cellVal;
+            in_oRange.GetType().InvokeMember("Value", BindingFlags.SetProperty, null, in_oRange, args, cultInfo());
+        }
+
+
+        public static void getRange(
+            ref object in_oWorksheet,
             ref object oRange,
             string cellAdr)
-		{
-			object[] args = new object[2];
+        {
+            object[] args = new object[2];
             args[0] = cellAdr;
-			args[1] = Missing.Value;
-			oRange = in_oWorksheet.GetType().InvokeMember("Range", BindingFlags.GetProperty, null, in_oWorksheet, args, cultInfo());
-		}
+            args[1] = Missing.Value;
+            oRange = in_oWorksheet.GetType().InvokeMember("Range", BindingFlags.GetProperty, null, in_oWorksheet, args, cultInfo());
+        }
 
 
-		public static void getRanges(
-            ref object in_oWorksheet, 
-            ref object oRange, 
+        public static void getRanges(
+            ref object in_oWorksheet,
+            ref object oRange,
             string adr1,
             string adr2)
-		{
-			object[] args = new object[2];
-			args[0] = adr1;
-			args[1] = adr2;
-			oRange = in_oWorksheet.GetType().InvokeMember("Range", BindingFlags.GetProperty, null, in_oWorksheet, args, cultInfo());
-		}
+        {
+            object[] args = new object[2];
+            args[0] = adr1;
+            args[1] = adr2;
+            oRange = in_oWorksheet.GetType().InvokeMember("Range", BindingFlags.GetProperty, null, in_oWorksheet, args, cultInfo());
+        }
 
 
-		public static string getRangeAddressLocal(ref object in_oRange)
-		{
-			object[] args = new object[5];
-			int Excel_XlReferenceStyle_xlA1 = 1;
+        public static string getRangeAddressLocal(ref object in_oRange)
+        {
+            object[] args = new object[5];
+            int Excel_XlReferenceStyle_xlA1 = 1;
 
-			args[0] = Missing.Value;
-			args[1] = Missing.Value;
-			args[2] = Excel_XlReferenceStyle_xlA1;
-			args[3] = Missing.Value;
-			args[4] = Missing.Value;
-			//string str1 = range.get_AddressLocal(Type.Missing,Type.Missing, Excel.XlReferenceStyle.xlA1,Type.Missing,Type.Missing);
+            args[0] = Missing.Value;
+            args[1] = Missing.Value;
+            args[2] = Excel_XlReferenceStyle_xlA1;
+            args[3] = Missing.Value;
+            args[4] = Missing.Value;
+            //string str1 = range.get_AddressLocal(Type.Missing,Type.Missing, Excel.XlReferenceStyle.xlA1,Type.Missing,Type.Missing);
 
-			object tmp = in_oRange.GetType().InvokeMember("AddressLocal", BindingFlags.GetProperty, null, in_oRange, args, cultInfo());
-			return tmp.ToString(); 
-		}
+            object tmp = in_oRange.GetType().InvokeMember("AddressLocal", BindingFlags.GetProperty, null, in_oRange, args, cultInfo());
+            return tmp.ToString();
+        }
 
 
-		public static void setRangeBorders(
-            ref object in_oRange, 
-            string adr1, 
-            string adr2, 
+        public static void setRangeBorders(
+            ref object in_oRange,
+            string adr1,
+            string adr2,
             int val)
-		{
-			/*
-			object[] args = new object[2];
-			args[0] = adr1;
-			args[1] = adr2;
-			object tmp = in_oRange.GetType().InvokeMember("Borders", BindingFlags.GetProperty, null, in_oRange, args);
+        {
+            /*
+            object[] args = new object[2];
+            args[0] = adr1;
+            args[1] = adr2;
+            object tmp = in_oRange.GetType().InvokeMember("Borders", BindingFlags.GetProperty, null, in_oRange, args);
 
-			//Excel.XlBorderWeight.xlThin = 2
-			args = new object[1];
-			args[0] = val;
-			tmp.GetType().InvokeMember("Weight", BindingFlags.SetProperty, null, tmp, args);
-			*/
-		}
-        		
+            //Excel.XlBorderWeight.xlThin = 2
+            args = new object[1];
+            args[0] = val;
+            tmp.GetType().InvokeMember("Weight", BindingFlags.SetProperty, null, tmp, args);
+            */
+        }
 
-		public static void setRangeBorders(
-            ref object in_oRange, 
+
+        public static void setRangeBorders(
+            ref object in_oRange,
             int val)
-		{
-			//Excel.XlBorderWeight.xlThin = 2
-			object borders = in_oRange.GetType().InvokeMember("Borders", BindingFlags.GetProperty, null, in_oRange, null, cultInfo());
-			object[] args = new object[1];
-			args[0] = val;
-			borders.GetType().InvokeMember("Weight", BindingFlags.SetProperty, null, borders, args, cultInfo());
-		}
+        {
+            //Excel.XlBorderWeight.xlThin = 2
+            object borders = in_oRange.GetType().InvokeMember("Borders", BindingFlags.GetProperty, null, in_oRange, null, cultInfo());
+            object[] args = new object[1];
+            args[0] = val;
+            borders.GetType().InvokeMember("Weight", BindingFlags.SetProperty, null, borders, args, cultInfo());
+        }
 
 
-		public static void setRangeSelect(ref object in_oRange)
-		{
-			try
-			{
-				object tmp = in_oRange.GetType().InvokeMember("Select", BindingFlags.InvokeMethod, null, in_oRange, null, cultInfo());
-			}
-			catch{}
-		}
+        public static void setRangeSelect(ref object in_oRange)
+        {
+            try
+            {
+                object tmp = in_oRange.GetType().InvokeMember("Select", BindingFlags.InvokeMethod, null, in_oRange, null, cultInfo());
+            }
+            catch { }
+        }
 
 
-		public static void getWorksheet(
-            ref object in_oWorksheets, 
-            ref object oWorksheet, 
+        public static void getWorksheet(
+            ref object in_oWorksheets,
+            ref object oWorksheet,
             int numberSheet)
-		{
-			try
-			{
-				object[] args = new object[1];
-				args[0] = numberSheet;
-				oWorksheet = in_oWorksheets.GetType().InvokeMember("Item", BindingFlags.GetProperty, null, in_oWorksheets, args, cultInfo());
-			}
-			catch
-			{
-				oWorksheet = null;
-			}
-		}
-		
+        {
+            try
+            {
+                object[] args = new object[1];
+                args[0] = numberSheet;
+                oWorksheet = in_oWorksheets.GetType().InvokeMember("Item", BindingFlags.GetProperty, null, in_oWorksheets, args, cultInfo());
+            }
+            catch
+            {
+                oWorksheet = null;
+            }
+        }
 
-		public static void getWorksheet(
-            ref object in_oWorksheets, 
-            ref object oWorksheet, 
+
+        public static void getWorksheet(
+            ref object in_oWorksheets,
+            ref object oWorksheet,
             string nameSheet)
-		{
-			try
-			{
-				object[] args = new object[1];
-				args[0] = nameSheet;
-				oWorksheet = in_oWorksheets.GetType().InvokeMember("Item", BindingFlags.GetProperty, null, in_oWorksheets, args, cultInfo());
-			}
-			catch
-			{
-				oWorksheet = null;
-			}
-		}
-        		
+        {
+            try
+            {
+                object[] args = new object[1];
+                args[0] = nameSheet;
+                oWorksheet = in_oWorksheets.GetType().InvokeMember("Item", BindingFlags.GetProperty, null, in_oWorksheets, args, cultInfo());
+            }
+            catch
+            {
+                oWorksheet = null;
+            }
+        }
 
-		public static void getWorksheets(
-            ref object in_oWorkbook, 
+
+        public static void getWorksheets(
+            ref object in_oWorkbook,
             ref object oWorksheets)
-		{
-			oWorksheets = in_oWorkbook.GetType().InvokeMember("Worksheets", BindingFlags.GetProperty, null, in_oWorkbook, null, cultInfo());
-		}
-        
+        {
+            oWorksheets = in_oWorkbook.GetType().InvokeMember("Worksheets", BindingFlags.GetProperty, null, in_oWorkbook, null, cultInfo());
+        }
 
-		public static void getWorkbook(
-            ref object in_oWorkbooks, 
+
+        public static void getWorkbook(
+            ref object in_oWorkbooks,
             ref object oWorkbook)
-		{
-			oWorkbook = in_oWorkbooks.GetType().InvokeMember("Add", BindingFlags.InvokeMethod, null, in_oWorkbooks, null, cultInfo());
-		}
-		
-		
-		public static void getWorkbooks(
-            ref object in_oExcelApp, 
+        {
+            oWorkbook = in_oWorkbooks.GetType().InvokeMember("Add", BindingFlags.InvokeMethod, null, in_oWorkbooks, null, cultInfo());
+        }
+
+
+        public static void getWorkbooks(
+            ref object in_oExcelApp,
             ref object oWorkbooks)
-		{
-			oWorkbooks = in_oExcelApp.GetType().InvokeMember("Workbooks", BindingFlags.GetProperty, null, in_oExcelApp, null, cultInfo());
-		}
+        {
+            oWorkbooks = in_oExcelApp.GetType().InvokeMember("Workbooks", BindingFlags.GetProperty, null, in_oExcelApp, null, cultInfo());
+        }
 
 
-		public static void setNullComObject(ref object in_Exl)
-		{
-			System.Runtime.InteropServices.Marshal.ReleaseComObject(in_Exl);
-			in_Exl = null;
-		}
-
-		
-		public static void quitExcel(ref object in_oExcelApp)
-		{
-			in_oExcelApp.GetType().InvokeMember("Quit", BindingFlags.InvokeMethod, null, in_oExcelApp, null, cultInfo());	
-		}
+        public static void setNullComObject(ref object in_Exl)
+        {
+            System.Runtime.InteropServices.Marshal.ReleaseComObject(in_Exl);
+            in_Exl = null;
+        }
 
 
-		public static void closeWorkbooks(ref object in_oWorkbooks)
-		{
-			in_oWorkbooks.GetType().InvokeMember("Close", BindingFlags.InvokeMethod, null, in_oWorkbooks, null, cultInfo());	
-		}
-		
+        public static void quitExcel(ref object in_oExcelApp)
+        {
+            in_oExcelApp.GetType().InvokeMember("Quit", BindingFlags.InvokeMethod, null, in_oExcelApp, null, cultInfo());
+        }
 
-		public static void closeWorkbook(
-            ref object in_oWorkbook, 
+
+        public static void closeWorkbooks(ref object in_oWorkbooks)
+        {
+            in_oWorkbooks.GetType().InvokeMember("Close", BindingFlags.InvokeMethod, null, in_oWorkbooks, null, cultInfo());
+        }
+
+
+        public static void closeWorkbook(
+            ref object in_oWorkbook,
             int typeClose)
-		{
-			object [] args = new object[3];
-			args[0] = typeClose;
-			args[1] = null;
-			args[2] = null;
-			in_oWorkbook.GetType().InvokeMember("Close", BindingFlags.InvokeMethod, null, in_oWorkbook, args, cultInfo());
-		}
+        {
+            object[] args = new object[3];
+            args[0] = typeClose;
+            args[1] = null;
+            args[2] = null;
+            in_oWorkbook.GetType().InvokeMember("Close", BindingFlags.InvokeMethod, null, in_oWorkbook, args, cultInfo());
+        }
 
 
-		public static void copyWorksheet(
-            ref object in_oWorksheet1, 
+        public static void copyWorksheet(
+            ref object in_oWorksheet1,
             ref object in_oWorksheet2)
-		{
-			//((Excel.Worksheet)objBook.Sheets.get_Item(1)).Copy(Type.Missing, objBook.Sheets.get_Item(num));
-			object[] args = new object[2];
-			args[0] = Missing.Value;
-			args[1] = in_oWorksheet2;
-			in_oWorksheet1.GetType().InvokeMember("Copy", BindingFlags.InvokeMethod, null, in_oWorksheet1, args, cultInfo());
-		}
+        {
+            //((Excel.Worksheet)objBook.Sheets.get_Item(1)).Copy(Type.Missing, objBook.Sheets.get_Item(num));
+            object[] args = new object[2];
+            args[0] = Missing.Value;
+            args[1] = in_oWorksheet2;
+            in_oWorksheet1.GetType().InvokeMember("Copy", BindingFlags.InvokeMethod, null, in_oWorksheet1, args, cultInfo());
+        }
 
-        
-        
+
+
         /// <summary>
         /// Копирование выделенной области
         /// </summary>
@@ -534,25 +572,25 @@ namespace LOffice
             activesheet.GetType().InvokeMember("Paste", BindingFlags.InvokeMethod, null, activesheet, null, cultInfo());
         }
 
-                
+
         public static void selectClearContents(ref object in_oExcelApp)
         {
             object selection = in_oExcelApp.GetType().InvokeMember("Selection", BindingFlags.GetProperty, null, in_oExcelApp, null, cultInfo());
             selection.GetType().InvokeMember("ClearContents", BindingFlags.InvokeMethod, null, selection, null, cultInfo());
         }
 
-        
+
         /// <summary>
         /// Странно работает, скорее не работает 
         /// </summary>
         /// <param name="in_oExcelApp"></param>
         /// <param name="rowsAdr"></param>
         public static void selectRows(
-            ref object in_oExcelApp, 
+            ref object in_oExcelApp,
             string rowsAdr)
         {
             object rows = in_oExcelApp.GetType().InvokeMember("Rows", BindingFlags.GetProperty, null, in_oExcelApp, null, cultInfo());
-            
+
             object[] args = new object[2];
             args[0] = rowsAdr;
             args[1] = Missing.Value;
@@ -561,8 +599,8 @@ namespace LOffice
 
 
         public static void selectRows(
-            ref object in_oWorksheet, 
-            ref object in_oRange, 
+            ref object in_oWorksheet,
+            ref object in_oRange,
             string rowsAdr)
         {
             LOffice.cExcelObj.getRange(ref in_oWorksheet, ref in_oRange, rowsAdr);
@@ -571,30 +609,30 @@ namespace LOffice
 
 
         public static void copyWorksheet(ref object in_oWorksheet)
-		{
-			//((Excel.Worksheet)objBook.Sheets.get_Item(1)).Copy(objBook.Sheets.get_Item(1), Type.Missing);
-			object[] args = new object[2];
-			args[0] = in_oWorksheet;
-			args[1] = Missing.Value;
-			in_oWorksheet.GetType().InvokeMember("Copy", BindingFlags.InvokeMethod, null, in_oWorksheet, args, cultInfo());
-		}
+        {
+            //((Excel.Worksheet)objBook.Sheets.get_Item(1)).Copy(objBook.Sheets.get_Item(1), Type.Missing);
+            object[] args = new object[2];
+            args[0] = in_oWorksheet;
+            args[1] = Missing.Value;
+            in_oWorksheet.GetType().InvokeMember("Copy", BindingFlags.InvokeMethod, null, in_oWorksheet, args, cultInfo());
+        }
 
 
-		public static void setWorksheetName(
-            ref object in_oWorksheet, 
+        public static void setWorksheetName(
+            ref object in_oWorksheet,
             string nameWS)
-		{
-			object[] args = new object[1];
-			args[0] = nameWS;
-			in_oWorksheet.GetType().InvokeMember("Name", BindingFlags.SetProperty, null, in_oWorksheet, args, cultInfo());
-		}
+        {
+            object[] args = new object[1];
+            args[0] = nameWS;
+            in_oWorksheet.GetType().InvokeMember("Name", BindingFlags.SetProperty, null, in_oWorksheet, args, cultInfo());
+        }
 
 
-		public static void deleteRange(ref object in_oRange)
-		{
-			object[] args = new object[1];
-			args[0] = Missing.Value;
-			in_oRange.GetType().InvokeMember("Delete", BindingFlags.InvokeMethod, null, in_oRange, args, cultInfo());
+        public static void deleteRange(ref object in_oRange)
+        {
+            object[] args = new object[1];
+            args[0] = Missing.Value;
+            in_oRange.GetType().InvokeMember("Delete", BindingFlags.InvokeMethod, null, in_oRange, args, cultInfo());
         }
 
 
@@ -604,7 +642,7 @@ namespace LOffice
             selection.GetType().InvokeMember("Merge", BindingFlags.InvokeMethod, null, selection, null, cultInfo());
         }
 
-        
+
         public static void unmergeRange(ref object in_oExcelApp)
         {
             object selection = in_oExcelApp.GetType().InvokeMember("Selection", BindingFlags.GetProperty, null, in_oExcelApp, null, cultInfo());
@@ -643,8 +681,8 @@ namespace LOffice
 
 
         public static string getRowAdr(
-            int index, 
-            string begCell, 
+            int index,
+            string begCell,
             string endCell)
         {
             string tmp = begCell + index.ToString() + ":" + endCell + index.ToString();
@@ -726,9 +764,9 @@ namespace LOffice
         #endregion public Static Function
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        
-        
-        #region Функции работы с файлом Excel 
+
+
+        #region Функции работы с файлом Excel
 
 
         /// <summary>
@@ -741,15 +779,15 @@ namespace LOffice
         /// <param name="pathFilePat"></param>
         /// <param name="pathFileDoc"></param>
         protected virtual void createFileName(
-            string path, 
-            string file, 
+            string path,
+            string file,
             ref string pathFile)
         {
             pathFile = path;
             LAny.cStr.addSlash(ref pathFile);
             pathFile += file;
         }
-        
+
 
         /// <summary>
         /// Проверка открыт файл документа Excel_ем или нет
@@ -777,7 +815,7 @@ namespace LOffice
                     LAny.cSysWinApi.activateWindow(i);
                 else
                     return -1;
-                
+
             }
             return 1;
         }
@@ -790,7 +828,7 @@ namespace LOffice
         /// <param name="fileDoc"></param>
         /// <returns></returns>
         protected virtual int chkFileDocWin(
-            string pathFileDoc, 
+            string pathFileDoc,
             string fileDoc)
         {
             if (System.IO.File.Exists(pathFileDoc))
@@ -830,7 +868,7 @@ namespace LOffice
         /// <param name="pathFileDoc"></param>
         /// <returns></returns>
         protected virtual int copyPatternWin(
-            string pathFilePat, 
+            string pathFilePat,
             string pathFileDoc)
         {
             try
@@ -842,7 +880,7 @@ namespace LOffice
             {
                 System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.Default;
                 exceptMsg(ref theException);
-                
+
                 return -1;
             }
         }
@@ -861,7 +899,7 @@ namespace LOffice
 
 
         #endregion Функции работы с файлом Excel
-        
+
 
 
         #region Функции работы с объектом ExcelApp
@@ -894,8 +932,8 @@ namespace LOffice
             LOffice.cExcelObj.getWorksheet(ref oWorksheets, ref oWorksheet, 1);
             return 1;
         }
-        
-        
+
+
         /// <summary>
         /// Создание объекта ExcelApp
         /// только WinForms
@@ -908,12 +946,12 @@ namespace LOffice
         /// <param name="oExcelApp"></param>
         /// <returns></returns>
         protected virtual int initObjWin(
-            ref object oRange, 
-            ref object oWorksheet, 
-            ref object oWorksheets, 
+            ref object oRange,
+            ref object oWorksheet,
+            ref object oWorksheets,
             ref object oWorkbook,
-            ref object oWorkbooks, 
-            ref object oExcelApp, 
+            ref object oWorkbooks,
+            ref object oExcelApp,
             string pathFileDoc)
         {
             try
@@ -946,11 +984,11 @@ namespace LOffice
         /// <param name="oWorkbooks"></param>
         /// <param name="oExcelApp"></param>
         protected virtual void killExcel(
-            ref object oRange, 
-            ref object oWorksheet, 
-            ref object oWorksheets, 
+            ref object oRange,
+            ref object oWorksheet,
+            ref object oWorksheets,
             ref object oWorkbook,
-            ref object oWorkbooks, 
+            ref object oWorkbooks,
             ref object oExcelApp)
         {
 
@@ -1023,15 +1061,15 @@ namespace LOffice
         }
 
         #endregion Функции работы с объектом ExcelApp
-        
+
 
 
         #region Функции работы с Rows
 
 
         protected virtual void rowsInsert(
-            ref object in_oWorksheet, 
-            ref object in_oRange, 
+            ref object in_oWorksheet,
+            ref object in_oRange,
             string cellAdr)
         {
             LOffice.cExcelObj.getRange(ref in_oWorksheet, ref in_oRange, cellAdr);
@@ -1040,8 +1078,8 @@ namespace LOffice
 
 
         protected virtual void rowsDelete(
-            ref object in_oWorksheet, 
-            ref object in_oRange, 
+            ref object in_oWorksheet,
+            ref object in_oRange,
             string cellAdr)
         {
             this.rangeSelect(ref in_oWorksheet, ref in_oRange, cellAdr);
@@ -1050,8 +1088,8 @@ namespace LOffice
 
 
         protected virtual void rowsCopy(
-            ref object in_oExcelApp, 
-            string cellAdrBeg, 
+            ref object in_oExcelApp,
+            string cellAdrBeg,
             string cellAdrEnd)
         {
             LOffice.cExcelObj.selectRows(ref in_oExcelApp, cellAdrBeg);
@@ -1062,10 +1100,10 @@ namespace LOffice
 
 
         protected virtual void rowsCopy(
-            ref object in_oExcelApp, 
-            ref object in_oWorksheet, 
-            ref object in_oRange, 
-            string cellAdrBeg, 
+            ref object in_oExcelApp,
+            ref object in_oWorksheet,
+            ref object in_oRange,
+            string cellAdrBeg,
             string cellAdrEnd)
         {
             LOffice.cExcelObj.selectRows(ref in_oWorksheet, ref in_oRange, cellAdrBeg);
@@ -1077,7 +1115,7 @@ namespace LOffice
 
 
         protected virtual string rowGetIndex(
-            string cellAdr, 
+            string cellAdr,
             bool abs)
         {
             string[] substrings = cellAdr.Split(':');
@@ -1138,15 +1176,15 @@ namespace LOffice
         /// <param name="in_oRange"></param>
         /// <param name="cellAdr"></param>
         protected virtual void rangeSelect(
-            ref object in_oWorksheet, 
-            ref object in_oRange, 
+            ref object in_oWorksheet,
+            ref object in_oRange,
             string cellAdr)
         {
             LOffice.cExcelObj.getRange(ref in_oWorksheet, ref in_oRange, cellAdr);
             LOffice.cExcelObj.setRangeSelect(ref in_oRange);
         }
 
-        
+
         /// <summary>
         /// Копирование 
         /// </summary>
@@ -1155,17 +1193,17 @@ namespace LOffice
         /// <param name="in_oRange"></param>
         /// <param name="cellAdr"></param>
         protected virtual void rangeCopy(
-            ref object in_oExcelApp, 
-            ref object in_oWorksheet, 
-            ref object in_oRange, 
-            string cellAdr) 
+            ref object in_oExcelApp,
+            ref object in_oWorksheet,
+            ref object in_oRange,
+            string cellAdr)
         {
-            
+
             LOffice.cExcelObj.getRange(ref in_oWorksheet, ref in_oRange, cellAdr);
             LOffice.cExcelObj.setRangeSelect(ref in_oRange);
             LOffice.cExcelObj.selectCopy(ref in_oExcelApp);
         }
-        
+
 
         /// <summary>
         /// Вставка
@@ -1175,10 +1213,10 @@ namespace LOffice
         /// <param name="in_oRange"></param>
         /// <param name="cellAdr"></param>
         protected virtual void rangePaste(
-            ref object in_oExcelApp, 
-            ref object in_oWorksheet, 
-            ref object in_oRange, 
-            string cellAdr) 
+            ref object in_oExcelApp,
+            ref object in_oWorksheet,
+            ref object in_oRange,
+            string cellAdr)
         {
             LOffice.cExcelObj.getRange(ref in_oWorksheet, ref in_oRange, cellAdr);
             LOffice.cExcelObj.setRangeSelect(ref in_oRange);
@@ -1195,16 +1233,16 @@ namespace LOffice
         /// <param name="cellAdrBeg"></param>
         /// <param name="cellAdrEnd"></param>
         protected virtual void rangeCopyMake(
-            ref object in_oExcelApp, 
-            ref object in_oWorksheet, 
-            ref object in_oRange, 
+            ref object in_oExcelApp,
+            ref object in_oWorksheet,
+            ref object in_oRange,
             string cellAdrBeg,
             string cellAdrEnd)
         {
             rangeCopy(ref in_oExcelApp, ref in_oWorksheet, ref in_oRange, cellAdrBeg);
             rangePaste(ref in_oExcelApp, ref in_oWorksheet, ref in_oRange, cellAdrEnd);
         }
-        
+
 
         /// <summary>
         /// Очистка значений из ячейки
@@ -1214,9 +1252,9 @@ namespace LOffice
         /// <param name="in_oRange"></param>
         /// <param name="cellAdr"></param>
         protected virtual void rangeClean(
-            ref object in_oExcelApp, 
-            ref object in_oWorksheet, 
-            ref object in_oRange, 
+            ref object in_oExcelApp,
+            ref object in_oWorksheet,
+            ref object in_oRange,
             string cellAdr)
         {
             LOffice.cExcelObj.getRange(ref in_oWorksheet, ref in_oRange, cellAdr);
@@ -1233,9 +1271,9 @@ namespace LOffice
         /// <param name="in_oRange"></param>
         /// <param name="cellAdr"></param>
         protected virtual void rangeMerge(
-            ref object in_oExcelApp, 
-            ref object in_oWorksheet, 
-            ref object in_oRange, 
+            ref object in_oExcelApp,
+            ref object in_oWorksheet,
+            ref object in_oRange,
             string cellAdr)
         {
             LOffice.cExcelObj.getRange(ref in_oWorksheet, ref in_oRange, cellAdr);
@@ -1252,9 +1290,9 @@ namespace LOffice
         /// <param name="in_oRange"></param>
         /// <param name="cellAdr"></param>
         protected virtual void rangeUnMerge(
-            ref object in_oExcelApp, 
-            ref object in_oWorksheet, 
-            ref object in_oRange, 
+            ref object in_oExcelApp,
+            ref object in_oWorksheet,
+            ref object in_oRange,
             string cellAdr)
         {
             LOffice.cExcelObj.getRange(ref in_oWorksheet, ref in_oRange, cellAdr);
@@ -1271,16 +1309,16 @@ namespace LOffice
         /// <param name="nameFieldAdr"></param>
         /// <param name="val"></param>
         protected virtual void rangeSetVal(
-            ref object in_oWorksheet, 
-            ref object in_oRange, 
-            string cellAdr, 
+            ref object in_oWorksheet,
+            ref object in_oRange,
+            string cellAdr,
             string val)
         {
             try
             {
-                LOffice.cExcelObj.setRangeValue(ref in_oWorksheet,ref in_oRange, cellAdr, val);
+                LOffice.cExcelObj.setRangeValue(ref in_oWorksheet, ref in_oRange, cellAdr, val);
             }
-            catch 
+            catch
             {
                 return;
             }
@@ -1297,10 +1335,10 @@ namespace LOffice
         /// <param name="val"></param>
         /// <param name="valEmpty"></param>
         protected virtual void rangeSetVal(
-            ref object in_oWorksheet, 
-            ref object in_oRange, 
-            string cellAdr, 
-            string val, 
+            ref object in_oWorksheet,
+            ref object in_oRange,
+            string cellAdr,
+            string val,
             string valEmpty)
         {
             try
@@ -1398,8 +1436,8 @@ namespace LOffice
         /// <param name="oRange"></param>
         /// <returns></returns>
         protected virtual string rangeFind(
-            string findVal, 
-            ref object in_oWorksheet, 
+            string findVal,
+            ref object in_oWorksheet,
             ref object oRange)
         {
             try
@@ -1450,7 +1488,7 @@ namespace LOffice
             string s = cellAdr;
             string[] substrings = s.Split(':');
             s = substrings[1].Replace("$", "");
-            
+
             return s;
         }
 
@@ -1462,3 +1500,4 @@ namespace LOffice
     }
 
 }
+
