@@ -38,7 +38,31 @@
             this.tabControlMain = new System.Windows.Forms.TabControl();
             this.tabPageImport = new System.Windows.Forms.TabPage();
             this.dataGrid_import_excel = new System.Windows.Forms.DataGridView();
-            this.label15 = new System.Windows.Forms.Label();
+            this.prodrewritenameoldDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.prodnameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.prodincomepriceDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.numberDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.bindingSource_import_excel = new System.Windows.Forms.BindingSource(this.components);
+            this.dataSet = new System.Data.DataSet();
+            this.dataTable_import_settings = new System.Data.DataTable();
+            this.dataColumn1 = new System.Data.DataColumn();
+            this.dataColumn2 = new System.Data.DataColumn();
+            this.dataColumn3 = new System.Data.DataColumn();
+            this.dataColumn4 = new System.Data.DataColumn();
+            this.dataColumn5 = new System.Data.DataColumn();
+            this.dataColumn6 = new System.Data.DataColumn();
+            this.dataColumn7 = new System.Data.DataColumn();
+            this.dataColumn8 = new System.Data.DataColumn();
+            this.dataColumn9 = new System.Data.DataColumn();
+            this.dataColumn10 = new System.Data.DataColumn();
+            this.dataColumn11 = new System.Data.DataColumn();
+            this.dataColumn12 = new System.Data.DataColumn();
+            this.dataTable_import_excel = new System.Data.DataTable();
+            this.dataColumn13 = new System.Data.DataColumn();
+            this.dataColumn14 = new System.Data.DataColumn();
+            this.dataColumn15 = new System.Data.DataColumn();
+            this.dataColumn16 = new System.Data.DataColumn();
+            this.label_file_name = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
             this.buttonOpenExcel = new System.Windows.Forms.Button();
             this.comboBox3 = new System.Windows.Forms.ComboBox();
@@ -67,20 +91,12 @@
             this.isuahflagDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.isidDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.bindingSource__import_settings = new System.Windows.Forms.BindingSource(this.components);
-            this.dataSet = new System.Data.DataSet();
-            this.dataTable_import_settings = new System.Data.DataTable();
-            this.dataColumn1 = new System.Data.DataColumn();
-            this.dataColumn2 = new System.Data.DataColumn();
-            this.dataColumn3 = new System.Data.DataColumn();
-            this.dataColumn4 = new System.Data.DataColumn();
-            this.dataColumn5 = new System.Data.DataColumn();
-            this.dataColumn6 = new System.Data.DataColumn();
-            this.dataColumn7 = new System.Data.DataColumn();
-            this.dataColumn8 = new System.Data.DataColumn();
-            this.dataColumn9 = new System.Data.DataColumn();
-            this.dataColumn10 = new System.Data.DataColumn();
-            this.dataColumn11 = new System.Data.DataColumn();
-            this.dataColumn12 = new System.Data.DataColumn();
+            this.comboBoxCurrency = new System.Windows.Forms.ComboBox();
+            this.comboBoxAvailability2 = new System.Windows.Forms.ComboBox();
+            this.comboBoxAvailability1 = new System.Windows.Forms.ComboBox();
+            this.comboBoxProductName = new System.Windows.Forms.ComboBox();
+            this.comboBoxPrice = new System.Windows.Forms.ComboBox();
+            this.comboBoxCode = new System.Windows.Forms.ComboBox();
             this.buttonSave = new System.Windows.Forms.Button();
             this.textBoxActuality = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
@@ -88,36 +104,24 @@
             this.label10 = new System.Windows.Forms.Label();
             this.textBoxAvailSign = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
-            this.textBoxCurrency = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
-            this.textBoxAvailability2 = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
-            this.textBoxAvailability1 = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
-            this.textBoxProductName = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
-            this.textBoxPrice = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.textBoxCode = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.textBoxFirstRow = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.textBoxName = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.bindingSource_import_excel = new System.Windows.Forms.BindingSource(this.components);
-            this.dataTable_import_excel = new System.Data.DataTable();
-            this.dataColumn13 = new System.Data.DataColumn();
-            this.dataColumn14 = new System.Data.DataColumn();
-            this.dataColumn15 = new System.Data.DataColumn();
-            this.dataColumn16 = new System.Data.DataColumn();
-            this.prodrewritenameoldDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.prodnameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.prodincomepriceDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.numberDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.menuStrip1.SuspendLayout();
             this.tabControlMain.SuspendLayout();
             this.tabPageImport.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGrid_import_excel)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bindingSource_import_excel)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataSet)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataTable_import_settings)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataTable_import_excel)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.tabPageSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -126,10 +130,6 @@
             this.splitContainer1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGrid_import_settings)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource__import_settings)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataSet)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataTable_import_settings)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.bindingSource_import_excel)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataTable_import_excel)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -195,7 +195,7 @@
             // tabPageImport
             // 
             this.tabPageImport.Controls.Add(this.dataGrid_import_excel);
-            this.tabPageImport.Controls.Add(this.label15);
+            this.tabPageImport.Controls.Add(this.label_file_name);
             this.tabPageImport.Controls.Add(this.button2);
             this.tabPageImport.Controls.Add(this.buttonOpenExcel);
             this.tabPageImport.Controls.Add(this.comboBox3);
@@ -231,14 +231,170 @@
             this.dataGrid_import_excel.Size = new System.Drawing.Size(1167, 536);
             this.dataGrid_import_excel.TabIndex = 10;
             // 
-            // label15
+            // prodrewritenameoldDataGridViewTextBoxColumn
             // 
-            this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(734, 13);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(92, 13);
-            this.label15.TabIndex = 9;
-            this.label15.Text = "Файл не выбран";
+            this.prodrewritenameoldDataGridViewTextBoxColumn.DataPropertyName = "prod_rewrite_name_old";
+            this.prodrewritenameoldDataGridViewTextBoxColumn.FillWeight = 200F;
+            this.prodrewritenameoldDataGridViewTextBoxColumn.HeaderText = "prod_rewrite_name_old";
+            this.prodrewritenameoldDataGridViewTextBoxColumn.Name = "prodrewritenameoldDataGridViewTextBoxColumn";
+            this.prodrewritenameoldDataGridViewTextBoxColumn.ReadOnly = true;
+            this.prodrewritenameoldDataGridViewTextBoxColumn.Width = 200;
+            // 
+            // prodnameDataGridViewTextBoxColumn
+            // 
+            this.prodnameDataGridViewTextBoxColumn.DataPropertyName = "prod_name";
+            this.prodnameDataGridViewTextBoxColumn.FillWeight = 600F;
+            this.prodnameDataGridViewTextBoxColumn.HeaderText = "prod_name";
+            this.prodnameDataGridViewTextBoxColumn.Name = "prodnameDataGridViewTextBoxColumn";
+            this.prodnameDataGridViewTextBoxColumn.ReadOnly = true;
+            this.prodnameDataGridViewTextBoxColumn.Width = 600;
+            // 
+            // prodincomepriceDataGridViewTextBoxColumn
+            // 
+            this.prodincomepriceDataGridViewTextBoxColumn.DataPropertyName = "prod_income_price";
+            this.prodincomepriceDataGridViewTextBoxColumn.FillWeight = 150F;
+            this.prodincomepriceDataGridViewTextBoxColumn.HeaderText = "prod_income_price";
+            this.prodincomepriceDataGridViewTextBoxColumn.Name = "prodincomepriceDataGridViewTextBoxColumn";
+            this.prodincomepriceDataGridViewTextBoxColumn.ReadOnly = true;
+            this.prodincomepriceDataGridViewTextBoxColumn.Width = 150;
+            // 
+            // numberDataGridViewTextBoxColumn
+            // 
+            this.numberDataGridViewTextBoxColumn.DataPropertyName = "number";
+            this.numberDataGridViewTextBoxColumn.HeaderText = "number";
+            this.numberDataGridViewTextBoxColumn.Name = "numberDataGridViewTextBoxColumn";
+            this.numberDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // bindingSource_import_excel
+            // 
+            this.bindingSource_import_excel.DataMember = "Table_import_excel";
+            this.bindingSource_import_excel.DataSource = this.dataSet;
+            // 
+            // dataSet
+            // 
+            this.dataSet.DataSetName = "dataSet";
+            this.dataSet.Tables.AddRange(new System.Data.DataTable[] {
+            this.dataTable_import_settings,
+            this.dataTable_import_excel});
+            // 
+            // dataTable_import_settings
+            // 
+            this.dataTable_import_settings.Columns.AddRange(new System.Data.DataColumn[] {
+            this.dataColumn1,
+            this.dataColumn2,
+            this.dataColumn3,
+            this.dataColumn4,
+            this.dataColumn5,
+            this.dataColumn6,
+            this.dataColumn7,
+            this.dataColumn8,
+            this.dataColumn9,
+            this.dataColumn10,
+            this.dataColumn11,
+            this.dataColumn12});
+            this.dataTable_import_settings.TableName = "Table_import_settings";
+            // 
+            // dataColumn1
+            // 
+            this.dataColumn1.AllowDBNull = false;
+            this.dataColumn1.Caption = "is_id";
+            this.dataColumn1.ColumnName = "is_id";
+            this.dataColumn1.DataType = typeof(int);
+            // 
+            // dataColumn2
+            // 
+            this.dataColumn2.Caption = "is_name";
+            this.dataColumn2.ColumnName = "is_name";
+            // 
+            // dataColumn3
+            // 
+            this.dataColumn3.Caption = "is_start_row";
+            this.dataColumn3.ColumnName = "is_start_row";
+            this.dataColumn3.DataType = typeof(int);
+            // 
+            // dataColumn4
+            // 
+            this.dataColumn4.Caption = "is_code_col";
+            this.dataColumn4.ColumnName = "is_code_col";
+            // 
+            // dataColumn5
+            // 
+            this.dataColumn5.Caption = "is_price_col";
+            this.dataColumn5.ColumnName = "is_price_col";
+            // 
+            // dataColumn6
+            // 
+            this.dataColumn6.Caption = "is_name_col";
+            this.dataColumn6.ColumnName = "is_name_col";
+            // 
+            // dataColumn7
+            // 
+            this.dataColumn7.Caption = "is_actuality";
+            this.dataColumn7.ColumnName = "is_actuality";
+            this.dataColumn7.DataType = typeof(int);
+            // 
+            // dataColumn8
+            // 
+            this.dataColumn8.Caption = "is_presense1_col";
+            this.dataColumn8.ColumnName = "is_presense1_col";
+            // 
+            // dataColumn9
+            // 
+            this.dataColumn9.Caption = "is_presense2_col";
+            this.dataColumn9.ColumnName = "is_presense2_col";
+            // 
+            // dataColumn10
+            // 
+            this.dataColumn10.Caption = "is_presense_symbol";
+            this.dataColumn10.ColumnName = "is_presense_symbol";
+            // 
+            // dataColumn11
+            // 
+            this.dataColumn11.Caption = "is_currency_col";
+            this.dataColumn11.ColumnName = "is_currency_col";
+            // 
+            // dataColumn12
+            // 
+            this.dataColumn12.Caption = "is_uah_flag";
+            this.dataColumn12.ColumnName = "is_uah_flag";
+            // 
+            // dataTable_import_excel
+            // 
+            this.dataTable_import_excel.Columns.AddRange(new System.Data.DataColumn[] {
+            this.dataColumn13,
+            this.dataColumn14,
+            this.dataColumn15,
+            this.dataColumn16});
+            this.dataTable_import_excel.TableName = "Table_import_excel";
+            // 
+            // dataColumn13
+            // 
+            this.dataColumn13.Caption = "prod_name";
+            this.dataColumn13.ColumnName = "prod_name";
+            // 
+            // dataColumn14
+            // 
+            this.dataColumn14.Caption = "prod_rewrite_name_old";
+            this.dataColumn14.ColumnName = "prod_rewrite_name_old";
+            // 
+            // dataColumn15
+            // 
+            this.dataColumn15.Caption = "prod_income_price";
+            this.dataColumn15.ColumnName = "prod_income_price";
+            // 
+            // dataColumn16
+            // 
+            this.dataColumn16.Caption = "number";
+            this.dataColumn16.ColumnName = "number";
+            // 
+            // label_file_name
+            // 
+            this.label_file_name.AutoSize = true;
+            this.label_file_name.Location = new System.Drawing.Point(734, 13);
+            this.label_file_name.Name = "label_file_name";
+            this.label_file_name.Size = new System.Drawing.Size(92, 13);
+            this.label_file_name.TabIndex = 9;
+            this.label_file_name.Text = "Файл не выбран";
             // 
             // button2
             // 
@@ -345,6 +501,12 @@
             // 
             // splitContainer1.Panel2
             // 
+            this.splitContainer1.Panel2.Controls.Add(this.comboBoxCurrency);
+            this.splitContainer1.Panel2.Controls.Add(this.comboBoxAvailability2);
+            this.splitContainer1.Panel2.Controls.Add(this.comboBoxAvailability1);
+            this.splitContainer1.Panel2.Controls.Add(this.comboBoxProductName);
+            this.splitContainer1.Panel2.Controls.Add(this.comboBoxPrice);
+            this.splitContainer1.Panel2.Controls.Add(this.comboBoxCode);
             this.splitContainer1.Panel2.Controls.Add(this.buttonSave);
             this.splitContainer1.Panel2.Controls.Add(this.textBoxActuality);
             this.splitContainer1.Panel2.Controls.Add(this.label11);
@@ -352,17 +514,11 @@
             this.splitContainer1.Panel2.Controls.Add(this.label10);
             this.splitContainer1.Panel2.Controls.Add(this.textBoxAvailSign);
             this.splitContainer1.Panel2.Controls.Add(this.label9);
-            this.splitContainer1.Panel2.Controls.Add(this.textBoxCurrency);
             this.splitContainer1.Panel2.Controls.Add(this.label8);
-            this.splitContainer1.Panel2.Controls.Add(this.textBoxAvailability2);
             this.splitContainer1.Panel2.Controls.Add(this.label7);
-            this.splitContainer1.Panel2.Controls.Add(this.textBoxAvailability1);
             this.splitContainer1.Panel2.Controls.Add(this.label6);
-            this.splitContainer1.Panel2.Controls.Add(this.textBoxProductName);
             this.splitContainer1.Panel2.Controls.Add(this.label5);
-            this.splitContainer1.Panel2.Controls.Add(this.textBoxPrice);
             this.splitContainer1.Panel2.Controls.Add(this.label4);
-            this.splitContainer1.Panel2.Controls.Add(this.textBoxCode);
             this.splitContainer1.Panel2.Controls.Add(this.label3);
             this.splitContainer1.Panel2.Controls.Add(this.textBoxFirstRow);
             this.splitContainer1.Panel2.Controls.Add(this.label2);
@@ -520,93 +676,53 @@
             this.bindingSource__import_settings.DataSource = this.dataSet;
             this.bindingSource__import_settings.CurrentChanged += new System.EventHandler(this.bindingSource__import_settings_CurrentChanged);
             // 
-            // dataSet
+            // comboBoxCurrency
             // 
-            this.dataSet.DataSetName = "dataSet";
-            this.dataSet.Tables.AddRange(new System.Data.DataTable[] {
-            this.dataTable_import_settings,
-            this.dataTable_import_excel});
+            this.comboBoxCurrency.FormattingEnabled = true;
+            this.comboBoxCurrency.Location = new System.Drawing.Point(12, 347);
+            this.comboBoxCurrency.Name = "comboBoxCurrency";
+            this.comboBoxCurrency.Size = new System.Drawing.Size(259, 21);
+            this.comboBoxCurrency.TabIndex = 29;
             // 
-            // dataTable_import_settings
+            // comboBoxAvailability2
             // 
-            this.dataTable_import_settings.Columns.AddRange(new System.Data.DataColumn[] {
-            this.dataColumn1,
-            this.dataColumn2,
-            this.dataColumn3,
-            this.dataColumn4,
-            this.dataColumn5,
-            this.dataColumn6,
-            this.dataColumn7,
-            this.dataColumn8,
-            this.dataColumn9,
-            this.dataColumn10,
-            this.dataColumn11,
-            this.dataColumn12});
-            this.dataTable_import_settings.TableName = "Table_import_settings";
+            this.comboBoxAvailability2.FormattingEnabled = true;
+            this.comboBoxAvailability2.Location = new System.Drawing.Point(12, 301);
+            this.comboBoxAvailability2.Name = "comboBoxAvailability2";
+            this.comboBoxAvailability2.Size = new System.Drawing.Size(259, 21);
+            this.comboBoxAvailability2.TabIndex = 28;
             // 
-            // dataColumn1
+            // comboBoxAvailability1
             // 
-            this.dataColumn1.AllowDBNull = false;
-            this.dataColumn1.Caption = "is_id";
-            this.dataColumn1.ColumnName = "is_id";
-            this.dataColumn1.DataType = typeof(int);
+            this.comboBoxAvailability1.FormattingEnabled = true;
+            this.comboBoxAvailability1.Location = new System.Drawing.Point(12, 254);
+            this.comboBoxAvailability1.Name = "comboBoxAvailability1";
+            this.comboBoxAvailability1.Size = new System.Drawing.Size(259, 21);
+            this.comboBoxAvailability1.TabIndex = 27;
             // 
-            // dataColumn2
+            // comboBoxProductName
             // 
-            this.dataColumn2.Caption = "is_name";
-            this.dataColumn2.ColumnName = "is_name";
+            this.comboBoxProductName.FormattingEnabled = true;
+            this.comboBoxProductName.Location = new System.Drawing.Point(12, 210);
+            this.comboBoxProductName.Name = "comboBoxProductName";
+            this.comboBoxProductName.Size = new System.Drawing.Size(259, 21);
+            this.comboBoxProductName.TabIndex = 26;
             // 
-            // dataColumn3
+            // comboBoxPrice
             // 
-            this.dataColumn3.Caption = "is_start_row";
-            this.dataColumn3.ColumnName = "is_start_row";
-            this.dataColumn3.DataType = typeof(int);
+            this.comboBoxPrice.FormattingEnabled = true;
+            this.comboBoxPrice.Location = new System.Drawing.Point(12, 163);
+            this.comboBoxPrice.Name = "comboBoxPrice";
+            this.comboBoxPrice.Size = new System.Drawing.Size(259, 21);
+            this.comboBoxPrice.TabIndex = 25;
             // 
-            // dataColumn4
+            // comboBoxCode
             // 
-            this.dataColumn4.Caption = "is_code_col";
-            this.dataColumn4.ColumnName = "is_code_col";
-            // 
-            // dataColumn5
-            // 
-            this.dataColumn5.Caption = "is_price_col";
-            this.dataColumn5.ColumnName = "is_price_col";
-            // 
-            // dataColumn6
-            // 
-            this.dataColumn6.Caption = "is_name_col";
-            this.dataColumn6.ColumnName = "is_name_col";
-            // 
-            // dataColumn7
-            // 
-            this.dataColumn7.Caption = "is_actuality";
-            this.dataColumn7.ColumnName = "is_actuality";
-            this.dataColumn7.DataType = typeof(int);
-            // 
-            // dataColumn8
-            // 
-            this.dataColumn8.Caption = "is_presense1_col";
-            this.dataColumn8.ColumnName = "is_presense1_col";
-            // 
-            // dataColumn9
-            // 
-            this.dataColumn9.Caption = "is_presense2_col";
-            this.dataColumn9.ColumnName = "is_presense2_col";
-            // 
-            // dataColumn10
-            // 
-            this.dataColumn10.Caption = "is_presense_symbol";
-            this.dataColumn10.ColumnName = "is_presense_symbol";
-            // 
-            // dataColumn11
-            // 
-            this.dataColumn11.Caption = "is_currency_col";
-            this.dataColumn11.ColumnName = "is_currency_col";
-            // 
-            // dataColumn12
-            // 
-            this.dataColumn12.Caption = "is_uah_flag";
-            this.dataColumn12.ColumnName = "is_uah_flag";
+            this.comboBoxCode.FormattingEnabled = true;
+            this.comboBoxCode.Location = new System.Drawing.Point(12, 115);
+            this.comboBoxCode.Name = "comboBoxCode";
+            this.comboBoxCode.Size = new System.Drawing.Size(259, 21);
+            this.comboBoxCode.TabIndex = 24;
             // 
             // buttonSave
             // 
@@ -666,13 +782,6 @@
             this.label9.TabIndex = 16;
             this.label9.Text = "Признак наличия";
             // 
-            // textBoxCurrency
-            // 
-            this.textBoxCurrency.Location = new System.Drawing.Point(12, 348);
-            this.textBoxCurrency.Name = "textBoxCurrency";
-            this.textBoxCurrency.Size = new System.Drawing.Size(259, 20);
-            this.textBoxCurrency.TabIndex = 15;
-            // 
             // label8
             // 
             this.label8.AutoSize = true;
@@ -681,13 +790,6 @@
             this.label8.Size = new System.Drawing.Size(137, 13);
             this.label8.TabIndex = 14;
             this.label8.Text = "Колонка отметки валюты";
-            // 
-            // textBoxAvailability2
-            // 
-            this.textBoxAvailability2.Location = new System.Drawing.Point(12, 302);
-            this.textBoxAvailability2.Name = "textBoxAvailability2";
-            this.textBoxAvailability2.Size = new System.Drawing.Size(259, 20);
-            this.textBoxAvailability2.TabIndex = 13;
             // 
             // label7
             // 
@@ -698,13 +800,6 @@
             this.label7.TabIndex = 12;
             this.label7.Text = "Колонка наличия 2";
             // 
-            // textBoxAvailability1
-            // 
-            this.textBoxAvailability1.Location = new System.Drawing.Point(12, 255);
-            this.textBoxAvailability1.Name = "textBoxAvailability1";
-            this.textBoxAvailability1.Size = new System.Drawing.Size(259, 20);
-            this.textBoxAvailability1.TabIndex = 11;
-            // 
             // label6
             // 
             this.label6.AutoSize = true;
@@ -713,13 +808,6 @@
             this.label6.Size = new System.Drawing.Size(103, 13);
             this.label6.TabIndex = 10;
             this.label6.Text = "Колонка наличия 1";
-            // 
-            // textBoxProductName
-            // 
-            this.textBoxProductName.Location = new System.Drawing.Point(12, 211);
-            this.textBoxProductName.Name = "textBoxProductName";
-            this.textBoxProductName.Size = new System.Drawing.Size(259, 20);
-            this.textBoxProductName.TabIndex = 9;
             // 
             // label5
             // 
@@ -730,13 +818,6 @@
             this.label5.TabIndex = 8;
             this.label5.Text = "Колонка названия";
             // 
-            // textBoxPrice
-            // 
-            this.textBoxPrice.Location = new System.Drawing.Point(12, 164);
-            this.textBoxPrice.Name = "textBoxPrice";
-            this.textBoxPrice.Size = new System.Drawing.Size(259, 20);
-            this.textBoxPrice.TabIndex = 7;
-            // 
             // label4
             // 
             this.label4.AutoSize = true;
@@ -745,13 +826,6 @@
             this.label4.Size = new System.Drawing.Size(79, 13);
             this.label4.TabIndex = 6;
             this.label4.Text = "Колонка цены";
-            // 
-            // textBoxCode
-            // 
-            this.textBoxCode.Location = new System.Drawing.Point(12, 115);
-            this.textBoxCode.Name = "textBoxCode";
-            this.textBoxCode.Size = new System.Drawing.Size(259, 20);
-            this.textBoxCode.TabIndex = 5;
             // 
             // label3
             // 
@@ -794,74 +868,6 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Название";
             // 
-            // bindingSource_import_excel
-            // 
-            this.bindingSource_import_excel.DataMember = "Table_import_excel";
-            this.bindingSource_import_excel.DataSource = this.dataSet;
-            // 
-            // dataTable_import_excel
-            // 
-            this.dataTable_import_excel.Columns.AddRange(new System.Data.DataColumn[] {
-            this.dataColumn13,
-            this.dataColumn14,
-            this.dataColumn15,
-            this.dataColumn16});
-            this.dataTable_import_excel.TableName = "Table_import_excel";
-            // 
-            // dataColumn13
-            // 
-            this.dataColumn13.Caption = "prod_name";
-            this.dataColumn13.ColumnName = "prod_name";
-            // 
-            // dataColumn14
-            // 
-            this.dataColumn14.Caption = "prod_rewrite_name_old";
-            this.dataColumn14.ColumnName = "prod_rewrite_name_old";
-            // 
-            // dataColumn15
-            // 
-            this.dataColumn15.Caption = "prod_income_price";
-            this.dataColumn15.ColumnName = "prod_income_price";
-            // 
-            // dataColumn16
-            // 
-            this.dataColumn16.Caption = "number";
-            this.dataColumn16.ColumnName = "number";
-            // 
-            // prodrewritenameoldDataGridViewTextBoxColumn
-            // 
-            this.prodrewritenameoldDataGridViewTextBoxColumn.DataPropertyName = "prod_rewrite_name_old";
-            this.prodrewritenameoldDataGridViewTextBoxColumn.FillWeight = 200F;
-            this.prodrewritenameoldDataGridViewTextBoxColumn.HeaderText = "prod_rewrite_name_old";
-            this.prodrewritenameoldDataGridViewTextBoxColumn.Name = "prodrewritenameoldDataGridViewTextBoxColumn";
-            this.prodrewritenameoldDataGridViewTextBoxColumn.ReadOnly = true;
-            this.prodrewritenameoldDataGridViewTextBoxColumn.Width = 200;
-            // 
-            // prodnameDataGridViewTextBoxColumn
-            // 
-            this.prodnameDataGridViewTextBoxColumn.DataPropertyName = "prod_name";
-            this.prodnameDataGridViewTextBoxColumn.FillWeight = 600F;
-            this.prodnameDataGridViewTextBoxColumn.HeaderText = "prod_name";
-            this.prodnameDataGridViewTextBoxColumn.Name = "prodnameDataGridViewTextBoxColumn";
-            this.prodnameDataGridViewTextBoxColumn.ReadOnly = true;
-            this.prodnameDataGridViewTextBoxColumn.Width = 600;
-            // 
-            // prodincomepriceDataGridViewTextBoxColumn
-            // 
-            this.prodincomepriceDataGridViewTextBoxColumn.DataPropertyName = "prod_income_price";
-            this.prodincomepriceDataGridViewTextBoxColumn.FillWeight = 150F;
-            this.prodincomepriceDataGridViewTextBoxColumn.HeaderText = "prod_income_price";
-            this.prodincomepriceDataGridViewTextBoxColumn.Name = "prodincomepriceDataGridViewTextBoxColumn";
-            this.prodincomepriceDataGridViewTextBoxColumn.ReadOnly = true;
-            this.prodincomepriceDataGridViewTextBoxColumn.Width = 150;
-            // 
-            // numberDataGridViewTextBoxColumn
-            // 
-            this.numberDataGridViewTextBoxColumn.DataPropertyName = "number";
-            this.numberDataGridViewTextBoxColumn.HeaderText = "number";
-            this.numberDataGridViewTextBoxColumn.Name = "numberDataGridViewTextBoxColumn";
-            this.numberDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -879,6 +885,10 @@
             this.tabPageImport.ResumeLayout(false);
             this.tabPageImport.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGrid_import_excel)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bindingSource_import_excel)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataSet)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataTable_import_settings)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataTable_import_excel)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.tabPageSettings.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
@@ -888,10 +898,6 @@
             this.splitContainer1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGrid_import_settings)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource__import_settings)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataSet)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataTable_import_settings)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.bindingSource_import_excel)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataTable_import_excel)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -916,17 +922,11 @@
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.TextBox textBoxAvailSign;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.TextBox textBoxCurrency;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.TextBox textBoxAvailability2;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.TextBox textBoxAvailability1;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.TextBox textBoxProductName;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.TextBox textBoxPrice;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox textBoxCode;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox textBoxFirstRow;
         private System.Windows.Forms.Label label2;
@@ -934,7 +934,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Button buttonDatabaseSettings;
-        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.Label label_file_name;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button buttonOpenExcel;
         private System.Windows.Forms.ComboBox comboBox3;
@@ -973,6 +973,7 @@
         private System.Windows.Forms.Button buttonDelete;
         private System.Windows.Forms.Button buttonAdd;
         private System.Windows.Forms.Button buttonSave;
+
         private System.Windows.Forms.DataGridView dataGrid_import_excel;
         private System.Windows.Forms.BindingSource bindingSource_import_excel;
         private System.Data.DataTable dataTable_import_excel;
@@ -984,5 +985,13 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn prodnameDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn prodincomepriceDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn numberDataGridViewTextBoxColumn;
+
+        private System.Windows.Forms.ComboBox comboBoxCode;
+        private System.Windows.Forms.ComboBox comboBoxCurrency;
+        private System.Windows.Forms.ComboBox comboBoxAvailability2;
+        private System.Windows.Forms.ComboBox comboBoxAvailability1;
+        private System.Windows.Forms.ComboBox comboBoxProductName;
+        private System.Windows.Forms.ComboBox comboBoxPrice;
+
     }
 }

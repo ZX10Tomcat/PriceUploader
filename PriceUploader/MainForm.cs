@@ -24,6 +24,7 @@ namespace PriceUploader
         private DataTable TableProductPrice = null;
         private DataTable TableSupplier = null;
         private DataTable TableExcelData = null; 
+        private string[] Columns = new string[27];
 
         public MainForm()
         {
@@ -114,8 +115,51 @@ namespace PriceUploader
             DateTime d2 = DateTime.Now;
             TimeSpan timeout = d2 - d1;
 
+            FillComboBoxes();
+
             Debug.WriteLine("time data loaded: " + timeout.ToString());
             return;
+        }
+
+        private void FillComboBoxes()
+        {
+            Columns[0] = "-";
+            Columns[1] = "A";
+            Columns[2] = "B";
+            Columns[3] = "C";
+            Columns[4] = "D";
+            Columns[5] = "E";
+            Columns[6] = "F";
+            Columns[7] = "G";
+            Columns[8] = "H";
+            Columns[9] = "I";
+            Columns[10] = "J";
+            Columns[11] = "K";
+            Columns[12] = "L";
+            Columns[13] = "M";
+            Columns[14] = "N";
+            Columns[15] = "O";
+            Columns[16] = "P";
+            Columns[17] = "Q";
+            Columns[18] = "R";
+            Columns[19] = "S";
+            Columns[20] = "T";
+            Columns[21] = "U";
+            Columns[22] = "V";
+            Columns[23] = "W";
+            Columns[24] = "X";
+            Columns[25] = "Y";
+            Columns[26] = "Z";
+
+            for (int i = 0; i < Columns.Length; i++)
+            {
+                comboBoxCode.Items.Add(Columns[i]);
+                comboBoxPrice.Items.Add(Columns[i]);
+                comboBoxProductName.Items.Add(Columns[i]);
+                comboBoxAvailability1.Items.Add(Columns[i]);
+                comboBoxAvailability2.Items.Add(Columns[i]);
+                comboBoxCurrency.Items.Add(Columns[i]);
+            }
         }
 
         private void SetDataTableByRows(Task<DataTable> res, string tableName)
@@ -138,12 +182,12 @@ namespace PriceUploader
         {
             textBoxFirstRow.DataBindings.Add(new System.Windows.Forms.Binding("Text", bindingSource__import_settings, "is_start_row", true));
             textBoxName.DataBindings.Add(new System.Windows.Forms.Binding("Text", bindingSource__import_settings, "is_name", true));
-            textBoxCode.DataBindings.Add(new System.Windows.Forms.Binding("Text", bindingSource__import_settings, "is_code_col", true));
-            textBoxPrice.DataBindings.Add(new System.Windows.Forms.Binding("Text", bindingSource__import_settings, "is_price_col", true));
-            textBoxProductName.DataBindings.Add(new System.Windows.Forms.Binding("Text", bindingSource__import_settings, "is_price_col", true));
-            textBoxAvailability1.DataBindings.Add(new System.Windows.Forms.Binding("Text", bindingSource__import_settings, "is_presense1_col", true));
-            textBoxAvailability2.DataBindings.Add(new System.Windows.Forms.Binding("Text", bindingSource__import_settings, "is_presense2_col", true));
-            textBoxCurrency.DataBindings.Add(new System.Windows.Forms.Binding("Text", bindingSource__import_settings, "is_currency_col", true));
+            comboBoxCode.DataBindings.Add(new System.Windows.Forms.Binding("Text", bindingSource__import_settings, "is_code_col", true));
+            comboBoxPrice.DataBindings.Add(new System.Windows.Forms.Binding("Text", bindingSource__import_settings, "is_price_col", true));
+            comboBoxProductName.DataBindings.Add(new System.Windows.Forms.Binding("Text", bindingSource__import_settings, "is_price_col", true));
+            comboBoxAvailability1.DataBindings.Add(new System.Windows.Forms.Binding("Text", bindingSource__import_settings, "is_presense1_col", true));
+            comboBoxAvailability2.DataBindings.Add(new System.Windows.Forms.Binding("Text", bindingSource__import_settings, "is_presense2_col", true));
+            comboBoxCurrency.DataBindings.Add(new System.Windows.Forms.Binding("Text", bindingSource__import_settings, "is_currency_col", true));
             textBoxAvailSign.DataBindings.Add(new System.Windows.Forms.Binding("Text", bindingSource__import_settings, "is_presense_symbol", true));
             textBoxPriceGrn.DataBindings.Add(new System.Windows.Forms.Binding("Text", bindingSource__import_settings, "is_uah_flag", true));
             textBoxActuality.DataBindings.Add(new System.Windows.Forms.Binding("Text", bindingSource__import_settings, "is_actuality", true));
@@ -254,6 +298,8 @@ namespace PriceUploader
 
         private void buttonOpenExcel_Click(object sender, EventArgs e)
         {
+            label_file_name.Text = string.Empty;
+
             OpenFileDialog openFileDialog = new OpenFileDialog();
             
             openFileDialog.InitialDirectory = "c:\\";
@@ -266,6 +312,7 @@ namespace PriceUploader
                 try
                 {
                     string fileName = openFileDialog.FileName;
+                    label_file_name.Text = openFileDialog.SafeFileName;
                     DataTable dt = new DataTable();
                     int res = this.Model.ImportExcel(fileName, ref dt);
                     if (res > 0)
@@ -276,11 +323,6 @@ namespace PriceUploader
                         this.dataGrid_import_excel.DataSource = null;
                         this.dataGrid_import_excel.Rows.Clear();
                         this.dataGrid_import_excel.DataSource = this.bindingSource_import_excel;
-
-                        int[] colIndex = new int[3];
-                        colIndex[0] = 3;
-                        colIndex[1] = 4;
-                        colIndex[2] = 6;
 
                         for (int i = 0; i < dt.Rows.Count; i++)
                         {
@@ -297,8 +339,12 @@ namespace PriceUploader
                 catch (Exception ex)
                 {
                     MessageBox.Show("Error: " + ex.Message);
+                    label_file_name.Text = "Oшибка";
                 }
             }
+            else
+                label_file_name.Text = "Файл не выбран";
+
 
 
 
