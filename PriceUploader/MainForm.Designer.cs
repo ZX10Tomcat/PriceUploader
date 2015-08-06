@@ -87,22 +87,22 @@
             this.label10 = new System.Windows.Forms.Label();
             this.textBoxAvailSign = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
-            this.textBoxCurrency = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
-            this.textBoxAvailability2 = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
-            this.textBoxAvailability1 = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
-            this.textBoxProductName = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
-            this.textBoxPrice = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.textBoxCode = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.textBoxFirstRow = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.textBoxName = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.comboBoxCode = new System.Windows.Forms.ComboBox();
+            this.comboBoxPrice = new System.Windows.Forms.ComboBox();
+            this.comboBoxProductName = new System.Windows.Forms.ComboBox();
+            this.comboBoxAvailability1 = new System.Windows.Forms.ComboBox();
+            this.comboBoxAvailability2 = new System.Windows.Forms.ComboBox();
+            this.comboBoxCurrency = new System.Windows.Forms.ComboBox();
             this.menuStrip1.SuspendLayout();
             this.tabControlMain.SuspendLayout();
             this.tabPageImport.SuspendLayout();
@@ -311,6 +311,12 @@
             // 
             // splitContainer1.Panel2
             // 
+            this.splitContainer1.Panel2.Controls.Add(this.comboBoxCurrency);
+            this.splitContainer1.Panel2.Controls.Add(this.comboBoxAvailability2);
+            this.splitContainer1.Panel2.Controls.Add(this.comboBoxAvailability1);
+            this.splitContainer1.Panel2.Controls.Add(this.comboBoxProductName);
+            this.splitContainer1.Panel2.Controls.Add(this.comboBoxPrice);
+            this.splitContainer1.Panel2.Controls.Add(this.comboBoxCode);
             this.splitContainer1.Panel2.Controls.Add(this.buttonSave);
             this.splitContainer1.Panel2.Controls.Add(this.textBoxActuality);
             this.splitContainer1.Panel2.Controls.Add(this.label11);
@@ -318,17 +324,11 @@
             this.splitContainer1.Panel2.Controls.Add(this.label10);
             this.splitContainer1.Panel2.Controls.Add(this.textBoxAvailSign);
             this.splitContainer1.Panel2.Controls.Add(this.label9);
-            this.splitContainer1.Panel2.Controls.Add(this.textBoxCurrency);
             this.splitContainer1.Panel2.Controls.Add(this.label8);
-            this.splitContainer1.Panel2.Controls.Add(this.textBoxAvailability2);
             this.splitContainer1.Panel2.Controls.Add(this.label7);
-            this.splitContainer1.Panel2.Controls.Add(this.textBoxAvailability1);
             this.splitContainer1.Panel2.Controls.Add(this.label6);
-            this.splitContainer1.Panel2.Controls.Add(this.textBoxProductName);
             this.splitContainer1.Panel2.Controls.Add(this.label5);
-            this.splitContainer1.Panel2.Controls.Add(this.textBoxPrice);
             this.splitContainer1.Panel2.Controls.Add(this.label4);
-            this.splitContainer1.Panel2.Controls.Add(this.textBoxCode);
             this.splitContainer1.Panel2.Controls.Add(this.label3);
             this.splitContainer1.Panel2.Controls.Add(this.textBoxFirstRow);
             this.splitContainer1.Panel2.Controls.Add(this.label2);
@@ -631,13 +631,6 @@
             this.label9.TabIndex = 16;
             this.label9.Text = "Признак наличия";
             // 
-            // textBoxCurrency
-            // 
-            this.textBoxCurrency.Location = new System.Drawing.Point(12, 348);
-            this.textBoxCurrency.Name = "textBoxCurrency";
-            this.textBoxCurrency.Size = new System.Drawing.Size(259, 20);
-            this.textBoxCurrency.TabIndex = 15;
-            // 
             // label8
             // 
             this.label8.AutoSize = true;
@@ -646,13 +639,6 @@
             this.label8.Size = new System.Drawing.Size(137, 13);
             this.label8.TabIndex = 14;
             this.label8.Text = "Колонка отметки валюты";
-            // 
-            // textBoxAvailability2
-            // 
-            this.textBoxAvailability2.Location = new System.Drawing.Point(12, 302);
-            this.textBoxAvailability2.Name = "textBoxAvailability2";
-            this.textBoxAvailability2.Size = new System.Drawing.Size(259, 20);
-            this.textBoxAvailability2.TabIndex = 13;
             // 
             // label7
             // 
@@ -663,13 +649,6 @@
             this.label7.TabIndex = 12;
             this.label7.Text = "Колонка наличия 2";
             // 
-            // textBoxAvailability1
-            // 
-            this.textBoxAvailability1.Location = new System.Drawing.Point(12, 255);
-            this.textBoxAvailability1.Name = "textBoxAvailability1";
-            this.textBoxAvailability1.Size = new System.Drawing.Size(259, 20);
-            this.textBoxAvailability1.TabIndex = 11;
-            // 
             // label6
             // 
             this.label6.AutoSize = true;
@@ -678,13 +657,6 @@
             this.label6.Size = new System.Drawing.Size(103, 13);
             this.label6.TabIndex = 10;
             this.label6.Text = "Колонка наличия 1";
-            // 
-            // textBoxProductName
-            // 
-            this.textBoxProductName.Location = new System.Drawing.Point(12, 211);
-            this.textBoxProductName.Name = "textBoxProductName";
-            this.textBoxProductName.Size = new System.Drawing.Size(259, 20);
-            this.textBoxProductName.TabIndex = 9;
             // 
             // label5
             // 
@@ -695,13 +667,6 @@
             this.label5.TabIndex = 8;
             this.label5.Text = "Колонка названия";
             // 
-            // textBoxPrice
-            // 
-            this.textBoxPrice.Location = new System.Drawing.Point(12, 164);
-            this.textBoxPrice.Name = "textBoxPrice";
-            this.textBoxPrice.Size = new System.Drawing.Size(259, 20);
-            this.textBoxPrice.TabIndex = 7;
-            // 
             // label4
             // 
             this.label4.AutoSize = true;
@@ -710,13 +675,6 @@
             this.label4.Size = new System.Drawing.Size(79, 13);
             this.label4.TabIndex = 6;
             this.label4.Text = "Колонка цены";
-            // 
-            // textBoxCode
-            // 
-            this.textBoxCode.Location = new System.Drawing.Point(12, 115);
-            this.textBoxCode.Name = "textBoxCode";
-            this.textBoxCode.Size = new System.Drawing.Size(259, 20);
-            this.textBoxCode.TabIndex = 5;
             // 
             // label3
             // 
@@ -758,6 +716,54 @@
             this.label1.Size = new System.Drawing.Size(57, 13);
             this.label1.TabIndex = 0;
             this.label1.Text = "Название";
+            // 
+            // comboBoxCode
+            // 
+            this.comboBoxCode.FormattingEnabled = true;
+            this.comboBoxCode.Location = new System.Drawing.Point(12, 115);
+            this.comboBoxCode.Name = "comboBoxCode";
+            this.comboBoxCode.Size = new System.Drawing.Size(259, 21);
+            this.comboBoxCode.TabIndex = 24;
+            // 
+            // comboBoxPrice
+            // 
+            this.comboBoxPrice.FormattingEnabled = true;
+            this.comboBoxPrice.Location = new System.Drawing.Point(12, 163);
+            this.comboBoxPrice.Name = "comboBoxPrice";
+            this.comboBoxPrice.Size = new System.Drawing.Size(259, 21);
+            this.comboBoxPrice.TabIndex = 25;
+            // 
+            // comboBoxProductName
+            // 
+            this.comboBoxProductName.FormattingEnabled = true;
+            this.comboBoxProductName.Location = new System.Drawing.Point(12, 210);
+            this.comboBoxProductName.Name = "comboBoxProductName";
+            this.comboBoxProductName.Size = new System.Drawing.Size(259, 21);
+            this.comboBoxProductName.TabIndex = 26;
+            // 
+            // comboBoxAvailability1
+            // 
+            this.comboBoxAvailability1.FormattingEnabled = true;
+            this.comboBoxAvailability1.Location = new System.Drawing.Point(12, 254);
+            this.comboBoxAvailability1.Name = "comboBoxAvailability1";
+            this.comboBoxAvailability1.Size = new System.Drawing.Size(259, 21);
+            this.comboBoxAvailability1.TabIndex = 27;
+            // 
+            // comboBoxAvailability2
+            // 
+            this.comboBoxAvailability2.FormattingEnabled = true;
+            this.comboBoxAvailability2.Location = new System.Drawing.Point(12, 301);
+            this.comboBoxAvailability2.Name = "comboBoxAvailability2";
+            this.comboBoxAvailability2.Size = new System.Drawing.Size(259, 21);
+            this.comboBoxAvailability2.TabIndex = 28;
+            // 
+            // comboBoxCurrency
+            // 
+            this.comboBoxCurrency.FormattingEnabled = true;
+            this.comboBoxCurrency.Location = new System.Drawing.Point(12, 347);
+            this.comboBoxCurrency.Name = "comboBoxCurrency";
+            this.comboBoxCurrency.Size = new System.Drawing.Size(259, 21);
+            this.comboBoxCurrency.TabIndex = 29;
             // 
             // MainForm
             // 
@@ -810,17 +816,11 @@
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.TextBox textBoxAvailSign;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.TextBox textBoxCurrency;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.TextBox textBoxAvailability2;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.TextBox textBoxAvailability1;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.TextBox textBoxProductName;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.TextBox textBoxPrice;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox textBoxCode;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox textBoxFirstRow;
         private System.Windows.Forms.Label label2;
@@ -867,5 +867,11 @@
         private System.Windows.Forms.Button buttonDelete;
         private System.Windows.Forms.Button buttonAdd;
         private System.Windows.Forms.Button buttonSave;
+        private System.Windows.Forms.ComboBox comboBoxCode;
+        private System.Windows.Forms.ComboBox comboBoxCurrency;
+        private System.Windows.Forms.ComboBox comboBoxAvailability2;
+        private System.Windows.Forms.ComboBox comboBoxAvailability1;
+        private System.Windows.Forms.ComboBox comboBoxProductName;
+        private System.Windows.Forms.ComboBox comboBoxPrice;
     }
 }
