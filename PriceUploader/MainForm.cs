@@ -74,6 +74,7 @@ namespace PriceUploader
             {
                 SetDataTableByRows(res, "Table_import_settings");
                 SetDataBindings();
+                SetFormatComboBox(res);
             });
 
             Model.Load_price_category().ContinueWith(res =>
@@ -109,14 +110,13 @@ namespace PriceUploader
             Model.Load_supplier().ContinueWith(res =>
             {
                 TableSupplier = res.Result;
-                Debug.WriteLine("           TableSupplier: " + TableSupplier.Rows.Count.ToString());
+                SetSupplierComboBox(res);                
             });
 
             DateTime d2 = DateTime.Now;
             TimeSpan timeout = d2 - d1;
 
-            FillComboBoxes();
-
+            FillComboBoxes();            
             Debug.WriteLine("time data loaded: " + timeout.ToString());
             return;
         }
@@ -159,9 +159,32 @@ namespace PriceUploader
                 comboBoxAvailability1.Items.Add(Columns[i]);
                 comboBoxAvailability2.Items.Add(Columns[i]);
                 comboBoxCurrency.Items.Add(Columns[i]);
-            }
+            }           
         }
 
+        private void SetFormatComboBox(Task<DataTable> res)
+        {   
+            comboBoxFormat.Invoke(new Action(() => {
+                comboBoxFormat.Items.Clear();
+                for (int i = 0; i < res.Result.Rows.Count; i++)
+                {
+                    comboBoxFormat.Items.Add(res.Result.Rows[i].ItemArray[1]);
+                }
+            }));
+        }
+
+        private void SetSupplierComboBox(Task<DataTable> res)
+        {
+            comboBoxSupplier.Invoke(new Action(() =>
+            {
+                comboBoxSupplier.Items.Clear();
+                for (int i = 0; i < res.Result.Rows.Count; i++)
+                {
+                    comboBoxSupplier.Items.Add(res.Result.Rows[i].ItemArray[1]);
+                }
+            }));
+        }
+        
         private void SetDataTableByRows(Task<DataTable> res, string tableName)
         {
             dataSet.Tables[tableName].Clear();
@@ -175,7 +198,7 @@ namespace PriceUploader
                 dataSet.Tables[tableName].Rows.Add(dr);
             }
             
-            dataSet.Tables[tableName].AcceptChanges();
+            dataSet.Tables[tableName].AcceptChanges();            
         }
 
         private void SetDataBindings()

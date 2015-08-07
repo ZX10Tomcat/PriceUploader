@@ -65,11 +65,11 @@
             this.label_file_name = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
             this.buttonOpenExcel = new System.Windows.Forms.Button();
-            this.comboBox3 = new System.Windows.Forms.ComboBox();
+            this.comboBoxImportCurrency = new System.Windows.Forms.ComboBox();
             this.label14 = new System.Windows.Forms.Label();
-            this.comboBox2 = new System.Windows.Forms.ComboBox();
+            this.comboBoxFormat = new System.Windows.Forms.ComboBox();
             this.label13 = new System.Windows.Forms.Label();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.comboBoxSupplier = new System.Windows.Forms.ComboBox();
             this.label12 = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.tabPageSettings = new System.Windows.Forms.TabPage();
@@ -198,11 +198,11 @@
             this.tabPageImport.Controls.Add(this.label_file_name);
             this.tabPageImport.Controls.Add(this.button2);
             this.tabPageImport.Controls.Add(this.buttonOpenExcel);
-            this.tabPageImport.Controls.Add(this.comboBox3);
+            this.tabPageImport.Controls.Add(this.comboBoxImportCurrency);
             this.tabPageImport.Controls.Add(this.label14);
-            this.tabPageImport.Controls.Add(this.comboBox2);
+            this.tabPageImport.Controls.Add(this.comboBoxFormat);
             this.tabPageImport.Controls.Add(this.label13);
-            this.tabPageImport.Controls.Add(this.comboBox1);
+            this.tabPageImport.Controls.Add(this.comboBoxSupplier);
             this.tabPageImport.Controls.Add(this.label12);
             this.tabPageImport.Controls.Add(this.dataGridView1);
             this.tabPageImport.Location = new System.Drawing.Point(4, 22);
@@ -415,13 +415,17 @@
             this.buttonOpenExcel.UseVisualStyleBackColor = true;
             this.buttonOpenExcel.Click += new System.EventHandler(this.buttonOpenExcel_Click);
             // 
-            // comboBox3
+            // comboBoxImportCurrency
             // 
-            this.comboBox3.FormattingEnabled = true;
-            this.comboBox3.Location = new System.Drawing.Point(502, 9);
-            this.comboBox3.Name = "comboBox3";
-            this.comboBox3.Size = new System.Drawing.Size(121, 21);
-            this.comboBox3.TabIndex = 6;
+            this.comboBoxImportCurrency.FormattingEnabled = true;
+            this.comboBoxImportCurrency.Items.AddRange(new object[] {
+            "USD",
+            "EUR",
+            "РРЦ"});
+            this.comboBoxImportCurrency.Location = new System.Drawing.Point(502, 9);
+            this.comboBoxImportCurrency.Name = "comboBoxImportCurrency";
+            this.comboBoxImportCurrency.Size = new System.Drawing.Size(121, 21);
+            this.comboBoxImportCurrency.TabIndex = 6;
             // 
             // label14
             // 
@@ -432,30 +436,30 @@
             this.label14.TabIndex = 5;
             this.label14.Text = "Валюта";
             // 
-            // comboBox2
+            // comboBoxFormat
             // 
-            this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(293, 8);
-            this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(121, 21);
-            this.comboBox2.TabIndex = 4;
+            this.comboBoxFormat.FormattingEnabled = true;
+            this.comboBoxFormat.Location = new System.Drawing.Point(293, 8);
+            this.comboBoxFormat.Name = "comboBoxFormat";
+            this.comboBoxFormat.Size = new System.Drawing.Size(151, 21);
+            this.comboBoxFormat.TabIndex = 4;
             // 
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(241, 12);
+            this.label13.Location = new System.Drawing.Point(240, 12);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(49, 13);
             this.label13.TabIndex = 3;
             this.label13.Text = "Формат";
             // 
-            // comboBox1
+            // comboBoxSupplier
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(81, 7);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(121, 21);
-            this.comboBox1.TabIndex = 2;
+            this.comboBoxSupplier.FormattingEnabled = true;
+            this.comboBoxSupplier.Location = new System.Drawing.Point(81, 7);
+            this.comboBoxSupplier.Name = "comboBoxSupplier";
+            this.comboBoxSupplier.Size = new System.Drawing.Size(121, 21);
+            this.comboBoxSupplier.TabIndex = 2;
             // 
             // label12
             // 
@@ -937,11 +941,11 @@
         private System.Windows.Forms.Label label_file_name;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button buttonOpenExcel;
-        private System.Windows.Forms.ComboBox comboBox3;
+        private System.Windows.Forms.ComboBox comboBoxImportCurrency;
         private System.Windows.Forms.Label label14;
-        private System.Windows.Forms.ComboBox comboBox2;
+        private System.Windows.Forms.ComboBox comboBoxFormat;
         private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox comboBoxSupplier;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemDatabaseSettings;
         private System.Windows.Forms.BindingSource bindingSource__import_settings;
         private System.Data.DataSet dataSet;
