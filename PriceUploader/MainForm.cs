@@ -23,7 +23,8 @@ namespace PriceUploader
         private DataTable TableProductCategory = null;
         private DataTable TableProductPrice = null;
         private DataTable TableSupplier = null;
-        private DataTable TableExcelData = null; 
+        private DataTable TableExcelData = null;
+        private DataTable TableProductAndAlias = null;
         private string[] Columns = new string[27];
 
         public MainForm()
@@ -63,6 +64,13 @@ namespace PriceUploader
             //int rowsProductPrice = Model.Load_product_price(ref TableProductPrice);
             //int rowsSupplier = Model.Load_supplier(ref TableSupplier);
 
+
+            Model.Load_product_and_alias().ContinueWith(res =>
+            {
+                TableProductAndAlias = res.Result;
+                Debug.WriteLine("           TableProductAndAlias: " + TableProductAndAlias.Rows.Count.ToString());
+            });
+            
             Model.Load_category_charge().ContinueWith(res => 
             {
                 TableCategoryCharge = res.Result;
@@ -344,8 +352,8 @@ namespace PriceUploader
                     string fileName = openFileDialog.FileName;
                     label_file_name.Text = openFileDialog.SafeFileName;
                     DataTable dt = new DataTable();
-                    int res = this.Model.ImportExcel(fileName, ref dt);
-                    if (res > 0)
+                    int countRowsExcel = this.Model.ImportExcel(fileName, ref dt);
+                    if (countRowsExcel > 0)
                     {
                         string tableName = "Table_import_excel";
                         dataSet.Tables[tableName].Clear();
@@ -354,13 +362,43 @@ namespace PriceUploader
                         this.dataGrid_import_excel.Rows.Clear();
                         this.dataGrid_import_excel.DataSource = this.bindingSource_import_excel;
 
-                        for (int i = 0; i < dt.Rows.Count; i++)
+                        IEnumerable<DataRow> aliasQuery =
+                            from productAlias in TableProductAlias.AsEnumerable()
+                            select productAlias;
+
+                        //DataTable dataTable = null; 
+                        int countFound = -1;
+                        string pa_code = string.Empty;
+
+                        for (int i = 0; i < countRowsExcel; i++)
                         {
+                            //IEnumerable<DataRow> results = null;
+                            var v = dt.Rows[i].ItemArray.GetValue(4);
+                            if (v != null)
+                            {
+                                pa_code = v as string;
+                                countFound = aliasQuery.Count(a => a.Field<string>("pa_code") == pa_code);
+
+                                //pa_code = v as string;
+                                //dataTable = new DataTable();
+                                //countFound = this.Model.Load_product_and_alias(ref dataTable, pa_code);
+
+                            }
+
                             DataRow dr = dataSet.Tables[tableName].NewRow();
                             dr[0] = dt.Rows[i].ItemArray.GetValue(3);
                             dr[1] = dt.Rows[i].ItemArray.GetValue(4);
                             dr[2] = dt.Rows[i].ItemArray.GetValue(6);
                             dr[3] = i;
+
+                            //if (results != null
+                            //    && results.Count<DataRow>() > 0)
+                            
+                            if(countFound > 0)
+                                dr[4] = TypeFoundProduct.Exist;
+                            else
+                                dr[4] = TypeFoundProduct.New;
+                            
                             dataSet.Tables[tableName].Rows.Add(dr);
                         }
                         dataSet.Tables[tableName].AcceptChanges();
@@ -404,6 +442,13 @@ namespace PriceUploader
         }
 
 
-
     }
+
+
+    public enum TypeFoundProduct
+    { 
+        New = 0,
+        Exist = 1,
+    }
+
 }

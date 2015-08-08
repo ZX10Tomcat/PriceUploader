@@ -22,7 +22,7 @@ namespace PriceUploader
          //           LEFT JOIN %sproduct_price ON pp_prod_id=prod_id
          //           WHERE pa_code='%s'",
          //           DB_PREFIX, DB_PREFIX, DB_PREFIX, tosql($alias));
-        
+
         
         private string strConn = string.Empty;
 
@@ -212,6 +212,12 @@ namespace PriceUploader
         {
             return FillData("SELECT * FROM supplier", ref dataTable);
         }
+
+        public int Load_product_and_alias(ref DataTable dataTable, string pa_code)
+        {
+            return FillData(string.Format("SELECT * FROM product_alias INNER JOIN product ON prod_id=pa_prod_id LEFT JOIN product_price ON pp_prod_id=prod_id where pa_code = '{0}'", pa_code), ref dataTable);
+        }
+        
         #endregion load
 
 
@@ -236,7 +242,32 @@ namespace PriceUploader
                 
             });
         }
+
         
+        public Task<DataTable> Load_product_and_alias()
+        {
+            return Task<DataTable>.Factory.StartNew(() =>
+            {
+                DataTable dt = new DataTable();
+                using (MySqlConnection con = new MySqlConnection(strConn))
+                {
+                    if (con != null)
+                    {
+                        con.Open();
+                        System.Configuration.AppSettingsReader cas = new System.Configuration.AppSettingsReader();
+                        con.ChangeDatabase(cas.GetValue("dataBase", typeof(string)).ToString());
+                        string sql = @"SELECT * FROM product_alias INNER JOIN product ON prod_id=pa_prod_id";
+                        MySqlDataAdapter da = new MySqlDataAdapter(sql, con);
+                        commandBuilder = new MySqlCommandBuilder(da);
+                        da.Fill(dt);
+                    }
+                }
+                return (dt);
+            });
+        }
+
+
+
         private MySqlDataAdapter da_import_settings = null;
         public Task<DataTable> Load_import_settings()
         {
