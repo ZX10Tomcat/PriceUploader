@@ -26,6 +26,7 @@ namespace PriceUploader
         private DataTable TableExcelData = null;
         private DataTable TableProductAndAlias = null;
         private string[] Columns = new string[27];
+        private List<Product> products = new List<Product>();
 
         public MainForm()
         {
@@ -55,20 +56,30 @@ namespace PriceUploader
 
             DateTime d1 = DateTime.Now;
 
-            //int rowsCategoryCharge = Model.Load_category_charge(ref TableCategoryCharge);
-            //int rowsImportSettings = Model.Load_import_settings(ref TableImportSettings);
-            //int rowsPriceCategory = Model.Load_price_category(ref TablePriceCategory);
-            //int rowsProduct = Model.Load_product(ref TableProduct);
-            //int rowsProductAlias = Model.Load_product_alias(ref TableProductAlias);
-            //int rowsProductCategory = Model.Load_product_category(ref TableProductCategory);
-            //int rowsProductPrice = Model.Load_product_price(ref TableProductPrice);
-            //int rowsSupplier = Model.Load_supplier(ref TableSupplier);
-
-
             Model.Load_product_and_alias().ContinueWith(res =>
             {
                 TableProductAndAlias = res.Result;
-                Debug.WriteLine("           TableProductAndAlias: " + TableProductAndAlias.Rows.Count.ToString());
+                
+                products = new List<Product>();
+                int count = TableProductAndAlias.Rows.Count;
+                for (int i = 0; i < count; i++)
+                {
+                    products.Add(new Product() 
+                    {
+                        prod_id = TableProductAndAlias.Rows[i].ItemArray[0],
+                        prod_name = TableProductAndAlias.Rows[i].ItemArray[1],
+                        prod_income_price = TableProductAndAlias.Rows[i].ItemArray[2],
+                        prod_text = TableProductAndAlias.Rows[i].ItemArray[3],
+                        prod_client_price = TableProductAndAlias.Rows[i].ItemArray[4],
+                        prod_price_col1 = TableProductAndAlias.Rows[i].ItemArray[5],
+                        prod_price_col2 = TableProductAndAlias.Rows[i].ItemArray[6],
+                        prod_price_col3 = TableProductAndAlias.Rows[i].ItemArray[7],
+                        prod_fixed_price = TableProductAndAlias.Rows[i].ItemArray[8],
+                        pa_code = TableProductAndAlias.Rows[i].ItemArray[9],
+                        //pp_price = TableProductAndAlias.Rows[i].ItemArray[10],
+                    });  
+                }
+
             });
             
             Model.Load_category_charge().ContinueWith(res => 
@@ -108,11 +119,11 @@ namespace PriceUploader
                 Debug.WriteLine("           TableProductCategory: " + TableProductCategory.Rows.Count.ToString());
             });
 
-            Model.Load_product_price().ContinueWith(res =>
-            {
-                TableProductPrice = res.Result;
-                Debug.WriteLine("           TableProductPrice: " + TableProductPrice.Rows.Count.ToString());
-            });
+            //Model.Load_product_price().ContinueWith(res =>
+            //{
+            //    TableProductPrice = res.Result;
+            //    Debug.WriteLine("           TableProductPrice: " + TableProductPrice.Rows.Count.ToString());
+            //});
 
             Model.Load_supplier().ContinueWith(res =>
             {
@@ -298,8 +309,7 @@ namespace PriceUploader
             formSetDatabase.Init(ref Model);
             formSetDatabase.ShowDialog();
         }
-
-        
+                
         private void buttonSave_Click(object sender, EventArgs e)
         {
             bindingSource__import_settings.MoveNext();
@@ -362,13 +372,13 @@ namespace PriceUploader
                         this.dataGrid_import_excel.Rows.Clear();
                         this.dataGrid_import_excel.DataSource = this.bindingSource_import_excel;
 
-                        IEnumerable<DataRow> aliasQuery =
-                            from productAlias in TableProductAlias.AsEnumerable()
-                            select productAlias;
+                        //IEnumerable<DataRow> aliasQuery =
+                        //    from productAlias in TableProductAlias.AsEnumerable()
+                        //    select productAlias;
 
                         //DataTable dataTable = null; 
                         int countFound = -1;
-                        string pa_code = string.Empty;
+                        string code = string.Empty;
 
                         for (int i = 0; i < countRowsExcel; i++)
                         {
@@ -376,13 +386,15 @@ namespace PriceUploader
                             var v = dt.Rows[i].ItemArray.GetValue(4);
                             if (v != null)
                             {
-                                pa_code = v as string;
-                                countFound = aliasQuery.Count(a => a.Field<string>("pa_code") == pa_code);
+                                code = v as string;
+                                //countFound = aliasQuery.Count(a => a.Field<string>("pa_code") == pa_code);
 
                                 //pa_code = v as string;
                                 //dataTable = new DataTable();
                                 //countFound = this.Model.Load_product_and_alias(ref dataTable, pa_code);
 
+                                countFound = products.Count(a => a.pa_code.ToString() == code);
+                                
                             }
 
                             DataRow dr = dataSet.Tables[tableName].NewRow();

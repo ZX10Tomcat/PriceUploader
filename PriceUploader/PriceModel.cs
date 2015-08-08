@@ -27,6 +27,7 @@ namespace PriceUploader
         private string strConn = string.Empty;
 
 
+
         public string StrDatabase
         {
             get 
@@ -256,7 +257,8 @@ namespace PriceUploader
                         con.Open();
                         System.Configuration.AppSettingsReader cas = new System.Configuration.AppSettingsReader();
                         con.ChangeDatabase(cas.GetValue("dataBase", typeof(string)).ToString());
-                        string sql = @"SELECT * FROM product_alias INNER JOIN product ON prod_id=pa_prod_id";
+                        string sql =@"SELECT prod_id, prod_name, prod_income_price, prod_text, prod_client_price, prod_price_col1, prod_price_col2, prod_price_col3, prod_fixed_price, pa_code 
+FROM product_alias INNER JOIN product pr ON pr.prod_id=pa_prod_id";
                         MySqlDataAdapter da = new MySqlDataAdapter(sql, con);
                         commandBuilder = new MySqlCommandBuilder(da);
                         da.Fill(dt);
@@ -265,8 +267,6 @@ namespace PriceUploader
                 return (dt);
             });
         }
-
-
 
         private MySqlDataAdapter da_import_settings = null;
         public Task<DataTable> Load_import_settings()
@@ -445,5 +445,21 @@ namespace PriceUploader
         public DataTable dataTable;
         public MySqlDataAdapter mySqlDataAdapter; 
     
+    }
+
+    public class Product
+    { 
+        public object prod_id = 0;
+        public object prod_name;
+        public object prod_income_price;
+        public object prod_text;
+        public object prod_client_price;
+        public object prod_price_col1;
+        public object prod_price_col2;
+        public object prod_price_col3;
+        public object prod_fixed_price;
+        public object pa_code;
+        public object pp_price;
+
     }
 }
