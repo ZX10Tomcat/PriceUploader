@@ -15,6 +15,15 @@ namespace PriceUploader
 {
     public class PriceModel
     {
+         //$sql = sprintf("
+         //           SELECT *
+         //           FROM %sproduct_alias
+         //           INNER JOIN %sproduct ON prod_id=pa_prod_id
+         //           LEFT JOIN %sproduct_price ON pp_prod_id=prod_id
+         //           WHERE pa_code='%s'",
+         //           DB_PREFIX, DB_PREFIX, DB_PREFIX, tosql($alias));
+        
+        
         private string strConn = string.Empty;
 
 

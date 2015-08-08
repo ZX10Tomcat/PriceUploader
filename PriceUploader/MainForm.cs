@@ -240,7 +240,7 @@ namespace PriceUploader
             }));
             comboBoxProductName.Invoke(new Action(()=>
             {
-                comboBoxProductName.DataBindings.Add(new System.Windows.Forms.Binding("Text", bindingSource__import_settings, "is_price_col", true, DataSourceUpdateMode.OnPropertyChanged));
+                comboBoxProductName.DataBindings.Add(new System.Windows.Forms.Binding("Text", bindingSource__import_settings, "is_name_col", true, DataSourceUpdateMode.OnPropertyChanged));
             }));
 
             comboBoxAvailability1.Invoke(new Action(()=>
