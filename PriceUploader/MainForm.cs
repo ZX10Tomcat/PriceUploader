@@ -291,32 +291,9 @@ namespace PriceUploader
             formSetDatabase.ShowDialog();
         }
 
-        private void dataGrid_import_settings_RowEnter(object sender, DataGridViewCellEventArgs e)
-        {
-            if (e != null)
-            {
-                //var v = dataSet.Tables["Table_import_settings"].Rows[e.RowIndex];                
-                //textBoxFirstRow.Text = v.ItemArray[2].ToString();
-                //textBoxName.Text = v.ItemArray[1].ToString();
-                //textBoxCode.Text = v.ItemArray[3].ToString();
-                //textBoxPrice.Text = v.ItemArray[4].ToString();
-                //textBoxProductName.Text = v.ItemArray[5].ToString();
-                //textBoxAvailability1.Text = v.ItemArray[7].ToString();
-                //textBoxAvailability2.Text = v.ItemArray[8].ToString();
-                //textBoxCurrency.Text = v.ItemArray[10].ToString();
-                //textBoxAvailSign.Text = v.ItemArray[9].ToString();
-                //textBoxPriceGrn.Text = v.ItemArray[11].ToString();
-                //textBoxActuality.Text = v.ItemArray[6].ToString();
-
-            }
-            
-            return;
-        }
         
         private void buttonSave_Click(object sender, EventArgs e)
         {
-            var currentRow = this.dataGrid_import_settings.CurrentRow.Index;
-
             bindingSource__import_settings.MoveNext();
             bindingSource__import_settings.MovePrevious();
             
@@ -336,20 +313,17 @@ namespace PriceUploader
             });
         }
 
-        private void dataGrid_import_settings_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
-        {
-            //var v = sender as DataGridView;
-            //if (v != null && v.CurrentRow != null)
-            //{
-            //    var viewRow = v.CurrentRow.DataBoundItem as DataRowView;
-            //    if (viewRow != null && viewRow.IsNew && viewRow.Row != null)
-            //        v.CurrentRow.Cells[11].Value = 0;
-            //}
-        }
 
         private void buttonDelete_Click(object sender, EventArgs e)
         {
-            return;
+            if (MessageBox.Show("Вы хотите удалить выбраную строку?", "Удаление", MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.Yes)
+            {
+                if (this.dataGrid_import_settings.CurrentRow != null)
+                {
+                    int currentRow = this.dataGrid_import_settings.CurrentRow.Index;
+                    bindingSource__import_settings.RemoveAt(currentRow);
+                }
+            }
         }
 
         private void buttonOpenExcel_Click(object sender, EventArgs e)
@@ -400,9 +374,6 @@ namespace PriceUploader
             }
             else
                 label_file_name.Text = "Файл не выбран";
-
-
-
 
         }
 

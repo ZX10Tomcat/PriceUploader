@@ -563,6 +563,10 @@
             // 
             // dataGrid_import_settings
             // 
+            this.dataGrid_import_settings.AllowUserToAddRows = false;
+            this.dataGrid_import_settings.AllowUserToDeleteRows = false;
+            this.dataGrid_import_settings.AllowUserToResizeColumns = false;
+            this.dataGrid_import_settings.AllowUserToResizeRows = false;
             this.dataGrid_import_settings.AutoGenerateColumns = false;
             this.dataGrid_import_settings.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGrid_import_settings.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -580,11 +584,11 @@
             this.isidDataGridViewTextBoxColumn});
             this.dataGrid_import_settings.DataSource = this.bindingSource__import_settings;
             this.dataGrid_import_settings.Location = new System.Drawing.Point(3, 35);
+            this.dataGrid_import_settings.MultiSelect = false;
             this.dataGrid_import_settings.Name = "dataGrid_import_settings";
+            this.dataGrid_import_settings.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGrid_import_settings.Size = new System.Drawing.Size(879, 531);
             this.dataGrid_import_settings.TabIndex = 0;
-            this.dataGrid_import_settings.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGrid_import_settings_RowEnter);
-            this.dataGrid_import_settings.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.dataGrid_import_settings_RowsAdded);
             // 
             // isnameDataGridViewTextBoxColumn
             // 
@@ -878,6 +882,7 @@
             this.ClientSize = new System.Drawing.Size(1186, 628);
             this.Controls.Add(this.tabControlMain);
             this.Controls.Add(this.menuStrip1);
+            this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "MainForm";
