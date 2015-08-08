@@ -457,7 +457,7 @@
             this.comboBoxSupplier.FormattingEnabled = true;
             this.comboBoxSupplier.Location = new System.Drawing.Point(81, 7);
             this.comboBoxSupplier.Name = "comboBoxSupplier";
-            this.comboBoxSupplier.Size = new System.Drawing.Size(121, 21);
+            this.comboBoxSupplier.Size = new System.Drawing.Size(153, 21);
             this.comboBoxSupplier.TabIndex = 2;
             // 
             // label12
