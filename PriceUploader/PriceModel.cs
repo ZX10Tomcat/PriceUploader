@@ -227,7 +227,7 @@ namespace PriceUploader
                 
             });
         }
-
+        
         private MySqlDataAdapter da_import_settings = null;
         public Task<DataTable> Load_import_settings()
         {
@@ -259,7 +259,6 @@ namespace PriceUploader
                 dt.AcceptChanges();
             }
         }
-
 
         public Task<DataTable> Load_price_category()
         {

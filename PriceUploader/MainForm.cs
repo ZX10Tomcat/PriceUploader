@@ -47,7 +47,6 @@ namespace PriceUploader
         {
             this.tabControlMain.SelectedIndex = 0;
         }
-
         
         public void Init()
         {
@@ -201,28 +200,84 @@ namespace PriceUploader
             dataSet.Tables[tableName].AcceptChanges();            
         }
 
-        private void SetDataBindings()
+        private void SetDataTableByRowsSync(DataTable dt, string tableName)
         {
-            textBoxFirstRow.DataBindings.Add(new System.Windows.Forms.Binding("Text", bindingSource__import_settings, "is_start_row", true));
-            textBoxName.DataBindings.Add(new System.Windows.Forms.Binding("Text", bindingSource__import_settings, "is_name", true));
-            comboBoxCode.DataBindings.Add(new System.Windows.Forms.Binding("Text", bindingSource__import_settings, "is_code_col", true));
-            comboBoxPrice.DataBindings.Add(new System.Windows.Forms.Binding("Text", bindingSource__import_settings, "is_price_col", true));
-            comboBoxProductName.DataBindings.Add(new System.Windows.Forms.Binding("Text", bindingSource__import_settings, "is_price_col", true));
-            comboBoxAvailability1.DataBindings.Add(new System.Windows.Forms.Binding("Text", bindingSource__import_settings, "is_presense1_col", true));
-            comboBoxAvailability2.DataBindings.Add(new System.Windows.Forms.Binding("Text", bindingSource__import_settings, "is_presense2_col", true));
-            comboBoxCurrency.DataBindings.Add(new System.Windows.Forms.Binding("Text", bindingSource__import_settings, "is_currency_col", true));
-            textBoxAvailSign.DataBindings.Add(new System.Windows.Forms.Binding("Text", bindingSource__import_settings, "is_presense_symbol", true));
-            textBoxPriceGrn.DataBindings.Add(new System.Windows.Forms.Binding("Text", bindingSource__import_settings, "is_uah_flag", true));
-            textBoxActuality.DataBindings.Add(new System.Windows.Forms.Binding("Text", bindingSource__import_settings, "is_actuality", true));
+            dataSet.Tables[tableName].Clear();
+
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                DataRow dr = dataSet.Tables[tableName].NewRow();
+                for (int n = 0; n < dr.ItemArray.ToList().Count; n++)
+                    dr[n] = dt.Rows[i].ItemArray[n];
+
+                dataSet.Tables[tableName].Rows.Add(dr);
+            }
+
+            dataSet.Tables[tableName].AcceptChanges();
         }
 
+        private void SetDataBindings()
+        {
+            textBoxFirstRow.Invoke(new Action(()=>
+            {
+                textBoxFirstRow.DataBindings.Add(new System.Windows.Forms.Binding("Text", bindingSource__import_settings, "is_start_row", true, DataSourceUpdateMode.OnPropertyChanged));
+                
+            }));
 
+            textBoxName.Invoke(new Action(()=>
+            {
+                textBoxName.DataBindings.Add(new System.Windows.Forms.Binding("Text", bindingSource__import_settings, "is_name", true, DataSourceUpdateMode.OnPropertyChanged));
+            }));
+
+            comboBoxCode.Invoke(new Action(()=>
+            {
+                comboBoxCode.DataBindings.Add(new System.Windows.Forms.Binding("Text", bindingSource__import_settings, "is_code_col", true, DataSourceUpdateMode.OnPropertyChanged));
+            }));
+
+            comboBoxPrice.Invoke(new Action(()=>
+            {
+                comboBoxPrice.DataBindings.Add(new System.Windows.Forms.Binding("Text", bindingSource__import_settings, "is_price_col", true, DataSourceUpdateMode.OnPropertyChanged));
+            }));
+            comboBoxProductName.Invoke(new Action(()=>
+            {
+                comboBoxProductName.DataBindings.Add(new System.Windows.Forms.Binding("Text", bindingSource__import_settings, "is_price_col", true, DataSourceUpdateMode.OnPropertyChanged));
+            }));
+
+            comboBoxAvailability1.Invoke(new Action(()=>
+            {
+                comboBoxAvailability1.DataBindings.Add(new System.Windows.Forms.Binding("Text", bindingSource__import_settings, "is_presense1_col", true, DataSourceUpdateMode.OnPropertyChanged));
+            }));
+
+            comboBoxAvailability2.Invoke(new Action(()=>
+            {
+                comboBoxAvailability2.DataBindings.Add(new System.Windows.Forms.Binding("Text", bindingSource__import_settings, "is_presense2_col", true, DataSourceUpdateMode.OnPropertyChanged));
+            }));
+
+            comboBoxCurrency.Invoke(new Action(()=>
+            {
+                comboBoxCurrency.DataBindings.Add(new System.Windows.Forms.Binding("Text", bindingSource__import_settings, "is_currency_col", true, DataSourceUpdateMode.OnPropertyChanged));
+            }));
+
+            textBoxAvailSign.Invoke(new Action(()=>
+            {
+                textBoxAvailSign.DataBindings.Add(new System.Windows.Forms.Binding("Text", bindingSource__import_settings, "is_presense_symbol", true, DataSourceUpdateMode.OnPropertyChanged));
+            }));
+
+            textBoxPriceGrn.Invoke(new Action(()=>
+            {
+                textBoxPriceGrn.DataBindings.Add(new System.Windows.Forms.Binding("Text", bindingSource__import_settings, "is_uah_flag", true, DataSourceUpdateMode.OnPropertyChanged));
+            }));
+
+            textBoxActuality.Invoke(new Action(()=>
+            {
+                textBoxActuality.DataBindings.Add(new System.Windows.Forms.Binding("Text", bindingSource__import_settings, "is_actuality", true, DataSourceUpdateMode.OnPropertyChanged));
+            }));
+        }
 
         private void toolStripMenuItemDatabaseSettings_Click(object sender, EventArgs e)
         {
             OpenSetDatabaseDialog();
         }
-
        
         private void buttonDatabaseSettings_Click(object sender, EventArgs e)
         {
@@ -235,12 +290,6 @@ namespace PriceUploader
             formSetDatabase.Init(ref Model);
             formSetDatabase.ShowDialog();
         }
-
-        private void bindingSource__import_settings_CurrentChanged(object sender, EventArgs e)
-        {
-
-        }
-
 
         private void dataGrid_import_settings_RowEnter(object sender, DataGridViewCellEventArgs e)
         {
@@ -263,59 +312,43 @@ namespace PriceUploader
             
             return;
         }
-
-
-        private static object _lock = new object();
-        public delegate void MyDelegate(DataGridView datagrid);
         
         private void buttonSave_Click(object sender, EventArgs e)
         {
-            var v = dataSet.Tables["Table_import_settings"];
-            Model.Update_import_settings(ref v);
+            var currentRow = this.dataGrid_import_settings.CurrentRow.Index;
+
+            bindingSource__import_settings.MoveNext();
+            bindingSource__import_settings.MovePrevious();
+            
+            var table = dataSet.Tables["Table_import_settings"];
+            Model.Update_import_settings(ref table);
 
             Model.Load_import_settings().ContinueWith(res =>
             {
-                SetDataTableByRows(res, "Table_import_settings");
-                lock (this)
+                table.Clear();
+                this.dataGrid_import_settings.Invoke(new Action(()=>
                 {
-                    v.Clear();
-        
-                    //this.dataGrid_import_settings.DataSource = null;
-                    //this.dataGrid_import_settings.Rows.Clear();
-                    //this.dataGrid_import_settings.DataSource = bindingSource__import_settings;
-                    //this.dataGrid_import_settings.Refresh();
-
-                    //this.dataGrid_import_settings.BeginInvoke(new MyDelegate(DelegateMethod));
-
-                }
-                
+                    this.dataGrid_import_settings.DataSource = null;
+                    this.dataGrid_import_settings.Rows.Clear();
+                    this.dataGrid_import_settings.DataSource = bindingSource__import_settings;
+                    this.SetDataTableByRows(res, "Table_import_settings");
+                }));
             });
         }
 
-
-        public void DelegateMethod(DataGridView datagrid)
-        {
-            datagrid.DataSource = null;
-            datagrid.Rows.Clear();
-            datagrid.DataSource = bindingSource__import_settings;
-            datagrid.Refresh();
-        }
-
-
         private void dataGrid_import_settings_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
         {
-            var v = sender as DataGridView;
-            if (v != null && v.CurrentRow != null)
-            {
-                var viewRow = v.CurrentRow.DataBoundItem as DataRowView;
-                if (viewRow != null && viewRow.IsNew && viewRow.Row != null)
-                    v.CurrentRow.Cells[11].Value = 0;
-            }
+            //var v = sender as DataGridView;
+            //if (v != null && v.CurrentRow != null)
+            //{
+            //    var viewRow = v.CurrentRow.DataBoundItem as DataRowView;
+            //    if (viewRow != null && viewRow.IsNew && viewRow.Row != null)
+            //        v.CurrentRow.Cells[11].Value = 0;
+            //}
         }
 
         private void buttonDelete_Click(object sender, EventArgs e)
         {
-            this.dataGrid_import_settings.Refresh();
             return;
         }
 
@@ -371,6 +404,32 @@ namespace PriceUploader
 
 
 
+        }
+
+        private void buttonAdd_Click(object sender, EventArgs e)
+        {
+            this.dataGrid_import_settings.DataSource = null;
+            this.dataGrid_import_settings.Rows.Clear();
+            this.dataGrid_import_settings.DataSource = bindingSource__import_settings;
+
+            string tableName = "Table_import_settings";
+            DataRow dr = dataSet.Tables[tableName].NewRow();
+            dr["is_id"] = "0";
+            dr["is_name"] = string.Empty;
+            dr["is_start_row"] = "0";
+            dr["is_code_col"] = "A";
+            dr["is_price_col"] = "B";
+            dr["is_name_col"] = "C";
+            dr["is_actuality"] = "1";
+            dr["is_presense1_col"] = "-";
+            dr["is_presense2_col"] = "-";
+            dr["is_presense_symbol"] = "-";
+            dr["is_currency_col"] = string.Empty;
+            dr["is_uah_flag"] = string.Empty;
+
+            dataSet.Tables[tableName].Rows.Add(dr);
+            bindingSource__import_settings.MoveLast();
+            
         }
 
 

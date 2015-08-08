@@ -296,7 +296,6 @@
             // 
             // dataColumn1
             // 
-            this.dataColumn1.AllowDBNull = false;
             this.dataColumn1.Caption = "is_id";
             this.dataColumn1.ColumnName = "is_id";
             this.dataColumn1.DataType = typeof(int);
@@ -560,6 +559,7 @@
             this.buttonAdd.TabIndex = 24;
             this.buttonAdd.Text = "Добавить";
             this.buttonAdd.UseVisualStyleBackColor = true;
+            this.buttonAdd.Click += new System.EventHandler(this.buttonAdd_Click);
             // 
             // dataGrid_import_settings
             // 
@@ -678,7 +678,6 @@
             // 
             this.bindingSource__import_settings.DataMember = "Table_import_settings";
             this.bindingSource__import_settings.DataSource = this.dataSet;
-            this.bindingSource__import_settings.CurrentChanged += new System.EventHandler(this.bindingSource__import_settings_CurrentChanged);
             // 
             // comboBoxCurrency
             // 
