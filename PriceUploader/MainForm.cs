@@ -515,6 +515,13 @@ namespace PriceUploader
             return index;
         }
 
+        private void button1_Click(object sender, EventArgs e)
+        {
+            FormCategories formCategories = new FormCategories();
+            //formCategories.Init(ref Model);
+            formCategories.ShowDialog();
+        }
+
     }
 
 
