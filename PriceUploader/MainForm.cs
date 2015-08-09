@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+
 namespace PriceUploader
 {
     public partial class MainForm : Form
@@ -56,6 +57,11 @@ namespace PriceUploader
 
             DateTime d1 = DateTime.Now;
 
+            ReceiveData.instance.OnLoaded += new ReceiveData.OnLoadedEventHandler(instance_OnLoaded);
+
+            ReceiveData.instance.BegQuery();
+
+
             Model.Load_product_and_alias().ContinueWith(res =>
             {
                 TableProductAndAlias = res.Result;
@@ -79,44 +85,60 @@ namespace PriceUploader
                         //pp_price = TableProductAndAlias.Rows[i].ItemArray[10],
                     });  
                 }
+
+                ReceiveData.instance.EndQuery();
+
                 Debug.WriteLine("           TableProductAndAlias: " + TableProductAndAlias.Rows.Count.ToString());
             });
-            
+
+
+            ReceiveData.instance.BegQuery();
             Model.Load_category_charge().ContinueWith(res => 
             {
                 TableCategoryCharge = res.Result;
                 Debug.WriteLine("           TableCategoryCharge: " + TableCategoryCharge.Rows.Count.ToString());
+                ReceiveData.instance.EndQuery();
             });
 
+            ReceiveData.instance.BegQuery();
             Model.Load_import_settings().ContinueWith(res =>
             {
                 SetDataTableByRows(res, "Table_import_settings");
                 SetDataBindings();
                 SetFormatComboBox(res);
+                ReceiveData.instance.EndQuery();
             });
 
+            ReceiveData.instance.BegQuery();
             Model.Load_price_category().ContinueWith(res =>
             {
                 TablePriceCategory = res.Result;
                 Debug.WriteLine("           TablePriceCategory: " + TablePriceCategory.Rows.Count.ToString());
+                ReceiveData.instance.EndQuery();
             });
 
+            ReceiveData.instance.BegQuery();
             Model.Load_product().ContinueWith(res =>
             {
                 TableProduct = res.Result;
                 Debug.WriteLine("           TableProduct: " + TableProduct.Rows.Count.ToString());
+                ReceiveData.instance.EndQuery();
             });
 
+            ReceiveData.instance.BegQuery();
             Model.Load_product_alias().ContinueWith(res =>
             {
                 TableProductAlias = res.Result;
                 Debug.WriteLine("           TableProductAlias: " + TableProductAlias.Rows.Count.ToString());
+                ReceiveData.instance.EndQuery();
             });
 
+            ReceiveData.instance.BegQuery();
             Model.Load_product_category().ContinueWith(res =>
             {
                 TableProductCategory = res.Result;
                 Debug.WriteLine("           TableProductCategory: " + TableProductCategory.Rows.Count.ToString());
+                ReceiveData.instance.EndQuery();
             });
 
             //Model.Load_product_price().ContinueWith(res =>
@@ -125,10 +147,12 @@ namespace PriceUploader
             //    Debug.WriteLine("           TableProductPrice: " + TableProductPrice.Rows.Count.ToString());
             //});
 
+            ReceiveData.instance.BegQuery();
             Model.Load_supplier().ContinueWith(res =>
             {
                 TableSupplier = res.Result;
-                SetSupplierComboBox(res);                
+                SetSupplierComboBox(res);
+                ReceiveData.instance.EndQuery();
             });
 
             DateTime d2 = DateTime.Now;
@@ -137,6 +161,15 @@ namespace PriceUploader
             FillComboBoxes();            
             Debug.WriteLine("time data loaded: " + timeout.ToString());
             return;
+        }
+
+
+        private void instance_OnLoaded()
+        {
+            buttonOpenExcel.Invoke(new Action(() =>
+            {
+                buttonOpenExcel.Enabled = true;
+            }));
         }
 
         private void FillComboBoxes()
@@ -515,13 +548,6 @@ namespace PriceUploader
             return index;
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            FormCategories formCategories = new FormCategories();
-            //formCategories.Init(ref Model);
-            formCategories.ShowDialog();
-        }
-
     }
 
 
@@ -529,6 +555,35 @@ namespace PriceUploader
     { 
         New = 0,
         Exist = 1,
+    }
+
+
+
+    public class ReceiveData
+    {
+        private int runQueryes = 0;
+
+        public static ReceiveData instance = new ReceiveData();
+
+        public delegate void OnLoadedEventHandler();
+        public event OnLoadedEventHandler OnLoaded;
+
+        public void BegQuery()
+        {
+            runQueryes++;
+        }
+
+        public void EndQuery()
+        {
+            if (runQueryes > 0)
+            {
+                runQueryes--;
+            }
+
+            if (runQueryes == 0)
+                OnLoaded();
+        }
+
     }
 
 }
