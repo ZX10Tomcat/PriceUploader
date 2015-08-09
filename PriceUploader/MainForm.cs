@@ -28,6 +28,7 @@ namespace PriceUploader
         private DataTable TableProductAndAlias = null;
         private string[] Columns = new string[27];
         private List<Product> products = new List<Product>();
+        private List<CategoryCharge> categoryCharge = new List<CategoryCharge>();
 
         public MainForm()
         {
@@ -96,8 +97,23 @@ namespace PriceUploader
             Model.Load_category_charge().ContinueWith(res => 
             {
                 TableCategoryCharge = res.Result;
-                Debug.WriteLine("           TableCategoryCharge: " + TableCategoryCharge.Rows.Count.ToString());
+
+                categoryCharge = new List<CategoryCharge>();
+                int count = TableCategoryCharge.Rows.Count;
+                for (int i = 0; i < count; i++)
+                {
+                    categoryCharge.Add(new CategoryCharge()
+                    {
+                        cc_pc_id = TableCategoryCharge.Rows[i].ItemArray[0],
+                        cc_price_from = TableCategoryCharge.Rows[i].ItemArray[1],
+                        cc_price_to = TableCategoryCharge.Rows[i].ItemArray[2],
+                        cc_charge = TableCategoryCharge.Rows[i].ItemArray[3],
+                    });
+                }
+
                 ReceiveData.instance.EndQuery();
+
+                Debug.WriteLine("           TableCategoryCharge: " + TableCategoryCharge.Rows.Count.ToString());
             });
 
             ReceiveData.instance.BegQuery();
