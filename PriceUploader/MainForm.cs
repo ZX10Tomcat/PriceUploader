@@ -22,9 +22,9 @@ namespace PriceUploader
         private DataTable TableProduct = null;
         private DataTable TableProductAlias = null;
         private DataTable TableProductCategory = null;
-        private DataTable TableProductPrice = null;
+        //private DataTable TableProductPrice = null;
         private DataTable TableSupplier = null;
-        private DataTable TableExcelData = null;
+        //private DataTable TableExcelData = null;
         private DataTable TableProductAndAlias = null;
         private string[] Columns = new string[27];
         private List<Product> products = new List<Product>();
@@ -556,7 +556,6 @@ namespace PriceUploader
         New = 0,
         Exist = 1,
     }
-
 
 
     public class ReceiveData
