@@ -58,6 +58,7 @@
             this.dataColumn14 = new System.Data.DataColumn();
             this.dataColumn15 = new System.Data.DataColumn();
             this.dataColumn16 = new System.Data.DataColumn();
+            this.dataColumn17 = new System.Data.DataColumn();
             this.label_file_name = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
             this.buttonOpenExcel = new System.Windows.Forms.Button();
@@ -110,12 +111,17 @@
             this.label2 = new System.Windows.Forms.Label();
             this.textBoxName = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.dataColumn17 = new System.Data.DataColumn();
+            this.dataColumn18 = new System.Data.DataColumn();
+            this.dataColumn19 = new System.Data.DataColumn();
+            this.dataColumn20 = new System.Data.DataColumn();
             this.prodnameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.prodcodeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.prodincomepriceDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.numberDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.prodpresense1DataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.prodpresense2DataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.prod_currency = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.typeFoundProductDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.numberDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.menuStrip1.SuspendLayout();
             this.tabControlMain.SuspendLayout();
             this.tabPageImport.SuspendLayout();
@@ -225,8 +231,11 @@
             this.prodnameDataGridViewTextBoxColumn,
             this.prodcodeDataGridViewTextBoxColumn,
             this.prodincomepriceDataGridViewTextBoxColumn,
-            this.numberDataGridViewTextBoxColumn,
-            this.typeFoundProductDataGridViewTextBoxColumn});
+            this.prodpresense1DataGridViewTextBoxColumn,
+            this.prodpresense2DataGridViewTextBoxColumn,
+            this.prod_currency,
+            this.typeFoundProductDataGridViewTextBoxColumn,
+            this.numberDataGridViewTextBoxColumn});
             this.dataGrid_import_excel.DataSource = this.bindingSource_import_excel;
             this.dataGrid_import_excel.Location = new System.Drawing.Point(8, 36);
             this.dataGrid_import_excel.Name = "dataGrid_import_excel";
@@ -333,7 +342,10 @@
             this.dataColumn14,
             this.dataColumn15,
             this.dataColumn16,
-            this.dataColumn17});
+            this.dataColumn17,
+            this.dataColumn18,
+            this.dataColumn19,
+            this.dataColumn20});
             this.dataTable_import_excel.TableName = "Table_import_excel";
             // 
             // dataColumn13
@@ -355,6 +367,12 @@
             // 
             this.dataColumn16.Caption = "number";
             this.dataColumn16.ColumnName = "number";
+            // 
+            // dataColumn17
+            // 
+            this.dataColumn17.Caption = "typeFoundProduct";
+            this.dataColumn17.ColumnName = "typeFoundProduct";
+            this.dataColumn17.DataType = typeof(short);
             // 
             // label_file_name
             // 
@@ -845,11 +863,20 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Название";
             // 
-            // dataColumn17
+            // dataColumn18
             // 
-            this.dataColumn17.Caption = "typeFoundProduct";
-            this.dataColumn17.ColumnName = "typeFoundProduct";
-            this.dataColumn17.DataType = typeof(short);
+            this.dataColumn18.Caption = "prod_presense1";
+            this.dataColumn18.ColumnName = "prod_presense1";
+            // 
+            // dataColumn19
+            // 
+            this.dataColumn19.Caption = "prod_presense2";
+            this.dataColumn19.ColumnName = "prod_presense2";
+            // 
+            // dataColumn20
+            // 
+            this.dataColumn20.Caption = "prod_currency";
+            this.dataColumn20.ColumnName = "prod_currency";
             // 
             // prodnameDataGridViewTextBoxColumn
             // 
@@ -872,12 +899,26 @@
             this.prodincomepriceDataGridViewTextBoxColumn.Name = "prodincomepriceDataGridViewTextBoxColumn";
             this.prodincomepriceDataGridViewTextBoxColumn.ReadOnly = true;
             // 
-            // numberDataGridViewTextBoxColumn
+            // prodpresense1DataGridViewTextBoxColumn
             // 
-            this.numberDataGridViewTextBoxColumn.DataPropertyName = "number";
-            this.numberDataGridViewTextBoxColumn.HeaderText = "number";
-            this.numberDataGridViewTextBoxColumn.Name = "numberDataGridViewTextBoxColumn";
-            this.numberDataGridViewTextBoxColumn.ReadOnly = true;
+            this.prodpresense1DataGridViewTextBoxColumn.DataPropertyName = "prod_presense1";
+            this.prodpresense1DataGridViewTextBoxColumn.HeaderText = "prod_presense1";
+            this.prodpresense1DataGridViewTextBoxColumn.Name = "prodpresense1DataGridViewTextBoxColumn";
+            this.prodpresense1DataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // prodpresense2DataGridViewTextBoxColumn
+            // 
+            this.prodpresense2DataGridViewTextBoxColumn.DataPropertyName = "prod_presense2";
+            this.prodpresense2DataGridViewTextBoxColumn.HeaderText = "prod_presense2";
+            this.prodpresense2DataGridViewTextBoxColumn.Name = "prodpresense2DataGridViewTextBoxColumn";
+            this.prodpresense2DataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // prod_currency
+            // 
+            this.prod_currency.DataPropertyName = "prod_currency";
+            this.prod_currency.HeaderText = "prod_currency";
+            this.prod_currency.Name = "prod_currency";
+            this.prod_currency.ReadOnly = true;
             // 
             // typeFoundProductDataGridViewTextBoxColumn
             // 
@@ -885,6 +926,13 @@
             this.typeFoundProductDataGridViewTextBoxColumn.HeaderText = "typeFoundProduct";
             this.typeFoundProductDataGridViewTextBoxColumn.Name = "typeFoundProductDataGridViewTextBoxColumn";
             this.typeFoundProductDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // numberDataGridViewTextBoxColumn
+            // 
+            this.numberDataGridViewTextBoxColumn.DataPropertyName = "number";
+            this.numberDataGridViewTextBoxColumn.HeaderText = "number";
+            this.numberDataGridViewTextBoxColumn.Name = "numberDataGridViewTextBoxColumn";
+            this.numberDataGridViewTextBoxColumn.ReadOnly = true;
             // 
             // MainForm
             // 
@@ -1008,11 +1056,17 @@
         private System.Windows.Forms.ComboBox comboBoxProductName;
         private System.Windows.Forms.ComboBox comboBoxPrice;
         private System.Data.DataColumn dataColumn17;
+        private System.Data.DataColumn dataColumn18;
+        private System.Data.DataColumn dataColumn19;
+        private System.Data.DataColumn dataColumn20;
         private System.Windows.Forms.DataGridViewTextBoxColumn prodnameDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn prodcodeDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn prodincomepriceDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn numberDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn prodpresense1DataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn prodpresense2DataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn prod_currency;
         private System.Windows.Forms.DataGridViewTextBoxColumn typeFoundProductDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn numberDataGridViewTextBoxColumn;
 
     }
 }

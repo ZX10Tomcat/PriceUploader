@@ -79,7 +79,7 @@ namespace PriceUploader
                         //pp_price = TableProductAndAlias.Rows[i].ItemArray[10],
                     });  
                 }
-
+                Debug.WriteLine("           TableProductAndAlias: " + TableProductAndAlias.Rows.Count.ToString());
             });
             
             Model.Load_category_charge().ContinueWith(res => 
@@ -368,13 +368,33 @@ namespace PriceUploader
                         string tableName = "Table_import_excel";
                         dataSet.Tables[tableName].Clear();
 
-                        this.dataGrid_import_excel.DataSource = null;
-                        this.dataGrid_import_excel.Rows.Clear();
-                        this.dataGrid_import_excel.DataSource = this.bindingSource_import_excel;
-
                         //IEnumerable<DataRow> aliasQuery =
                         //    from productAlias in TableProductAlias.AsEnumerable()
                         //    select productAlias;
+
+
+                        string format = comboBoxFormat.Text;
+
+                        if (string.IsNullOrEmpty(format))
+                        {
+                            MessageBox.Show("Выберите формат импорта!", "Импорт");
+                            return;
+                        }
+
+
+                        IEnumerable<DataRow> importSettingsQuery =
+                            from settings in dataSet.Tables["Table_import_settings"].AsEnumerable()
+                            select settings;
+
+                        DataRow importSettings = null;
+                        importSettings = importSettingsQuery.FirstOrDefault(s => s.Field<string>("is_name") == format);
+                        
+                        int indexColumnName = LetterNumber(importSettings["is_name_col"].ToString()) - 1;
+                        int indexColumnCode = LetterNumber(importSettings["is_code_col"].ToString()) - 1;
+                        int indexColumnPrice = LetterNumber(importSettings["is_price_col"].ToString()) - 1;
+                        int indexColumnPresense1 = LetterNumber(importSettings["is_presense1_col"].ToString()) - 1;
+                        int indexColumnPresense2 = LetterNumber(importSettings["is_presense2_col"].ToString()) - 1;
+                        int indexColumnCurrency = LetterNumber(importSettings["is_currency_col"].ToString()) - 1;
 
                         //DataTable dataTable = null; 
                         int countFound = -1;
@@ -398,22 +418,56 @@ namespace PriceUploader
                             }
 
                             DataRow dr = dataSet.Tables[tableName].NewRow();
-                            dr[0] = dt.Rows[i].ItemArray.GetValue(3);
-                            dr[1] = dt.Rows[i].ItemArray.GetValue(4);
-                            dr[2] = dt.Rows[i].ItemArray.GetValue(6);
-                            dr[3] = i;
+                            if (indexColumnName >= 0)
+                                dr["prod_name"] = dt.Rows[i].ItemArray.GetValue(indexColumnName); // наименование
+                            else
+                                dr["prod_name"] = null; // наименование
+
+                            if(indexColumnCode >=0)
+                                dr["prod_code"] = dt.Rows[i].ItemArray.GetValue(indexColumnCode); //код
+                            else
+                                dr["prod_code"] = null; //код
+
+                            if(indexColumnPrice>=0)
+                                dr["prod_income_price"] = dt.Rows[i].ItemArray.GetValue(indexColumnPrice);
+                            else
+                                dr["prod_income_price"] = null;
+
+                            dr["number"] = i;
 
                             //if (results != null
                             //    && results.Count<DataRow>() > 0)
                             
                             if(countFound > 0)
-                                dr[4] = TypeFoundProduct.Exist;
+                                dr["typeFoundProduct"] = TypeFoundProduct.Exist;
                             else
-                                dr[4] = TypeFoundProduct.New;
+                                dr["typeFoundProduct"] = TypeFoundProduct.New;
+
+                            if(indexColumnPresense1 >= 0)
+                                dr["prod_presense1"] = dt.Rows[i].ItemArray.GetValue(indexColumnPresense1);
+                            else
+                                dr["prod_presense1"] = null;
                             
+                            if (indexColumnPresense2 >= 0)
+                                dr["prod_presense2"] = dt.Rows[i].ItemArray.GetValue(indexColumnPresense1);
+                            else
+                                dr["prod_presense2"] = null;
+
+                            if(indexColumnCurrency>=0)
+                                dr["prod_currency"] = dt.Rows[i].ItemArray.GetValue(indexColumnCurrency);
+                            else
+                                dr["prod_currency"] = null;
+                                
+
                             dataSet.Tables[tableName].Rows.Add(dr);
                         }
                         dataSet.Tables[tableName].AcceptChanges();
+
+                        this.dataGrid_import_excel.DataSource = null;
+                        this.dataGrid_import_excel.Rows.Clear();
+                        this.dataGrid_import_excel.DataSource = this.bindingSource_import_excel;
+
+                    
                     }
                 }
                 catch (Exception ex)
@@ -453,6 +507,13 @@ namespace PriceUploader
             
         }
 
+
+        public int LetterNumber(string charValue)
+        {
+            char c = Convert.ToChar(charValue);
+            int index = char.ToUpper(c) - 64;
+            return index;
+        }
 
     }
 
