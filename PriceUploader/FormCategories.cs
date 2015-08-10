@@ -16,5 +16,13 @@ namespace PriceUploader
         {
             InitializeComponent();
         }
+                
+        internal void Init(DataTable TableProductCategory)
+        {
+            foreach (var item in TableProductCategory.AsEnumerable())
+            {
+
+            }
+        }
     }
 }
