@@ -415,6 +415,8 @@ namespace PriceUploader
                     if (countRowsExcel > 0)
                     {
                         string tableName = "Table_import_excel";
+                        this.dataGrid_import_excel.DataSource = null;
+
                         dataSet.Tables[tableName].Clear();
 
                         //IEnumerable<DataRow> aliasQuery =
@@ -448,8 +450,7 @@ namespace PriceUploader
                         int countFound = -1;
                         string code = string.Empty;
                         Product prod = null;
-                        //for (int i = 0; i < countRowsExcel; i++)
-                        for (int i = 0; i < 50; i++)
+                        for (int i = 0; i < countRowsExcel; i++)
                         {
                             //IEnumerable<DataRow> results = null;
                             prod = null;
@@ -509,7 +510,6 @@ namespace PriceUploader
                             else
                                 dr["prod_currency"] = null;
 
-
                             dr["prod_client_price"] = null;
                             
                             object recived_price = dt.Rows[i].ItemArray.GetValue(indexColumnPrice);
@@ -525,99 +525,19 @@ namespace PriceUploader
                             }
 
                             dataSet.Tables[tableName].Rows.Add(dr);
-                        }
-                        dataSet.Tables[tableName].AcceptChanges();
 
-                        this.dataGrid_import_excel.DataSource = null;
-                        this.dataGrid_import_excel.Rows.Clear();
-                        this.dataGrid_import_excel.DataSource = this.bindingSource_import_excel;
-
-
-                        ///////////////////////////////////////////////////////////////////////////////////////////////////////
-                        //Эксперемент
-                        Application.DoEvents();
-
-                        for (int i = 50; i < countRowsExcel; i++)
-                        {
-                            //IEnumerable<DataRow> results = null;
-                            prod = null;
-                            var v = dt.Rows[i].ItemArray.GetValue(4);
-                            if (v != null)
+                            if ( (countRowsExcel < 50
+                                && i == countRowsExcel)
+                                || (i == 50))
                             {
-                                code = v as string;
-                                //countFound = aliasQuery.Count(a => a.Field<string>("pa_code") == pa_code);
-
-                                //pa_code = v as string;
-                                //dataTable = new DataTable();
-                                //countFound = this.Model.Load_product_and_alias(ref dataTable, pa_code);
-
-                                countFound = products.Count(a => a.pa_code.ToString() == code);
-
-                                prod = products.FirstOrDefault(a => a.pa_code.ToString() == code);
+                                this.dataGrid_import_excel.DataSource = null;
+                                this.dataGrid_import_excel.Rows.Clear();
+                                this.dataGrid_import_excel.DataSource = this.bindingSource_import_excel;
                             }
-
-                            DataRow dr = dataSet.Tables[tableName].NewRow();
-                            if (indexColumnName >= 0)
-                                dr["prod_name"] = dt.Rows[i].ItemArray.GetValue(indexColumnName); // наименование
-                            else
-                                dr["prod_name"] = null; // наименование
-
-                            if (indexColumnCode >= 0)
-                                dr["prod_code"] = dt.Rows[i].ItemArray.GetValue(indexColumnCode); //код
-                            else
-                                dr["prod_code"] = null; //код
-
-                            if (indexColumnPrice >= 0)
-                                dr["prod_income_price"] = dt.Rows[i].ItemArray.GetValue(indexColumnPrice);
-                            else
-                                dr["prod_income_price"] = null;
-
-                            dr["number"] = i;
-
-                            //if (results != null
-                            //    && results.Count<DataRow>() > 0)
-
-                            if (countFound > 0)
-                                dr["typeFoundProduct"] = TypeFoundProduct.Exist;
-                            else
-                                dr["typeFoundProduct"] = TypeFoundProduct.New;
-
-                            if (indexColumnPresense1 >= 0)
-                                dr["prod_presense1"] = dt.Rows[i].ItemArray.GetValue(indexColumnPresense1);
-                            else
-                                dr["prod_presense1"] = null;
-
-                            if (indexColumnPresense2 >= 0)
-                                dr["prod_presense2"] = dt.Rows[i].ItemArray.GetValue(indexColumnPresense1);
-                            else
-                                dr["prod_presense2"] = null;
-
-                            if (indexColumnCurrency >= 0)
-                                dr["prod_currency"] = dt.Rows[i].ItemArray.GetValue(indexColumnCurrency);
-                            else
-                                dr["prod_currency"] = null;
-
-
-                            dr["prod_client_price"] = null;
-
-                            object recived_price = dt.Rows[i].ItemArray.GetValue(indexColumnPrice);
-                            if (prod != null
-                                && prod.prod_pc_id != null
-                                && countFound > 0
-                                && categoryCharge != null
-                                && recived_price != null)
-                            {
-                                int prod_pc_id = System.Convert.ToInt32(prod.prod_pc_id);
-                                double price = System.Convert.ToDouble(recived_price);
-                                dr["prod_client_price"] = CalcClientPrice(prod_pc_id, price);
-                            }
-
-                            dataSet.Tables[tableName].Rows.Add(dr);
 
                             Application.DoEvents();
                         }
                         dataSet.Tables[tableName].AcceptChanges();
-                        ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
                     }
                 }
