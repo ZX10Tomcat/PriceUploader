@@ -415,7 +415,9 @@ namespace PriceUploader
                     if (countRowsExcel > 0)
                     {
                         string tableName = "Table_import_excel";
+
                         this.dataGrid_import_excel.DataSource = null;
+                        this.dataGrid_import_excel.Rows.Clear();
 
                         dataSet.Tables[tableName].Clear();
 
@@ -526,14 +528,8 @@ namespace PriceUploader
 
                             dataSet.Tables[tableName].Rows.Add(dr);
 
-                            if ( (countRowsExcel < 50
-                                && i == countRowsExcel)
-                                || (i == 50))
-                            {
-                                this.dataGrid_import_excel.DataSource = null;
-                                this.dataGrid_import_excel.Rows.Clear();
+                            if ( (countRowsExcel < 50 && i == countRowsExcel) || (i == 50) )
                                 this.dataGrid_import_excel.DataSource = this.bindingSource_import_excel;
-                            }
 
                             Application.DoEvents();
                         }
