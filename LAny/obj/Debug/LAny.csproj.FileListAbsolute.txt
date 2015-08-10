@@ -8,8 +8,3 @@ D:\Projects\PriceUploader\PriceUploader\LAny\bin\Debug\LAny2.pdb
 D:\Projects\PriceUploader\PriceUploader\LAny\obj\Debug\LAny.csprojResolveAssemblyReference.cache
 D:\Projects\PriceUploader\PriceUploader\LAny\obj\Debug\LAny2.dll
 D:\Projects\PriceUploader\PriceUploader\LAny\obj\Debug\LAny2.pdb
-D:\Work\PriceUploader\LAny\bin\Debug\LAny2.dll
-D:\Work\PriceUploader\LAny\bin\Debug\LAny2.pdb
-D:\Work\PriceUploader\LAny\obj\Debug\LAny.csprojResolveAssemblyReference.cache
-D:\Work\PriceUploader\LAny\obj\Debug\LAny2.dll
-D:\Work\PriceUploader\LAny\obj\Debug\LAny2.pdb

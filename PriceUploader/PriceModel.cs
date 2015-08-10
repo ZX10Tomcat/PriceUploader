@@ -459,17 +459,16 @@ prod_fixed_price, pa_code, prod_pc_id FROM product_alias INNER JOIN product pr O
         public object prod_price_col3;
         public object prod_fixed_price;
         public object pa_code;
-        public object pp_price;
         public object prod_pc_id;
     }
 
 
     public class CategoryCharge
     {
-        public object cc_pc_id;
-        public object cc_price_from;
-        public object cc_price_to;
-        public object cc_charge;
+        public object cc_pc_id = 0;
+        public object cc_price_from = 0;
+        public object cc_price_to = 0;
+        public object cc_charge = 0;
 
     }
 
