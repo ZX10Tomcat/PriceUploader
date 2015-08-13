@@ -526,6 +526,12 @@ namespace PriceUploader
                                 dr["prod_client_price"] = CalcClientPrice(prod_pc_id, price);
                             }
 
+                            if(prod != null)
+                                dr["prod_pc_id"] = prod.prod_pc_id;
+                            else
+                                dr["prod_pc_id"] = null;
+
+                            ///////////////////////////////////////////////////////////////////////////////////////////////////
                             dataSet.Tables[tableName].Rows.Add(dr);
 
                             if ( (countRowsExcel < 50 && i == countRowsExcel) || (i == 50) )
@@ -552,7 +558,7 @@ namespace PriceUploader
         private double? CalcClientPrice(int prod_pc_id, double price)
         {
             double? res = null;
-            CategoryCharge findCharge = categoryCharge.FirstOrDefault(f => System.Convert.ToInt32(f.cc_pc_id) == prod_pc_id && (int)price >= System.Convert.ToInt32(f.cc_price_from) && (int)price < System.Convert.ToInt32(f.cc_price_to));
+            CategoryCharge findCharge = categoryCharge.FirstOrDefault(f => System.Convert.ToInt32(f.cc_pc_id) == prod_pc_id && (double)price >= System.Convert.ToDouble(f.cc_price_from) && (double)price < System.Convert.ToDouble(f.cc_price_to));
             if (findCharge != null)
                 res = price + ((price * System.Convert.ToInt32(findCharge.cc_charge)) / 100);
             

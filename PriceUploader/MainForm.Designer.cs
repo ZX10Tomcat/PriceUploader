@@ -84,6 +84,7 @@
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.tabPageSettings = new System.Windows.Forms.TabPage();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.button1 = new System.Windows.Forms.Button();
             this.buttonDelete = new System.Windows.Forms.Button();
             this.buttonDatabaseSettings = new System.Windows.Forms.Button();
             this.buttonAdd = new System.Windows.Forms.Button();
@@ -124,7 +125,8 @@
             this.label2 = new System.Windows.Forms.Label();
             this.textBoxName = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
+            this.dataColumn22 = new System.Data.DataColumn();
+            this.prod_pc_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.menuStrip1.SuspendLayout();
             this.tabControlMain.SuspendLayout();
             this.tabPageImport.SuspendLayout();
@@ -239,7 +241,8 @@
             this.prod_currency,
             this.prod_client_price,
             this.typeFoundProductDataGridViewTextBoxColumn,
-            this.numberDataGridViewTextBoxColumn});
+            this.numberDataGridViewTextBoxColumn,
+            this.prod_pc_id});
             this.dataGrid_import_excel.DataSource = this.bindingSource_import_excel;
             this.dataGrid_import_excel.Location = new System.Drawing.Point(8, 36);
             this.dataGrid_import_excel.Name = "dataGrid_import_excel";
@@ -413,7 +416,8 @@
             this.dataColumn18,
             this.dataColumn19,
             this.dataColumn20,
-            this.dataColumn21});
+            this.dataColumn21,
+            this.dataColumn22});
             this.dataTable_import_excel.TableName = "Table_import_excel";
             // 
             // dataColumn13
@@ -607,6 +611,16 @@
             this.splitContainer1.Size = new System.Drawing.Size(1172, 572);
             this.splitContainer1.SplitterDistance = 885;
             this.splitContainer1.TabIndex = 0;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(472, 23);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(259, 23);
+            this.button1.TabIndex = 26;
+            this.button1.Text = "Настройки доступа к БД";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // buttonDelete
             // 
@@ -952,15 +966,17 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Название";
             // 
-            // button1
+            // dataColumn22
             // 
-            this.button1.Location = new System.Drawing.Point(472, 23);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(259, 23);
-            this.button1.TabIndex = 26;
-            this.button1.Text = "Настройки доступа к БД";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.dataColumn22.Caption = "prod_pc_id";
+            this.dataColumn22.ColumnName = "prod_pc_id";
+            // 
+            // prod_pc_id
+            // 
+            this.prod_pc_id.DataPropertyName = "prod_pc_id";
+            this.prod_pc_id.HeaderText = "prod_pc_id";
+            this.prod_pc_id.Name = "prod_pc_id";
+            this.prod_pc_id.ReadOnly = true;
             // 
             // MainForm
             // 
@@ -1098,6 +1114,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn numberDataGridViewTextBoxColumn;
         private System.Data.DataColumn dataColumn21;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn prod_pc_id;
+        private System.Data.DataColumn dataColumn22;
 
     }
 }
