@@ -558,7 +558,10 @@ namespace PriceUploader
         private double? CalcClientPrice(int prod_pc_id, double price)
         {
             double? res = null;
-            CategoryCharge findCharge = categoryCharge.FirstOrDefault(f => System.Convert.ToInt32(f.cc_pc_id) == prod_pc_id && (double)price >= System.Convert.ToDouble(f.cc_price_from) && (double)price < System.Convert.ToDouble(f.cc_price_to));
+            CategoryCharge findCharge = categoryCharge.FirstOrDefault(
+                f => (System.Convert.ToInt32(f.cc_pc_id) == prod_pc_id && (double)price >= System.Convert.ToDouble(f.cc_price_from) && (double)price < System.Convert.ToDouble(f.cc_price_to))
+                    || (System.Convert.ToInt32(f.cc_pc_id) == prod_pc_id && (double)price > System.Convert.ToDouble(f.cc_price_from) && (double)price >= System.Convert.ToDouble(f.cc_price_to)) );
+            
             if (findCharge != null)
                 res = price + ((price * System.Convert.ToInt32(findCharge.cc_charge)) / 100);
             
