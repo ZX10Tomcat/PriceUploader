@@ -5,3 +5,10 @@ C:\Users\b_sam_000\Documents\GitHub\PriceUploader\LOffice\bin\Debug\LAny2.pdb
 C:\Users\b_sam_000\Documents\GitHub\PriceUploader\LOffice\obj\Debug\LOffice.csprojResolveAssemblyReference.cache
 C:\Users\b_sam_000\Documents\GitHub\PriceUploader\LOffice\obj\Debug\LOffice2.dll
 C:\Users\b_sam_000\Documents\GitHub\PriceUploader\LOffice\obj\Debug\LOffice2.pdb
+D:\Work\PriceUploader\LOffice\bin\Debug\LOffice2.dll
+D:\Work\PriceUploader\LOffice\bin\Debug\LOffice2.pdb
+D:\Work\PriceUploader\LOffice\bin\Debug\LAny2.dll
+D:\Work\PriceUploader\LOffice\bin\Debug\LAny2.pdb
+D:\Work\PriceUploader\LOffice\obj\Debug\LOffice.csprojResolveAssemblyReference.cache
+D:\Work\PriceUploader\LOffice\obj\Debug\LOffice2.dll
+D:\Work\PriceUploader\LOffice\obj\Debug\LOffice2.pdb
