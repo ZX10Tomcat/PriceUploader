@@ -453,6 +453,13 @@ namespace PriceUploader
                         int countFound = -1;
                         string code = string.Empty;
                         Product prod = null;
+
+                        dataGrid1.SelectionMode = SourceGrid.GridSelectionMode.Row;
+                        //dataGrid1.Selection.EnableMultiSelection = true;
+                        dataGrid1.DataSource = new DevAge.ComponentModel.BoundDataView(dataSet.Tables[tableName].DefaultView);
+                        dataGrid1.Columns.AutoSizeView();
+                        dataGrid1.DefaultWidth = 50;
+
                         for (int i = 0; i < countRowsExcel; i++)
                         {
                             //IEnumerable<DataRow> results = null;
@@ -531,27 +538,30 @@ namespace PriceUploader
                             ///////////////////////////////////////////////////////////////////////////////////////////////////
                             dataSet.Tables[tableName].Rows.Add(dr);
                             
-                            //if ( (countRowsExcel < 50 && i == countRowsExcel) || (i == 50) )
-                            if (i == 0)
-                                this.dataGrid_import_excel.DataSource = this.bindingSource_import_excel;
+                            ////if ( (countRowsExcel < 50 && i == countRowsExcel) || (i == 50) )
+                            //if (i == 0)
+                            //    this.dataGrid_import_excel.DataSource = this.bindingSource_import_excel;
+
+                            //// Set Row Color
+                            //if (countFound > 0)
+                            //{
+                            //    dr["typeFoundProduct"] = TypeFoundProduct.Exist;
+                            //    dataGrid_import_excel.Rows[i].DefaultCellStyle.BackColor = Color.Green;
+                            //}
+                            //else
+                            //{
+                            //    dr["typeFoundProduct"] = TypeFoundProduct.New;
+                            //    dataGrid_import_excel.Rows[i].DefaultCellStyle.BackColor = Color.Red;
+                            //}
 
                             Application.DoEvents();
-
-                            // Set Row Color
-                            if (countFound > 0)
-                            {
-                                dr["typeFoundProduct"] = TypeFoundProduct.Exist;
-                                dataGrid_import_excel.Rows[i].DefaultCellStyle.BackColor = Color.Green;
-                            }
-                            else
-                            {
-                                dr["typeFoundProduct"] = TypeFoundProduct.New;
-                                dataGrid_import_excel.Rows[i].DefaultCellStyle.BackColor = Color.Red;
-                            }
+                            dataGrid1.ResumeLayout();
                         }
                         dataSet.Tables[tableName].AcceptChanges();
 
                         
+
+
                     }
                 }
                 catch (Exception ex)
@@ -564,6 +574,9 @@ namespace PriceUploader
                 label_file_name.Text = "Файл не выбран";
 
         }
+
+
+
 
 
         private double? CalcClientPrice(int prod_pc_id, double price)

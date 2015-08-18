@@ -38,6 +38,17 @@
             this.tabControlMain = new System.Windows.Forms.TabControl();
             this.tabPageImport = new System.Windows.Forms.TabPage();
             this.dataGrid_import_excel = new System.Windows.Forms.DataGridView();
+            this.isChecked = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.prodnameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.prodcodeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.prodincomepriceDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.prodpresense1DataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.prodpresense2DataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.prod_currency = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.prod_client_price = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.typeFoundProductDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.numberDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.prod_pc_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.bindingSource_import_excel = new System.Windows.Forms.BindingSource(this.components);
             this.dataSet = new System.Data.DataSet();
             this.dataTable_import_settings = new System.Data.DataTable();
@@ -117,17 +128,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.textBoxName = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.isChecked = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.prodnameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.prodcodeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.prodincomepriceDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.prodpresense1DataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.prodpresense2DataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.prod_currency = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.prod_client_price = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.typeFoundProductDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.numberDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.prod_pc_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGrid1 = new SourceGrid.DataGrid();
             this.menuStrip1.SuspendLayout();
             this.tabControlMain.SuspendLayout();
             this.tabPageImport.SuspendLayout();
@@ -208,6 +209,7 @@
             // 
             // tabPageImport
             // 
+            this.tabPageImport.Controls.Add(this.dataGrid1);
             this.tabPageImport.Controls.Add(this.dataGrid_import_excel);
             this.tabPageImport.Controls.Add(this.label_file_name);
             this.tabPageImport.Controls.Add(this.button2);
@@ -248,8 +250,75 @@
             this.dataGrid_import_excel.DataSource = this.bindingSource_import_excel;
             this.dataGrid_import_excel.Location = new System.Drawing.Point(8, 36);
             this.dataGrid_import_excel.Name = "dataGrid_import_excel";
-            this.dataGrid_import_excel.Size = new System.Drawing.Size(1167, 536);
+            this.dataGrid_import_excel.Size = new System.Drawing.Size(1167, 63);
             this.dataGrid_import_excel.TabIndex = 10;
+            // 
+            // isChecked
+            // 
+            this.isChecked.HeaderText = "";
+            this.isChecked.Name = "isChecked";
+            this.isChecked.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.isChecked.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            // 
+            // prodnameDataGridViewTextBoxColumn
+            // 
+            this.prodnameDataGridViewTextBoxColumn.DataPropertyName = "prod_name";
+            this.prodnameDataGridViewTextBoxColumn.HeaderText = "prod_name";
+            this.prodnameDataGridViewTextBoxColumn.Name = "prodnameDataGridViewTextBoxColumn";
+            // 
+            // prodcodeDataGridViewTextBoxColumn
+            // 
+            this.prodcodeDataGridViewTextBoxColumn.DataPropertyName = "prod_code";
+            this.prodcodeDataGridViewTextBoxColumn.HeaderText = "prod_code";
+            this.prodcodeDataGridViewTextBoxColumn.Name = "prodcodeDataGridViewTextBoxColumn";
+            // 
+            // prodincomepriceDataGridViewTextBoxColumn
+            // 
+            this.prodincomepriceDataGridViewTextBoxColumn.DataPropertyName = "prod_income_price";
+            this.prodincomepriceDataGridViewTextBoxColumn.HeaderText = "prod_income_price";
+            this.prodincomepriceDataGridViewTextBoxColumn.Name = "prodincomepriceDataGridViewTextBoxColumn";
+            // 
+            // prodpresense1DataGridViewTextBoxColumn
+            // 
+            this.prodpresense1DataGridViewTextBoxColumn.DataPropertyName = "prod_presense1";
+            this.prodpresense1DataGridViewTextBoxColumn.HeaderText = "prod_presense1";
+            this.prodpresense1DataGridViewTextBoxColumn.Name = "prodpresense1DataGridViewTextBoxColumn";
+            // 
+            // prodpresense2DataGridViewTextBoxColumn
+            // 
+            this.prodpresense2DataGridViewTextBoxColumn.DataPropertyName = "prod_presense2";
+            this.prodpresense2DataGridViewTextBoxColumn.HeaderText = "prod_presense2";
+            this.prodpresense2DataGridViewTextBoxColumn.Name = "prodpresense2DataGridViewTextBoxColumn";
+            // 
+            // prod_currency
+            // 
+            this.prod_currency.DataPropertyName = "prod_currency";
+            this.prod_currency.HeaderText = "prod_currency";
+            this.prod_currency.Name = "prod_currency";
+            // 
+            // prod_client_price
+            // 
+            this.prod_client_price.DataPropertyName = "prod_client_price";
+            this.prod_client_price.HeaderText = "prod_client_price";
+            this.prod_client_price.Name = "prod_client_price";
+            // 
+            // typeFoundProductDataGridViewTextBoxColumn
+            // 
+            this.typeFoundProductDataGridViewTextBoxColumn.DataPropertyName = "typeFoundProduct";
+            this.typeFoundProductDataGridViewTextBoxColumn.HeaderText = "typeFoundProduct";
+            this.typeFoundProductDataGridViewTextBoxColumn.Name = "typeFoundProductDataGridViewTextBoxColumn";
+            // 
+            // numberDataGridViewTextBoxColumn
+            // 
+            this.numberDataGridViewTextBoxColumn.DataPropertyName = "number";
+            this.numberDataGridViewTextBoxColumn.HeaderText = "number";
+            this.numberDataGridViewTextBoxColumn.Name = "numberDataGridViewTextBoxColumn";
+            // 
+            // prod_pc_id
+            // 
+            this.prod_pc_id.DataPropertyName = "prod_pc_id";
+            this.prod_pc_id.HeaderText = "prod_pc_id";
+            this.prod_pc_id.Name = "prod_pc_id";
             // 
             // bindingSource_import_excel
             // 
@@ -498,7 +567,7 @@
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Location = new System.Drawing.Point(6, 35);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(1169, 538);
+            this.dataGridView1.Size = new System.Drawing.Size(1169, 537);
             this.dataGridView1.TabIndex = 0;
             // 
             // tabPageSettings
@@ -909,72 +978,18 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Название";
             // 
-            // isChecked
+            // dataGrid1
             // 
-            this.isChecked.HeaderText = "";
-            this.isChecked.Name = "isChecked";
-            this.isChecked.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.isChecked.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            // 
-            // prodnameDataGridViewTextBoxColumn
-            // 
-            this.prodnameDataGridViewTextBoxColumn.DataPropertyName = "prod_name";
-            this.prodnameDataGridViewTextBoxColumn.HeaderText = "prod_name";
-            this.prodnameDataGridViewTextBoxColumn.Name = "prodnameDataGridViewTextBoxColumn";
-            // 
-            // prodcodeDataGridViewTextBoxColumn
-            // 
-            this.prodcodeDataGridViewTextBoxColumn.DataPropertyName = "prod_code";
-            this.prodcodeDataGridViewTextBoxColumn.HeaderText = "prod_code";
-            this.prodcodeDataGridViewTextBoxColumn.Name = "prodcodeDataGridViewTextBoxColumn";
-            // 
-            // prodincomepriceDataGridViewTextBoxColumn
-            // 
-            this.prodincomepriceDataGridViewTextBoxColumn.DataPropertyName = "prod_income_price";
-            this.prodincomepriceDataGridViewTextBoxColumn.HeaderText = "prod_income_price";
-            this.prodincomepriceDataGridViewTextBoxColumn.Name = "prodincomepriceDataGridViewTextBoxColumn";
-            // 
-            // prodpresense1DataGridViewTextBoxColumn
-            // 
-            this.prodpresense1DataGridViewTextBoxColumn.DataPropertyName = "prod_presense1";
-            this.prodpresense1DataGridViewTextBoxColumn.HeaderText = "prod_presense1";
-            this.prodpresense1DataGridViewTextBoxColumn.Name = "prodpresense1DataGridViewTextBoxColumn";
-            // 
-            // prodpresense2DataGridViewTextBoxColumn
-            // 
-            this.prodpresense2DataGridViewTextBoxColumn.DataPropertyName = "prod_presense2";
-            this.prodpresense2DataGridViewTextBoxColumn.HeaderText = "prod_presense2";
-            this.prodpresense2DataGridViewTextBoxColumn.Name = "prodpresense2DataGridViewTextBoxColumn";
-            // 
-            // prod_currency
-            // 
-            this.prod_currency.DataPropertyName = "prod_currency";
-            this.prod_currency.HeaderText = "prod_currency";
-            this.prod_currency.Name = "prod_currency";
-            // 
-            // prod_client_price
-            // 
-            this.prod_client_price.DataPropertyName = "prod_client_price";
-            this.prod_client_price.HeaderText = "prod_client_price";
-            this.prod_client_price.Name = "prod_client_price";
-            // 
-            // typeFoundProductDataGridViewTextBoxColumn
-            // 
-            this.typeFoundProductDataGridViewTextBoxColumn.DataPropertyName = "typeFoundProduct";
-            this.typeFoundProductDataGridViewTextBoxColumn.HeaderText = "typeFoundProduct";
-            this.typeFoundProductDataGridViewTextBoxColumn.Name = "typeFoundProductDataGridViewTextBoxColumn";
-            // 
-            // numberDataGridViewTextBoxColumn
-            // 
-            this.numberDataGridViewTextBoxColumn.DataPropertyName = "number";
-            this.numberDataGridViewTextBoxColumn.HeaderText = "number";
-            this.numberDataGridViewTextBoxColumn.Name = "numberDataGridViewTextBoxColumn";
-            // 
-            // prod_pc_id
-            // 
-            this.prod_pc_id.DataPropertyName = "prod_pc_id";
-            this.prod_pc_id.HeaderText = "prod_pc_id";
-            this.prod_pc_id.Name = "prod_pc_id";
+            this.dataGrid1.DeleteQuestionMessage = "Are you sure to delete all the selected rows?";
+            this.dataGrid1.EnableSort = false;
+            this.dataGrid1.FixedRows = 1;
+            this.dataGrid1.Location = new System.Drawing.Point(14, 105);
+            this.dataGrid1.Name = "dataGrid1";
+            this.dataGrid1.SelectionMode = SourceGrid.GridSelectionMode.Row;
+            this.dataGrid1.Size = new System.Drawing.Size(1156, 456);
+            this.dataGrid1.TabIndex = 11;
+            this.dataGrid1.TabStop = true;
+            this.dataGrid1.ToolTipText = "";
             // 
             // MainForm
             // 
@@ -1115,6 +1130,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn typeFoundProductDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn numberDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn prod_pc_id;
+        private SourceGrid.DataGrid dataGrid1;
 
     }
 }
