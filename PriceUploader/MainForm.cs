@@ -174,7 +174,8 @@ namespace PriceUploader
             DateTime d2 = DateTime.Now;
             TimeSpan timeout = d2 - d1;
 
-            FillComboBoxes();            
+            FillComboBoxes();
+            dataGrid_import_excel.Columns["isChecked"].ReadOnly = false;
             Debug.WriteLine("time data loaded: " + timeout.ToString());
             return;
         }
@@ -491,11 +492,7 @@ namespace PriceUploader
 
                             //if (results != null
                             //    && results.Count<DataRow>() > 0)
-                            
-                            if(countFound > 0)
-                                dr["typeFoundProduct"] = TypeFoundProduct.Exist;
-                            else
-                                dr["typeFoundProduct"] = TypeFoundProduct.New;
+                           
 
                             if(indexColumnPresense1 >= 0)
                                 dr["prod_presense1"] = dt.Rows[i].ItemArray.GetValue(indexColumnPresense1);
@@ -533,14 +530,28 @@ namespace PriceUploader
 
                             ///////////////////////////////////////////////////////////////////////////////////////////////////
                             dataSet.Tables[tableName].Rows.Add(dr);
-
-                            if ( (countRowsExcel < 50 && i == countRowsExcel) || (i == 50) )
+                            
+                            //if ( (countRowsExcel < 50 && i == countRowsExcel) || (i == 50) )
+                            if (i == 0)
                                 this.dataGrid_import_excel.DataSource = this.bindingSource_import_excel;
 
                             Application.DoEvents();
+
+                            // Set Row Color
+                            if (countFound > 0)
+                            {
+                                dr["typeFoundProduct"] = TypeFoundProduct.Exist;
+                                dataGrid_import_excel.Rows[i].DefaultCellStyle.BackColor = Color.Green;
+                            }
+                            else
+                            {
+                                dr["typeFoundProduct"] = TypeFoundProduct.New;
+                                dataGrid_import_excel.Rows[i].DefaultCellStyle.BackColor = Color.Red;
+                            }
                         }
                         dataSet.Tables[tableName].AcceptChanges();
 
+                        
                     }
                 }
                 catch (Exception ex)
