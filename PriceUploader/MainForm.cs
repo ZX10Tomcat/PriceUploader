@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -394,6 +395,18 @@ namespace PriceUploader
             }
         }
 
+
+        private DataTable table = new DataTable();
+        private DataTable tableExcel = new DataTable();
+        private int countRowsExcel = 0;
+        private int indexColumnName = 0;
+        private int indexColumnCode = 0;
+        private int indexColumnPrice = 0;
+        private int indexColumnPresense1 = 0;
+        private int indexColumnPresense2 = 0;
+        private int indexColumnCurrency = 0;
+        private DateTime timeBeg = DateTime.Now;
+
         private void buttonOpenExcel_Click(object sender, EventArgs e)
         {
             label_file_name.Text = string.Empty;
@@ -411,21 +424,12 @@ namespace PriceUploader
                 {
                     string fileName = openFileDialog.FileName;
                     label_file_name.Text = openFileDialog.SafeFileName;
-                    DataTable dt = new DataTable();
+                    
+                    table = new DataTable();
+                    tableExcel = new DataTable();
 
-
-                    // Set columns
-                    dt.Columns.Add("prod_name", typeof(string));
-                    dt.Columns.Add("prod_code", typeof(string));
-                    dt.Columns.Add("prod_income_price", typeof(string));
-                    dt.Columns.Add("prod_presense1", typeof(string));
-                    dt.Columns.Add("prod_presense2", typeof(string));
-                    dt.Columns.Add("prod_currency", typeof(string));
-                    dt.Columns.Add("prod_client_price", typeof(string));
-                    dt.Columns.Add("prod_pc_id", typeof(string));                   
-
-
-                    int countRowsExcel = this.Model.ImportExcel(fileName, ref dt);
+                    countRowsExcel = this.Model.ImportExcel(fileName, ref tableExcel);
+                    
                     if (countRowsExcel > 0)
                     {
                         string tableName = "Table_import_excel";
@@ -455,147 +459,37 @@ namespace PriceUploader
                         DataRow importSettings = null;
                         importSettings = importSettingsQuery.FirstOrDefault(s => s.Field<string>("is_name") == format);
                         
-                        int indexColumnName = LetterNumber(importSettings["is_name_col"].ToString()) - 1;
-                        int indexColumnCode = LetterNumber(importSettings["is_code_col"].ToString()) - 1;
-                        int indexColumnPrice = LetterNumber(importSettings["is_price_col"].ToString()) - 1;
-                        int indexColumnPresense1 = LetterNumber(importSettings["is_presense1_col"].ToString()) - 1;
-                        int indexColumnPresense2 = LetterNumber(importSettings["is_presense2_col"].ToString()) - 1;
-                        int indexColumnCurrency = LetterNumber(importSettings["is_currency_col"].ToString()) - 1;
-
-                        //DataTable dataTable = null; 
-                        int countFound = -1;
-                        string code = string.Empty;
-                        Product prod = null;
-
-                        dataGrid1.SelectionMode = SourceGrid.GridSelectionMode.Row;
-                        //dataGrid1.Selection.EnableMultiSelection = true;
-                        dataGrid1.DataSource = new DevAge.ComponentModel.BoundDataView(dt.DefaultView);
-                        dataGrid1.Columns.AutoSizeView();
-                        dataGrid1.DefaultWidth = 50;
+                        indexColumnName = LetterNumber(importSettings["is_name_col"].ToString()) - 1;
+                        indexColumnCode = LetterNumber(importSettings["is_code_col"].ToString()) - 1;
+                        indexColumnPrice = LetterNumber(importSettings["is_price_col"].ToString()) - 1;
+                        indexColumnPresense1 = LetterNumber(importSettings["is_presense1_col"].ToString()) - 1;
+                        indexColumnPresense2 = LetterNumber(importSettings["is_presense2_col"].ToString()) - 1;
+                        indexColumnCurrency = LetterNumber(importSettings["is_currency_col"].ToString()) - 1;
+                        
+                        // Set columns
+                        table.Columns.Add("number", typeof(string));
+                        table.Columns.Add("prod_name", typeof(string));
+                        table.Columns.Add("prod_code", typeof(string));
+                        table.Columns.Add("prod_income_price", typeof(string));
+                        table.Columns.Add("prod_presense1", typeof(string));
+                        table.Columns.Add("prod_presense2", typeof(string));
+                        table.Columns.Add("prod_currency", typeof(string));
+                        table.Columns.Add("prod_client_price", typeof(string));
+                        table.Columns.Add("prod_pc_id", typeof(string));                   
 
                         lbl_TotalCount.Text = (countRowsExcel-1).ToString();
 
-                        DateTime timeBeg = DateTime.Now;
-                        for (int i = 0; i < countRowsExcel; i++)
-                        {
-                            //IEnumerable<DataRow> results = null;
-                            prod = null;
-                            var v = dt.Rows[i].ItemArray.GetValue(4);
-                            if (v != null)
-                            {
-                                code = v as string;
-                                //countFound = aliasQuery.Count(a => a.Field<string>("pa_code") == pa_code);
+                        timeBeg = DateTime.Now;
+                        AddRows(0, 100, indexColumnName, indexColumnCode, indexColumnPrice, indexColumnPresense1, indexColumnPresense2, indexColumnCurrency);
 
-                                //pa_code = v as string;
-                                //dataTable = new DataTable();
-                                //countFound = this.Model.Load_product_and_alias(ref dataTable, pa_code);
+                        dataGrid1.SelectionMode = SourceGrid.GridSelectionMode.Row;
+                        dataGrid1.DataSource = new DevAge.ComponentModel.BoundDataView(table.DefaultView);
+                        dataGrid1.Columns.AutoSizeView();
+                        dataGrid1.DefaultWidth = 50;
 
-                                countFound = products.Count(a => a.pa_code.ToString() == code);
+                        new Thread(CreateData).Start();
 
-                                prod = products.FirstOrDefault(a => a.pa_code.ToString() == code);
-                            }
-
-                            DataRow dr = dataSet.Tables[tableName].NewRow();
-                            if (indexColumnName >= 0)
-                                dr["prod_name"] = dt.Rows[i].ItemArray.GetValue(indexColumnName); // наименование
-                            else
-                                dr["prod_name"] = null; // наименование
-
-                            if(indexColumnCode >=0)
-                                dr["prod_code"] = dt.Rows[i].ItemArray.GetValue(indexColumnCode); //код
-                            else
-                                dr["prod_code"] = null; //код
-
-                            if(indexColumnPrice>=0)
-                                dr["prod_income_price"] = dt.Rows[i].ItemArray.GetValue(indexColumnPrice);
-                            else
-                                dr["prod_income_price"] = null;
-
-                            dr["number"] = i;
-
-                            //if (results != null
-                            //    && results.Count<DataRow>() > 0)
-                           
-
-                            if(indexColumnPresense1 >= 0)
-                                dr["prod_presense1"] = dt.Rows[i].ItemArray.GetValue(indexColumnPresense1);
-                            else
-                                dr["prod_presense1"] = null;
-                            
-                            if (indexColumnPresense2 >= 0)
-                                dr["prod_presense2"] = dt.Rows[i].ItemArray.GetValue(indexColumnPresense1);
-                            else
-                                dr["prod_presense2"] = null;
-
-                            if(indexColumnCurrency>=0)
-                                dr["prod_currency"] = dt.Rows[i].ItemArray.GetValue(indexColumnCurrency);
-                            else
-                                dr["prod_currency"] = null;
-
-                            dr["prod_client_price"] = null;
-                            
-                            object recived_price = dt.Rows[i].ItemArray.GetValue(indexColumnPrice);
-                            if (prod != null
-                                && prod.prod_pc_id != null
-                                && countFound > 0
-                                && categoryCharge != null
-                                && recived_price != null)
-                            {
-                                int prod_pc_id = System.Convert.ToInt32(prod.prod_pc_id);
-                                double price = System.Convert.ToDouble(recived_price);
-                                dr["prod_client_price"] = CalcClientPrice(prod_pc_id, price);
-                            }
-
-                            if(prod != null)
-                                dr["prod_pc_id"] = prod.prod_pc_id;
-                            else
-                                dr["prod_pc_id"] = null;
-
-                            ///////////////////////////////////////////////////////////////////////////////////////////////////
-                            //dataSet.Tables[tableName].Rows.Add(dr);
-
-                            dt.Rows.Add(
-                                new object[] {
-                                    dr["prod_name"],
-                                    dr["prod_code"],
-                                    dr["prod_income_price"],
-                                    dr["prod_presense1"],
-                                    dr["prod_presense2"],
-                                    dr["prod_currency"],
-                                    dr["prod_client_price"],
-                                    dr["prod_pc_id"]
-                                });
-
-                            
-                            ////if ( (countRowsExcel < 50 && i == countRowsExcel) || (i == 50) )
-                            //if (i == 0)
-                            //    this.dataGrid_import_excel.DataSource = this.bindingSource_import_excel;
-
-                            //// Set Row Color
-                            //if (countFound > 0)
-                            //{
-                            //    dr["typeFoundProduct"] = TypeFoundProduct.Exist;
-                            //    dataGrid_import_excel.Rows[i].DefaultCellStyle.BackColor = Color.Green;
-                            //}
-                            //else
-                            //{
-                            //    dr["typeFoundProduct"] = TypeFoundProduct.New;
-                            //    dataGrid_import_excel.Rows[i].DefaultCellStyle.BackColor = Color.Red;
-                            //}
-
-                            Application.DoEvents();
-                            dataGrid1.ResumeLayout();
-
-                            lbl_Counter.Text = i.ToString();
-
-                            TimeSpan ts = DateTime.Now - timeBeg;
-                            double calc = ts.TotalMilliseconds / 1000;
-                            label_TimeSpan.Text = calc.ToString();
-                        }
-
-                        dataSet.Tables[tableName].AcceptChanges();
-
-                        
+                        //dataSet.Tables[tableName].AcceptChanges();
 
 
                     }
@@ -608,6 +502,149 @@ namespace PriceUploader
             }
             else
                 label_file_name.Text = "Файл не выбран";
+
+        }
+
+        private void UpdateTime()
+        {
+            label_TimeSpan.Invoke(new Action(() =>
+            {
+                TimeSpan ts = DateTime.Now - timeBeg;
+                double calc = ts.TotalMilliseconds / 1000;
+                label_TimeSpan.Text = calc.ToString();
+            }));
+        }
+        
+
+        private void UpdateCounter(int index)
+        {
+            lbl_Counter.Invoke(new Action(() =>
+            {
+                lbl_Counter.Text = index.ToString();
+            }));
+        }
+
+
+        private void CreateData()
+        {
+            dataGrid1.SuspendLayout();
+            
+            AddRows(100, countRowsExcel, indexColumnName, indexColumnCode, indexColumnPrice, indexColumnPresense1, indexColumnPresense2, indexColumnCurrency);
+            
+            dataGrid1.Invoke(new Action(() =>
+            {
+                dataGrid1.ResumeLayout();
+                dataGrid1.RecalcCustomScrollBars();
+            }));
+        }
+
+
+
+        private void AddRows(int indexBeg, int indexEnd, int indexColumnName, int indexColumnCode, int indexColumnPrice, int indexColumnPresense1, int indexColumnPresense2, int indexColumnCurrency)
+        {
+            string code = string.Empty;
+            Product prod = null;
+            int countFound = 0;
+            ImportToDB importToDB = null;
+
+            for (int i = indexBeg; i < indexEnd; i++)
+            {
+                importToDB = new ImportToDB();
+
+                importToDB.number = i.ToString();
+
+                prod = null;
+                var v = tableExcel.Rows[i].ItemArray.GetValue(4);
+                if (v != null)
+                {
+                    code = v as string;
+                    countFound = products.Count(a => a.pa_code.ToString() == code);
+                    prod = products.FirstOrDefault(a => a.pa_code.ToString() == code);
+                }
+
+                if (indexColumnName >= 0)
+                    importToDB.prod_name = tableExcel.Rows[i].ItemArray.GetValue(indexColumnName).ToString(); // наименование
+
+                if (indexColumnCode >= 0)
+                    importToDB.prod_code = tableExcel.Rows[i].ItemArray.GetValue(indexColumnCode).ToString(); //код
+
+                if (indexColumnPrice >= 0)
+                    importToDB.prod_income_price = tableExcel.Rows[i].ItemArray.GetValue(indexColumnPrice).ToString();
+
+                if (indexColumnPresense1 >= 0)
+                    importToDB.prod_presense1 = tableExcel.Rows[i].ItemArray.GetValue(indexColumnPresense1).ToString();
+
+                if (indexColumnPresense2 >= 0)
+                    importToDB.prod_presense2 = tableExcel.Rows[i].ItemArray.GetValue(indexColumnPresense2).ToString();
+
+                if (indexColumnCurrency >= 0)
+                    importToDB.prod_currency = tableExcel.Rows[i].ItemArray.GetValue(indexColumnCurrency).ToString();
+
+                object recived_price = tableExcel.Rows[i].ItemArray.GetValue(indexColumnPrice);
+                if (prod != null
+                    && prod.prod_pc_id != null
+                    && countFound > 0
+                    && categoryCharge != null
+                    && recived_price != null)
+                {
+                    int prod_pc_id = System.Convert.ToInt32(prod.prod_pc_id);
+                    double price = System.Convert.ToDouble(recived_price);
+                    importToDB.prod_client_price = CalcClientPrice(prod_pc_id, price).ToString();
+                }
+
+                importToDB.prod_client_price = null;
+
+                if (prod != null)
+                    importToDB.prod_pc_id = prod.prod_pc_id.ToString();
+
+                table.Rows.Add(
+                    new object[] {
+                                    importToDB.number,
+                                    importToDB.prod_name,
+                                    importToDB.prod_code,
+                                    importToDB.prod_income_price,
+                                    importToDB.prod_presense1,
+                                    importToDB.prod_presense2,
+                                    importToDB.prod_currency,
+                                    importToDB.prod_client_price,
+                                    importToDB.prod_pc_id
+                                });
+
+
+                ////if ( (countRowsExcel < 50 && i == countRowsExcel) || (i == 50) )
+                //if (i == 0)
+                //    this.dataGrid_import_excel.DataSource = this.bindingSource_import_excel;
+
+                //// Set Row Color
+                //if (countFound > 0)
+                //{
+                //    dr["typeFoundProduct"] = TypeFoundProduct.Exist;
+                //    dataGrid_import_excel.Rows[i].DefaultCellStyle.BackColor = Color.Green;
+                //}
+                //else
+                //{
+                //    dr["typeFoundProduct"] = TypeFoundProduct.New;
+                //    dataGrid_import_excel.Rows[i].DefaultCellStyle.BackColor = Color.Red;
+                //}
+                
+
+                if (i % 100 == 0)
+                {
+                    UpdateCounter(i);
+                    UpdateTime();
+                }
+
+                //if (i % 1000 == 0)
+                //    dataGrid1.Invoke(new Action(() =>
+                //    {
+                //        dataGrid1.ResumeLayout();
+                //        dataGrid1.RecalcCustomScrollBars();
+                //    }));
+
+            }
+            
+            UpdateCounter(indexEnd-1);
+            UpdateTime();
 
         }
 
