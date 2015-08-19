@@ -475,6 +475,7 @@ namespace PriceUploader
 
                         lbl_TotalCount.Text = (countRowsExcel-1).ToString();
 
+                        DateTime timeBeg = DateTime.Now;
                         for (int i = 0; i < countRowsExcel; i++)
                         {
                             //IEnumerable<DataRow> results = null;
@@ -586,7 +587,12 @@ namespace PriceUploader
                             dataGrid1.ResumeLayout();
 
                             lbl_Counter.Text = i.ToString();
+
+                            TimeSpan ts = DateTime.Now - timeBeg;
+                            double calc = ts.TotalMilliseconds / 1000;
+                            label_TimeSpan.Text = calc.ToString();
                         }
+
                         dataSet.Tables[tableName].AcceptChanges();
 
                         

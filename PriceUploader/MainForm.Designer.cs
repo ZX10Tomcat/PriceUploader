@@ -132,6 +132,8 @@
             this.label2 = new System.Windows.Forms.Label();
             this.textBoxName = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.label15 = new System.Windows.Forms.Label();
+            this.label_TimeSpan = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.tabControlMain.SuspendLayout();
             this.tabPageImport.SuspendLayout();
@@ -212,6 +214,8 @@
             // 
             // tabPageImport
             // 
+            this.tabPageImport.Controls.Add(this.label_TimeSpan);
+            this.tabPageImport.Controls.Add(this.label15);
             this.tabPageImport.Controls.Add(this.lbl_TotalCount);
             this.tabPageImport.Controls.Add(this.lbl_Of);
             this.tabPageImport.Controls.Add(this.lbl_Counter);
@@ -1024,6 +1028,24 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Название";
             // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(144, 550);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(105, 13);
+            this.label15.TabIndex = 15;
+            this.label15.Text = "Время выполнения";
+            // 
+            // label_TimeSpan
+            // 
+            this.label_TimeSpan.AutoSize = true;
+            this.label_TimeSpan.Location = new System.Drawing.Point(256, 550);
+            this.label_TimeSpan.Name = "label_TimeSpan";
+            this.label_TimeSpan.Size = new System.Drawing.Size(13, 13);
+            this.label_TimeSpan.TabIndex = 16;
+            this.label_TimeSpan.Text = "0";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1167,6 +1189,8 @@
         private System.Windows.Forms.Label lbl_TotalCount;
         private System.Windows.Forms.Label lbl_Of;
         private System.Windows.Forms.Label lbl_Counter;
+        private System.Windows.Forms.Label label_TimeSpan;
+        private System.Windows.Forms.Label label15;
 
     }
 }
