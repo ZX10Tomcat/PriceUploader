@@ -406,7 +406,7 @@ namespace PriceUploader
         private int indexColumnPresense2 = 0;
         private int indexColumnCurrency = 0;
         private DateTime timeBeg = DateTime.Now;
-
+        private int firstPart = 25;
         private void buttonOpenExcel_Click(object sender, EventArgs e)
         {
             label_file_name.Text = string.Empty;
@@ -480,7 +480,7 @@ namespace PriceUploader
                         lbl_TotalCount.Text = (countRowsExcel-1).ToString();
 
                         timeBeg = DateTime.Now;
-                        AddRows(0, 100, indexColumnName, indexColumnCode, indexColumnPrice, indexColumnPresense1, indexColumnPresense2, indexColumnCurrency);
+                        AddRows(0, firstPart, indexColumnName, indexColumnCode, indexColumnPrice, indexColumnPresense1, indexColumnPresense2, indexColumnCurrency);
 
                         dataGrid1.SelectionMode = SourceGrid.GridSelectionMode.Row;
                         dataGrid1.DataSource = new DevAge.ComponentModel.BoundDataView(table.DefaultView);
@@ -532,8 +532,8 @@ namespace PriceUploader
         private void CreateData()
         {
             dataGrid1.SuspendLayout();
-            
-            AddRows(100, countRowsExcel, indexColumnName, indexColumnCode, indexColumnPrice, indexColumnPresense1, indexColumnPresense2, indexColumnCurrency);
+
+            AddRows(firstPart, countRowsExcel, indexColumnName, indexColumnCode, indexColumnPrice, indexColumnPresense1, indexColumnPresense2, indexColumnCurrency);
             
             dataGrid1.Invoke(new Action(() =>
             {
@@ -585,17 +585,16 @@ namespace PriceUploader
                     importToDB.prod_currency = tableExcel.Rows[i].ItemArray.GetValue(indexColumnCurrency).ToString();
 
                 object recived_price = tableExcel.Rows[i].ItemArray.GetValue(indexColumnPrice);
-                if (prod != null
-                    && prod.prod_pc_id != null
-                    && countFound > 0
-                    && categoryCharge != null
-                    && recived_price != null)
+                if (countFound > 0
+                    && (prod != null
+                        && prod.prod_pc_id != null
+                        && categoryCharge != null
+                        && recived_price != null))
                 {
                     int prod_pc_id = System.Convert.ToInt32(prod.prod_pc_id);
                     double price = System.Convert.ToDouble(recived_price);
                     importToDB.prod_client_price = CalcClientPrice(prod_pc_id, price).ToString();
                 }
-                
 
                 if (prod != null)
                     importToDB.prod_pc_id = prod.prod_pc_id.ToString();

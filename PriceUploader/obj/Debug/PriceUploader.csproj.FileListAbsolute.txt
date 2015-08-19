@@ -14,4 +14,3 @@ C:\Users\b_sam_000\Documents\GitHub\PriceUploader\PriceUploader\obj\Debug\PriceU
 C:\Users\b_sam_000\Documents\GitHub\PriceUploader\PriceUploader\obj\Debug\PriceUploader.MainForm.resources
 C:\Users\b_sam_000\Documents\GitHub\PriceUploader\PriceUploader\obj\Debug\PriceUploader.Properties.Resources.resources
 C:\Users\b_sam_000\Documents\GitHub\PriceUploader\PriceUploader\obj\Debug\PriceUploader.csproj.GenerateResource.Cache
-D:\Work\PriceUploader\PriceUploader\bin\Debug\PriceUploader.exe.config
