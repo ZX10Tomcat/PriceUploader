@@ -467,7 +467,7 @@ namespace PriceUploader
                         indexColumnCurrency = LetterNumber(importSettings["is_currency_col"].ToString()) - 1;
                         
                         // Set columns
-                        table.Columns.Add("number", typeof(string));
+                        table.Columns.Add("number", typeof(int));
                         table.Columns.Add("prod_name", typeof(string));
                         table.Columns.Add("prod_code", typeof(string));
                         table.Columns.Add("prod_income_price", typeof(string));
@@ -487,10 +487,14 @@ namespace PriceUploader
                         dataGrid1.Columns.AutoSizeView();
                         dataGrid1.DefaultWidth = 50;
 
+                        dataGrid1.Invoke(new Action(() =>
+                        {
+                            dataGrid1.ResumeLayout();
+                            dataGrid1.RecalcCustomScrollBars();
+                        }));
+
+
                         new Thread(CreateData).Start();
-
-                        //dataSet.Tables[tableName].AcceptChanges();
-
 
                     }
                 }
@@ -551,7 +555,7 @@ namespace PriceUploader
             {
                 importToDB = new ImportToDB();
 
-                importToDB.number = i.ToString();
+                importToDB.number = i;
 
                 prod = null;
                 var v = tableExcel.Rows[i].ItemArray.GetValue(4);
@@ -591,8 +595,7 @@ namespace PriceUploader
                     double price = System.Convert.ToDouble(recived_price);
                     importToDB.prod_client_price = CalcClientPrice(prod_pc_id, price).ToString();
                 }
-
-                importToDB.prod_client_price = null;
+                
 
                 if (prod != null)
                     importToDB.prod_pc_id = prod.prod_pc_id.ToString();
@@ -634,17 +637,25 @@ namespace PriceUploader
                     UpdateTime();
                 }
 
-                //if (i % 1000 == 0)
-                //    dataGrid1.Invoke(new Action(() =>
-                //    {
-                //        dataGrid1.ResumeLayout();
-                //        dataGrid1.RecalcCustomScrollBars();
-                //    }));
+                if (i % 500 == 0)
+                    dataGrid1.Invoke(new Action(() =>
+                    {
+                        dataGrid1.ResumeLayout();
+                        dataGrid1.RecalcCustomScrollBars();
+                    }));
 
             }
             
             UpdateCounter(indexEnd-1);
             UpdateTime();
+
+
+            dataGrid1.Invoke(new Action(() =>
+            {
+                dataGrid1.ResumeLayout();
+                dataGrid1.RecalcCustomScrollBars();
+            }));
+
 
         }
 
