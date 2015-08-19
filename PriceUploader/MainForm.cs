@@ -412,6 +412,19 @@ namespace PriceUploader
                     string fileName = openFileDialog.FileName;
                     label_file_name.Text = openFileDialog.SafeFileName;
                     DataTable dt = new DataTable();
+
+
+                    // Set columns
+                    dt.Columns.Add("prod_name", typeof(string));
+                    dt.Columns.Add("prod_code", typeof(string));
+                    dt.Columns.Add("prod_income_price", typeof(string));
+                    dt.Columns.Add("prod_presense1", typeof(string));
+                    dt.Columns.Add("prod_presense2", typeof(string));
+                    dt.Columns.Add("prod_currency", typeof(string));
+                    dt.Columns.Add("prod_client_price", typeof(string));
+                    dt.Columns.Add("prod_pc_id", typeof(string));                   
+
+
                     int countRowsExcel = this.Model.ImportExcel(fileName, ref dt);
                     if (countRowsExcel > 0)
                     {
@@ -456,9 +469,11 @@ namespace PriceUploader
 
                         dataGrid1.SelectionMode = SourceGrid.GridSelectionMode.Row;
                         //dataGrid1.Selection.EnableMultiSelection = true;
-                        dataGrid1.DataSource = new DevAge.ComponentModel.BoundDataView(dataSet.Tables[tableName].DefaultView);
+                        dataGrid1.DataSource = new DevAge.ComponentModel.BoundDataView(dt.DefaultView);
                         dataGrid1.Columns.AutoSizeView();
                         dataGrid1.DefaultWidth = 50;
+
+                        lbl_TotalCount.Text = (countRowsExcel-1).ToString();
 
                         for (int i = 0; i < countRowsExcel; i++)
                         {
@@ -536,7 +551,20 @@ namespace PriceUploader
                                 dr["prod_pc_id"] = null;
 
                             ///////////////////////////////////////////////////////////////////////////////////////////////////
-                            dataSet.Tables[tableName].Rows.Add(dr);
+                            //dataSet.Tables[tableName].Rows.Add(dr);
+
+                            dt.Rows.Add(
+                                new object[] {
+                                    dr["prod_name"],
+                                    dr["prod_code"],
+                                    dr["prod_income_price"],
+                                    dr["prod_presense1"],
+                                    dr["prod_presense2"],
+                                    dr["prod_currency"],
+                                    dr["prod_client_price"],
+                                    dr["prod_pc_id"]
+                                });
+
                             
                             ////if ( (countRowsExcel < 50 && i == countRowsExcel) || (i == 50) )
                             //if (i == 0)
@@ -556,6 +584,8 @@ namespace PriceUploader
 
                             Application.DoEvents();
                             dataGrid1.ResumeLayout();
+
+                            lbl_Counter.Text = i.ToString();
                         }
                         dataSet.Tables[tableName].AcceptChanges();
 

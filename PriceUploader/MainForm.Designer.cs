@@ -37,6 +37,10 @@
             this.toolStripMenuItemExit = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControlMain = new System.Windows.Forms.TabControl();
             this.tabPageImport = new System.Windows.Forms.TabPage();
+            this.lbl_TotalCount = new System.Windows.Forms.Label();
+            this.lbl_Of = new System.Windows.Forms.Label();
+            this.lbl_Counter = new System.Windows.Forms.Label();
+            this.dataGrid1 = new SourceGrid.DataGrid();
             this.dataGrid_import_excel = new System.Windows.Forms.DataGridView();
             this.isChecked = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.prodnameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -128,7 +132,6 @@
             this.label2 = new System.Windows.Forms.Label();
             this.textBoxName = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.dataGrid1 = new SourceGrid.DataGrid();
             this.menuStrip1.SuspendLayout();
             this.tabControlMain.SuspendLayout();
             this.tabPageImport.SuspendLayout();
@@ -209,6 +212,9 @@
             // 
             // tabPageImport
             // 
+            this.tabPageImport.Controls.Add(this.lbl_TotalCount);
+            this.tabPageImport.Controls.Add(this.lbl_Of);
+            this.tabPageImport.Controls.Add(this.lbl_Counter);
             this.tabPageImport.Controls.Add(this.dataGrid1);
             this.tabPageImport.Controls.Add(this.dataGrid_import_excel);
             this.tabPageImport.Controls.Add(this.label_file_name);
@@ -228,6 +234,46 @@
             this.tabPageImport.TabIndex = 0;
             this.tabPageImport.Text = "Импорт";
             this.tabPageImport.UseVisualStyleBackColor = true;
+            // 
+            // lbl_TotalCount
+            // 
+            this.lbl_TotalCount.AutoSize = true;
+            this.lbl_TotalCount.Location = new System.Drawing.Point(90, 550);
+            this.lbl_TotalCount.Name = "lbl_TotalCount";
+            this.lbl_TotalCount.Size = new System.Drawing.Size(13, 13);
+            this.lbl_TotalCount.TabIndex = 14;
+            this.lbl_TotalCount.Text = "0";
+            // 
+            // lbl_Of
+            // 
+            this.lbl_Of.AutoSize = true;
+            this.lbl_Of.Location = new System.Drawing.Point(63, 550);
+            this.lbl_Of.Name = "lbl_Of";
+            this.lbl_Of.Size = new System.Drawing.Size(22, 13);
+            this.lbl_Of.TabIndex = 13;
+            this.lbl_Of.Text = "ИЗ";
+            // 
+            // lbl_Counter
+            // 
+            this.lbl_Counter.AutoSize = true;
+            this.lbl_Counter.Location = new System.Drawing.Point(11, 550);
+            this.lbl_Counter.Name = "lbl_Counter";
+            this.lbl_Counter.Size = new System.Drawing.Size(13, 13);
+            this.lbl_Counter.TabIndex = 12;
+            this.lbl_Counter.Text = "0";
+            // 
+            // dataGrid1
+            // 
+            this.dataGrid1.DeleteQuestionMessage = "Are you sure to delete all the selected rows?";
+            this.dataGrid1.EnableSort = false;
+            this.dataGrid1.FixedRows = 1;
+            this.dataGrid1.Location = new System.Drawing.Point(14, 105);
+            this.dataGrid1.Name = "dataGrid1";
+            this.dataGrid1.SelectionMode = SourceGrid.GridSelectionMode.Row;
+            this.dataGrid1.Size = new System.Drawing.Size(1156, 420);
+            this.dataGrid1.TabIndex = 11;
+            this.dataGrid1.TabStop = true;
+            this.dataGrid1.ToolTipText = "";
             // 
             // dataGrid_import_excel
             // 
@@ -567,7 +613,7 @@
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Location = new System.Drawing.Point(6, 35);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(1169, 537);
+            this.dataGridView1.Size = new System.Drawing.Size(1169, 64);
             this.dataGridView1.TabIndex = 0;
             // 
             // tabPageSettings
@@ -978,19 +1024,6 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Название";
             // 
-            // dataGrid1
-            // 
-            this.dataGrid1.DeleteQuestionMessage = "Are you sure to delete all the selected rows?";
-            this.dataGrid1.EnableSort = false;
-            this.dataGrid1.FixedRows = 1;
-            this.dataGrid1.Location = new System.Drawing.Point(14, 105);
-            this.dataGrid1.Name = "dataGrid1";
-            this.dataGrid1.SelectionMode = SourceGrid.GridSelectionMode.Row;
-            this.dataGrid1.Size = new System.Drawing.Size(1156, 456);
-            this.dataGrid1.TabIndex = 11;
-            this.dataGrid1.TabStop = true;
-            this.dataGrid1.ToolTipText = "";
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1131,6 +1164,9 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn numberDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn prod_pc_id;
         private SourceGrid.DataGrid dataGrid1;
+        private System.Windows.Forms.Label lbl_TotalCount;
+        private System.Windows.Forms.Label lbl_Of;
+        private System.Windows.Forms.Label lbl_Counter;
 
     }
 }
