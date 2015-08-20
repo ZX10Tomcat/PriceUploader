@@ -434,8 +434,8 @@ prod_fixed_price, pa_code, prod_pc_id FROM product_alias INNER JOIN product pr O
 
             data = new DataTable();
             int res = exl.readExcelFileSQL(fileName, ref data);
+          
             return res;
-
         }
 
     }
@@ -461,7 +461,7 @@ prod_fixed_price, pa_code, prod_pc_id FROM product_alias INNER JOIN product pr O
         public object pa_code;
         public object prod_pc_id;
     }
-
+        
     public class ImportToDB
     {
         public string prod_name = string.Empty;

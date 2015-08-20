@@ -30,6 +30,7 @@ namespace PriceUploader
         private string[] Columns = new string[27];
         private List<Product> products = new List<Product>();
         private List<CategoryCharge> categoryCharge = new List<CategoryCharge>();
+        private List<ImportToDB> excelList = new List<ImportToDB>();
 
         public MainForm()
         {
@@ -176,7 +177,7 @@ namespace PriceUploader
             TimeSpan timeout = d2 - d1;
 
             FillComboBoxes();
-            dataGrid_import_excel.Columns["isChecked"].ReadOnly = false;
+            //dataGrid_import_excel.Columns["isChecked"].ReadOnly = false;
             Debug.WriteLine("time data loaded: " + timeout.ToString());
             return;
         }
@@ -429,13 +430,16 @@ namespace PriceUploader
                     tableExcel = new DataTable();
 
                     countRowsExcel = this.Model.ImportExcel(fileName, ref tableExcel);
+
+
+
                     
                     if (countRowsExcel > 0)
                     {
                         string tableName = "Table_import_excel";
 
-                        this.dataGrid_import_excel.DataSource = null;
-                        this.dataGrid_import_excel.Rows.Clear();
+                        //this.dataGrid_import_excel.DataSource = null;
+                        //this.dataGrid_import_excel.Rows.Clear();
 
                         dataSet.Tables[tableName].Clear();
 
@@ -478,6 +482,23 @@ namespace PriceUploader
                         table.Columns.Add("prod_pc_id", typeof(string));                   
 
                         lbl_TotalCount.Text = (countRowsExcel-1).ToString();
+                        
+                        int count = countRowsExcel;
+                        for (int i = 0; i < count; i++)
+                        {
+                            excelList.Add(new ImportToDB()
+                            {
+                                prod_name = tableExcel.Rows[i].ItemArray.GetValue(indexColumnName).ToString(),
+                                prod_code = tableExcel.Rows[i].ItemArray.GetValue(indexColumnCode).ToString(),
+                                prod_income_price = tableExcel.Rows[i].ItemArray.GetValue(indexColumnPrice).ToString(),
+                                //prod_presense1 = tableExcel.Rows[i].ItemArray.GetValue(indexColumnPresense1).ToString(),
+                                //prod_presense2 = tableExcel.Rows[i].ItemArray.GetValue(indexColumnPresense2).ToString(),
+                                //prod_currency = tableExcel.Rows[i].ItemArray.GetValue(indexColumnCurrency).ToString(),
+                                //prod_client_price = tableExcel.Rows[i].ItemArray.GetValue(indexColumnPrice).ToString(),
+                                //prod_pc_id = tableExcel.Rows[i].ItemArray.GetValue(4).ToString(), // Откуда єто брать?
+                                number = i
+                            });
+                        }
 
                         timeBeg = DateTime.Now;
                         AddRows(0, 100, indexColumnName, indexColumnCode, indexColumnPrice, indexColumnPresense1, indexColumnPresense2, indexColumnCurrency);
@@ -558,59 +579,59 @@ namespace PriceUploader
                 importToDB.number = i;
 
                 prod = null;
-                var v = tableExcel.Rows[i].ItemArray.GetValue(4);
-                if (v != null)
-                {
-                    code = v as string;
-                    countFound = products.Count(a => a.pa_code.ToString() == code);
-                    prod = products.FirstOrDefault(a => a.pa_code.ToString() == code);
-                }
+                //var v = tableExcel.Rows[i].ItemArray.GetValue(4);
+                //if (v != null)
+                //{
+                //    code = v as string;
+                //    countFound = products.Count(a => a.pa_code.ToString() == code);
+                //    prod = products.FirstOrDefault(a => a.pa_code.ToString() == code);
+                //}
 
-                if (indexColumnName >= 0)
-                    importToDB.prod_name = tableExcel.Rows[i].ItemArray.GetValue(indexColumnName).ToString(); // наименование
+                //if (indexColumnName >= 0)
+                //    importToDB.prod_name = tableExcel.Rows[i].ItemArray.GetValue(indexColumnName).ToString(); // наименование
 
-                if (indexColumnCode >= 0)
-                    importToDB.prod_code = tableExcel.Rows[i].ItemArray.GetValue(indexColumnCode).ToString(); //код
+                //if (indexColumnCode >= 0)
+                //    importToDB.prod_code = tableExcel.Rows[i].ItemArray.GetValue(indexColumnCode).ToString(); //код
 
-                if (indexColumnPrice >= 0)
-                    importToDB.prod_income_price = tableExcel.Rows[i].ItemArray.GetValue(indexColumnPrice).ToString();
+                //if (indexColumnPrice >= 0)
+                //    importToDB.prod_income_price = tableExcel.Rows[i].ItemArray.GetValue(indexColumnPrice).ToString();
 
-                if (indexColumnPresense1 >= 0)
-                    importToDB.prod_presense1 = tableExcel.Rows[i].ItemArray.GetValue(indexColumnPresense1).ToString();
+                //if (indexColumnPresense1 >= 0)
+                //    importToDB.prod_presense1 = tableExcel.Rows[i].ItemArray.GetValue(indexColumnPresense1).ToString();
 
-                if (indexColumnPresense2 >= 0)
-                    importToDB.prod_presense2 = tableExcel.Rows[i].ItemArray.GetValue(indexColumnPresense2).ToString();
+                //if (indexColumnPresense2 >= 0)
+                //    importToDB.prod_presense2 = tableExcel.Rows[i].ItemArray.GetValue(indexColumnPresense2).ToString();
 
-                if (indexColumnCurrency >= 0)
-                    importToDB.prod_currency = tableExcel.Rows[i].ItemArray.GetValue(indexColumnCurrency).ToString();
+                //if (indexColumnCurrency >= 0)
+                //    importToDB.prod_currency = tableExcel.Rows[i].ItemArray.GetValue(indexColumnCurrency).ToString();
 
-                object recived_price = tableExcel.Rows[i].ItemArray.GetValue(indexColumnPrice);
-                if (prod != null
-                    && prod.prod_pc_id != null
-                    && countFound > 0
-                    && categoryCharge != null
-                    && recived_price != null)
-                {
-                    int prod_pc_id = System.Convert.ToInt32(prod.prod_pc_id);
-                    double price = System.Convert.ToDouble(recived_price);
-                    importToDB.prod_client_price = CalcClientPrice(prod_pc_id, price).ToString();
-                }
+                //object recived_price = tableExcel.Rows[i].ItemArray.GetValue(indexColumnPrice);
+                //if (prod != null
+                //    && prod.prod_pc_id != null
+                //    && countFound > 0
+                //    && categoryCharge != null
+                //    && recived_price != null)
+                //{
+                //    int prod_pc_id = System.Convert.ToInt32(prod.prod_pc_id);
+                //    double price = System.Convert.ToDouble(recived_price);
+                //    importToDB.prod_client_price = CalcClientPrice(prod_pc_id, price).ToString();
+                //}
                 
 
-                if (prod != null)
-                    importToDB.prod_pc_id = prod.prod_pc_id.ToString();
+                //if (prod != null)
+                //    importToDB.prod_pc_id = prod.prod_pc_id.ToString();
 
                 table.Rows.Add(
                     new object[] {
-                                    importToDB.number,
-                                    importToDB.prod_name,
-                                    importToDB.prod_code,
-                                    importToDB.prod_income_price,
-                                    importToDB.prod_presense1,
-                                    importToDB.prod_presense2,
-                                    importToDB.prod_currency,
-                                    importToDB.prod_client_price,
-                                    importToDB.prod_pc_id
+                                    excelList[i].number,
+                                    excelList[i].prod_name,
+                                    excelList[i].prod_code,
+                                    excelList[i].prod_income_price,
+                                    excelList[i].prod_presense1,
+                                    excelList[i].prod_presense2,
+                                    excelList[i].prod_currency,
+                                    excelList[i].prod_client_price,
+                                    excelList[i].prod_pc_id
                                 });
 
 
