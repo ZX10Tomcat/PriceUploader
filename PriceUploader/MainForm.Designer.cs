@@ -37,22 +37,12 @@
             this.toolStripMenuItemExit = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControlMain = new System.Windows.Forms.TabControl();
             this.tabPageImport = new System.Windows.Forms.TabPage();
+            this.label_TimeSpan = new System.Windows.Forms.Label();
+            this.label15 = new System.Windows.Forms.Label();
             this.lbl_TotalCount = new System.Windows.Forms.Label();
             this.lbl_Of = new System.Windows.Forms.Label();
             this.lbl_Counter = new System.Windows.Forms.Label();
             this.dataGrid1 = new SourceGrid.DataGrid();
-            this.dataGrid_import_excel = new System.Windows.Forms.DataGridView();
-            this.isChecked = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.prodnameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.prodcodeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.prodincomepriceDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.prodpresense1DataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.prodpresense2DataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.prod_currency = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.prod_client_price = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.typeFoundProductDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.numberDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.prod_pc_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.bindingSource_import_excel = new System.Windows.Forms.BindingSource(this.components);
             this.dataSet = new System.Data.DataSet();
             this.dataTable_import_settings = new System.Data.DataTable();
@@ -88,7 +78,6 @@
             this.label13 = new System.Windows.Forms.Label();
             this.comboBoxSupplier = new System.Windows.Forms.ComboBox();
             this.label12 = new System.Windows.Forms.Label();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.tabPageSettings = new System.Windows.Forms.TabPage();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.button1 = new System.Windows.Forms.Button();
@@ -132,17 +121,13 @@
             this.label2 = new System.Windows.Forms.Label();
             this.textBoxName = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.label15 = new System.Windows.Forms.Label();
-            this.label_TimeSpan = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.tabControlMain.SuspendLayout();
             this.tabPageImport.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGrid_import_excel)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource_import_excel)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataSet)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataTable_import_settings)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataTable_import_excel)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.tabPageSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -220,7 +205,6 @@
             this.tabPageImport.Controls.Add(this.lbl_Of);
             this.tabPageImport.Controls.Add(this.lbl_Counter);
             this.tabPageImport.Controls.Add(this.dataGrid1);
-            this.tabPageImport.Controls.Add(this.dataGrid_import_excel);
             this.tabPageImport.Controls.Add(this.label_file_name);
             this.tabPageImport.Controls.Add(this.button2);
             this.tabPageImport.Controls.Add(this.buttonOpenExcel);
@@ -230,7 +214,6 @@
             this.tabPageImport.Controls.Add(this.label13);
             this.tabPageImport.Controls.Add(this.comboBoxSupplier);
             this.tabPageImport.Controls.Add(this.label12);
-            this.tabPageImport.Controls.Add(this.dataGridView1);
             this.tabPageImport.Location = new System.Drawing.Point(4, 22);
             this.tabPageImport.Name = "tabPageImport";
             this.tabPageImport.Padding = new System.Windows.Forms.Padding(3);
@@ -238,6 +221,24 @@
             this.tabPageImport.TabIndex = 0;
             this.tabPageImport.Text = "Импорт";
             this.tabPageImport.UseVisualStyleBackColor = true;
+            // 
+            // label_TimeSpan
+            // 
+            this.label_TimeSpan.AutoSize = true;
+            this.label_TimeSpan.Location = new System.Drawing.Point(256, 550);
+            this.label_TimeSpan.Name = "label_TimeSpan";
+            this.label_TimeSpan.Size = new System.Drawing.Size(13, 13);
+            this.label_TimeSpan.TabIndex = 16;
+            this.label_TimeSpan.Text = "0";
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(144, 550);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(105, 13);
+            this.label15.TabIndex = 15;
+            this.label15.Text = "Время выполнения";
             // 
             // lbl_TotalCount
             // 
@@ -271,104 +272,13 @@
             this.dataGrid1.DeleteQuestionMessage = "Are you sure to delete all the selected rows?";
             this.dataGrid1.EnableSort = false;
             this.dataGrid1.FixedRows = 1;
-            this.dataGrid1.Location = new System.Drawing.Point(14, 105);
+            this.dataGrid1.Location = new System.Drawing.Point(14, 36);
             this.dataGrid1.Name = "dataGrid1";
             this.dataGrid1.SelectionMode = SourceGrid.GridSelectionMode.Row;
-            this.dataGrid1.Size = new System.Drawing.Size(1156, 420);
+            this.dataGrid1.Size = new System.Drawing.Size(1156, 489);
             this.dataGrid1.TabIndex = 11;
             this.dataGrid1.TabStop = true;
             this.dataGrid1.ToolTipText = "";
-            // 
-            // dataGrid_import_excel
-            // 
-            this.dataGrid_import_excel.AllowUserToAddRows = false;
-            this.dataGrid_import_excel.AllowUserToDeleteRows = false;
-            this.dataGrid_import_excel.AutoGenerateColumns = false;
-            this.dataGrid_import_excel.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGrid_import_excel.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.isChecked,
-            this.prodnameDataGridViewTextBoxColumn,
-            this.prodcodeDataGridViewTextBoxColumn,
-            this.prodincomepriceDataGridViewTextBoxColumn,
-            this.prodpresense1DataGridViewTextBoxColumn,
-            this.prodpresense2DataGridViewTextBoxColumn,
-            this.prod_currency,
-            this.prod_client_price,
-            this.typeFoundProductDataGridViewTextBoxColumn,
-            this.numberDataGridViewTextBoxColumn,
-            this.prod_pc_id});
-            this.dataGrid_import_excel.DataSource = this.bindingSource_import_excel;
-            this.dataGrid_import_excel.Location = new System.Drawing.Point(8, 36);
-            this.dataGrid_import_excel.Name = "dataGrid_import_excel";
-            this.dataGrid_import_excel.Size = new System.Drawing.Size(1167, 63);
-            this.dataGrid_import_excel.TabIndex = 10;
-            // 
-            // isChecked
-            // 
-            this.isChecked.HeaderText = "";
-            this.isChecked.Name = "isChecked";
-            this.isChecked.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.isChecked.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            // 
-            // prodnameDataGridViewTextBoxColumn
-            // 
-            this.prodnameDataGridViewTextBoxColumn.DataPropertyName = "prod_name";
-            this.prodnameDataGridViewTextBoxColumn.HeaderText = "prod_name";
-            this.prodnameDataGridViewTextBoxColumn.Name = "prodnameDataGridViewTextBoxColumn";
-            // 
-            // prodcodeDataGridViewTextBoxColumn
-            // 
-            this.prodcodeDataGridViewTextBoxColumn.DataPropertyName = "prod_code";
-            this.prodcodeDataGridViewTextBoxColumn.HeaderText = "prod_code";
-            this.prodcodeDataGridViewTextBoxColumn.Name = "prodcodeDataGridViewTextBoxColumn";
-            // 
-            // prodincomepriceDataGridViewTextBoxColumn
-            // 
-            this.prodincomepriceDataGridViewTextBoxColumn.DataPropertyName = "prod_income_price";
-            this.prodincomepriceDataGridViewTextBoxColumn.HeaderText = "prod_income_price";
-            this.prodincomepriceDataGridViewTextBoxColumn.Name = "prodincomepriceDataGridViewTextBoxColumn";
-            // 
-            // prodpresense1DataGridViewTextBoxColumn
-            // 
-            this.prodpresense1DataGridViewTextBoxColumn.DataPropertyName = "prod_presense1";
-            this.prodpresense1DataGridViewTextBoxColumn.HeaderText = "prod_presense1";
-            this.prodpresense1DataGridViewTextBoxColumn.Name = "prodpresense1DataGridViewTextBoxColumn";
-            // 
-            // prodpresense2DataGridViewTextBoxColumn
-            // 
-            this.prodpresense2DataGridViewTextBoxColumn.DataPropertyName = "prod_presense2";
-            this.prodpresense2DataGridViewTextBoxColumn.HeaderText = "prod_presense2";
-            this.prodpresense2DataGridViewTextBoxColumn.Name = "prodpresense2DataGridViewTextBoxColumn";
-            // 
-            // prod_currency
-            // 
-            this.prod_currency.DataPropertyName = "prod_currency";
-            this.prod_currency.HeaderText = "prod_currency";
-            this.prod_currency.Name = "prod_currency";
-            // 
-            // prod_client_price
-            // 
-            this.prod_client_price.DataPropertyName = "prod_client_price";
-            this.prod_client_price.HeaderText = "prod_client_price";
-            this.prod_client_price.Name = "prod_client_price";
-            // 
-            // typeFoundProductDataGridViewTextBoxColumn
-            // 
-            this.typeFoundProductDataGridViewTextBoxColumn.DataPropertyName = "typeFoundProduct";
-            this.typeFoundProductDataGridViewTextBoxColumn.HeaderText = "typeFoundProduct";
-            this.typeFoundProductDataGridViewTextBoxColumn.Name = "typeFoundProductDataGridViewTextBoxColumn";
-            // 
-            // numberDataGridViewTextBoxColumn
-            // 
-            this.numberDataGridViewTextBoxColumn.DataPropertyName = "number";
-            this.numberDataGridViewTextBoxColumn.HeaderText = "number";
-            this.numberDataGridViewTextBoxColumn.Name = "numberDataGridViewTextBoxColumn";
-            // 
-            // prod_pc_id
-            // 
-            this.prod_pc_id.DataPropertyName = "prod_pc_id";
-            this.prod_pc_id.HeaderText = "prod_pc_id";
-            this.prod_pc_id.Name = "prod_pc_id";
             // 
             // bindingSource_import_excel
             // 
@@ -610,15 +520,6 @@
             this.label12.Size = new System.Drawing.Size(65, 13);
             this.label12.TabIndex = 1;
             this.label12.Text = "Поставщик";
-            // 
-            // dataGridView1
-            // 
-            this.dataGridView1.AllowUserToOrderColumns = true;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(6, 35);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(1169, 64);
-            this.dataGridView1.TabIndex = 0;
             // 
             // tabPageSettings
             // 
@@ -1028,24 +929,6 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Название";
             // 
-            // label15
-            // 
-            this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(144, 550);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(105, 13);
-            this.label15.TabIndex = 15;
-            this.label15.Text = "Время выполнения";
-            // 
-            // label_TimeSpan
-            // 
-            this.label_TimeSpan.AutoSize = true;
-            this.label_TimeSpan.Location = new System.Drawing.Point(256, 550);
-            this.label_TimeSpan.Name = "label_TimeSpan";
-            this.label_TimeSpan.Size = new System.Drawing.Size(13, 13);
-            this.label_TimeSpan.TabIndex = 16;
-            this.label_TimeSpan.Text = "0";
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1063,12 +946,10 @@
             this.tabControlMain.ResumeLayout(false);
             this.tabPageImport.ResumeLayout(false);
             this.tabPageImport.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGrid_import_excel)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource_import_excel)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataSet)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataTable_import_settings)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataTable_import_excel)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.tabPageSettings.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
@@ -1092,7 +973,6 @@
         private System.Windows.Forms.TabControl tabControlMain;
         private System.Windows.Forms.TabPage tabPageImport;
         private System.Windows.Forms.TabPage tabPageSettings;
-        private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.DataGridView dataGrid_import_settings;
         private System.Windows.Forms.TextBox textBoxActuality;
@@ -1152,8 +1032,6 @@
         private System.Windows.Forms.Button buttonDelete;
         private System.Windows.Forms.Button buttonAdd;
         private System.Windows.Forms.Button buttonSave;
-
-        private System.Windows.Forms.DataGridView dataGrid_import_excel;
         private System.Windows.Forms.BindingSource bindingSource_import_excel;
         private System.Data.DataTable dataTable_import_excel;
         private System.Data.DataColumn dataColumn13;
@@ -1174,17 +1052,6 @@
         private System.Data.DataColumn dataColumn21;
         private System.Windows.Forms.Button button1;
         private System.Data.DataColumn dataColumn22;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn isChecked;
-        private System.Windows.Forms.DataGridViewTextBoxColumn prodnameDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn prodcodeDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn prodincomepriceDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn prodpresense1DataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn prodpresense2DataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn prod_currency;
-        private System.Windows.Forms.DataGridViewTextBoxColumn prod_client_price;
-        private System.Windows.Forms.DataGridViewTextBoxColumn typeFoundProductDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn numberDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn prod_pc_id;
         private SourceGrid.DataGrid dataGrid1;
         private System.Windows.Forms.Label lbl_TotalCount;
         private System.Windows.Forms.Label lbl_Of;
