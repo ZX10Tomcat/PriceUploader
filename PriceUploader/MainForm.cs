@@ -84,7 +84,7 @@ namespace PriceUploader
                         prod_price_col2 = TableProductAndAlias.Rows[i].ItemArray[6],
                         prod_price_col3 = TableProductAndAlias.Rows[i].ItemArray[7],
                         prod_fixed_price = TableProductAndAlias.Rows[i].ItemArray[8],
-                        pa_code = TableProductAndAlias.Rows[i].ItemArray[9],
+                        pa_code = TableProductAndAlias.Rows[i].ItemArray[9] == null ? "" : TableProductAndAlias.Rows[i].ItemArray[9].ToString(),
                         prod_pc_id = TableProductAndAlias.Rows[i].ItemArray[10],
                     });  
                 }
@@ -438,12 +438,11 @@ namespace PriceUploader
                         //this.dataGrid_import_excel.DataSource = null;
                         //this.dataGrid_import_excel.Rows.Clear();
 
-                        dataSet.Tables[tableName].Clear();
+                        //dataSet.Tables[tableName].Clear();
 
                         //IEnumerable<DataRow> aliasQuery =
                         //    from productAlias in TableProductAlias.AsEnumerable()
                         //    select productAlias;
-
 
                         string format = comboBoxFormat.Text;
 
@@ -548,7 +547,7 @@ namespace PriceUploader
         {
             string temp = string.Empty;
             if (column >= 0)
-                temp = tbl.Rows[row].ItemArray.GetValue(column).ToString();
+                temp = tbl.Rows[row].ItemArray.GetValue(column) != null ? tbl.Rows[row].ItemArray.GetValue(column).ToString() : string.Empty;
             return temp;
         }
 
@@ -598,19 +597,17 @@ namespace PriceUploader
             for (int i = indexBeg; i < indexEnd; i++)
             {
                 importToDB = new ImportToDB();
-
                 importToDB.number = i;
 
                 prod = null;
-                var v = tableExcel.Rows[i].ItemArray.GetValue(4);
-                if (v != null)
+                importToDB.prod_code = GetValue(ref tableExcel, i, indexColumnCode);
+
+                if (!string.IsNullOrEmpty(importToDB.prod_code))
                 {
-                    code = v as string;
-                    prod = products.FirstOrDefault(a => a.pa_code.ToString() == code);
+                    prod = products.FirstOrDefault(a => a.pa_code == importToDB.prod_code);
                 }
 
-                importToDB.prod_name = GetValue(ref tableExcel, i, indexColumnPresense1); // наименование
-                importToDB.prod_code = GetValue(ref tableExcel, i, indexColumnCode); //код
+                importToDB.prod_name = GetValue(ref tableExcel, i, indexColumnName);       
                 importToDB.prod_income_price = GetValue(ref tableExcel, i, indexColumnPrice);
                 importToDB.prod_presense1 = GetValue(ref tableExcel, i, indexColumnPresense1);
                 importToDB.prod_presense2 = GetValue(ref tableExcel, i, indexColumnPresense2);
@@ -696,18 +693,13 @@ namespace PriceUploader
             UpdateCounter(indexEnd-1);
             UpdateTime();
 
-
             dataGrid1.Invoke(new Action(() =>
             {
                 dataGrid1.ResumeLayout();
                 dataGrid1.RecalcCustomScrollBars();
             }));
 
-
         }
-
-
-
 
 
         private double? CalcClientPrice(int prod_pc_id, double price)

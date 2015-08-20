@@ -458,7 +458,7 @@ prod_fixed_price, pa_code, prod_pc_id FROM product_alias INNER JOIN product pr O
         public object prod_price_col2;
         public object prod_price_col3;
         public object prod_fixed_price;
-        public object pa_code;
+        public string pa_code;
         public object prod_pc_id;
     }
         
