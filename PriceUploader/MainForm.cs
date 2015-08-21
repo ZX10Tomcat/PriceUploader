@@ -177,6 +177,11 @@ namespace PriceUploader
             TimeSpan timeout = d2 - d1;
 
             FillComboBoxes();
+            comboBoxImportCurrency.SelectedIndex = 0;
+
+            
+
+
             //dataGrid_import_excel.Columns["isChecked"].ReadOnly = false;
             Debug.WriteLine("time data loaded: " + timeout.ToString());
             return;
@@ -229,7 +234,7 @@ namespace PriceUploader
                 comboBoxAvailability1.Items.Add(Columns[i]);
                 comboBoxAvailability2.Items.Add(Columns[i]);
                 comboBoxCurrency.Items.Add(Columns[i]);
-            }           
+            }                 
         }
 
         private void SetFormatComboBox(Task<DataTable> res)
@@ -240,6 +245,7 @@ namespace PriceUploader
                 {
                     comboBoxFormat.Items.Add(res.Result.Rows[i].ItemArray[1]);
                 }
+                comboBoxFormat.SelectedIndex = 0;
             }));
         }
 
@@ -252,6 +258,7 @@ namespace PriceUploader
                 {
                     comboBoxSupplier.Items.Add(res.Result.Rows[i].ItemArray[1]);
                 }
+                comboBoxSupplier.SelectedIndex = 0;
             }));
         }
         
@@ -467,10 +474,10 @@ namespace PriceUploader
                         indexColumnCurrency = LetterNumber(importSettings["is_currency_col"].ToString()) - 1;
                         
                         // Set columns
-                        table.Columns.Add("number", typeof(int));
-                        table.Columns.Add("prod_name", typeof(string));
-                        table.Columns.Add("prod_code", typeof(string));
-                        table.Columns.Add("prod_income_price", typeof(string));
+                        table.Columns.Add("№", typeof(int));
+                        table.Columns.Add("Наименование", typeof(string));
+                        table.Columns.Add("Код", typeof(string));
+                        table.Columns.Add("Цена", typeof(string));
                         table.Columns.Add("prod_presense1", typeof(string));
                         table.Columns.Add("prod_presense2", typeof(string));
                         table.Columns.Add("prod_currency", typeof(string));
@@ -519,9 +526,21 @@ namespace PriceUploader
 
                         dataGrid1.SelectionMode = SourceGrid.GridSelectionMode.Row;
                         dataGrid1.DataSource = new DevAge.ComponentModel.BoundDataView(table.DefaultView);
-                        dataGrid1.Columns.AutoSizeView();
+                        //dataGrid1.Columns.AutoSizeView();
                         dataGrid1.DefaultWidth = 50;
-
+                        
+                        // Columns width
+                        dataGrid1.Columns[0].Width = 50;
+                        dataGrid1.Columns[1].Width = 300;
+                        dataGrid1.Columns[2].Width = 100;
+                        dataGrid1.Columns[3].Width = 100;
+                        dataGrid1.Columns[4].Width = 100;
+                        dataGrid1.Columns[5].Width = 100;
+                        dataGrid1.Columns[6].Width = 100;
+                        dataGrid1.Columns[7].Width = 100;
+                        dataGrid1.Columns[8].Width = 100;
+                                               
+                        
                         dataGrid1.Invoke(new Action(() =>
                         {
                             dataGrid1.ResumeLayout();
@@ -644,8 +663,8 @@ namespace PriceUploader
                 table.Rows.Add(
                     new object[] {
                                     importToDB.number,
-                                    importToDB.prod_name,
                                     importToDB.prod_code,
+                                    importToDB.prod_name,                                   
                                     importToDB.prod_income_price,
                                     importToDB.prod_presense1,
                                     importToDB.prod_presense2,
@@ -655,7 +674,7 @@ namespace PriceUploader
                                 });
 
 
-
+                table.Rows[i].
 
 
                 ////if ( (countRowsExcel < 50 && i == countRowsExcel) || (i == 50) )
