@@ -415,6 +415,7 @@ namespace PriceUploader
         private int indexColumnCurrency = 0;
         private DateTime timeBeg = DateTime.Now;
         private List<ImportToDB> listImportToDB = new List<ImportToDB>();
+        private int beginRows = 0;
 
         private void buttonOpenExcel_Click(object sender, EventArgs e)
         {
@@ -442,6 +443,8 @@ namespace PriceUploader
 
                     if (countRowsExcel > 0)
                     {
+                        beginRows = countRowsExcel / 3;
+
                         //string tableName = "Table_import_excel";
 
                         //this.dataGrid_import_excel.DataSource = null;
@@ -524,7 +527,7 @@ namespace PriceUploader
                         //}
 
                         timeBeg = DateTime.Now;
-                        AddRows(0, 100, indexColumnName, indexColumnCode, indexColumnPrice, indexColumnPresense1, indexColumnPresense2, indexColumnCurrency);
+                        AddRows(0, beginRows, indexColumnName, indexColumnCode, indexColumnPrice, indexColumnPresense1, indexColumnPresense2, indexColumnCurrency);
 
                         dataGrid1.SelectionMode = SourceGrid.GridSelectionMode.Row;
                         dataGrid1.DataSource = new DevAge.ComponentModel.BoundDataView(table.DefaultView);
@@ -597,8 +600,8 @@ namespace PriceUploader
         private void CreateData()
         {
             dataGrid1.SuspendLayout();
-            
-            AddRows(100, countRowsExcel, indexColumnName, indexColumnCode, indexColumnPrice, indexColumnPresense1, indexColumnPresense2, indexColumnCurrency);
+
+            AddRows(beginRows, countRowsExcel, indexColumnName, indexColumnCode, indexColumnPrice, indexColumnPresense1, indexColumnPresense2, indexColumnCurrency);
             
             dataGrid1.Invoke(new Action(() =>
             {
