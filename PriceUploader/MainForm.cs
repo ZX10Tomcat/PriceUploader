@@ -414,6 +414,7 @@ namespace PriceUploader
         private int indexColumnPresense2 = 0;
         private int indexColumnCurrency = 0;
         private DateTime timeBeg = DateTime.Now;
+        private List<ImportToDB> listImportToDB = new List<ImportToDB>();
 
         private void buttonOpenExcel_Click(object sender, EventArgs e)
         {
@@ -437,10 +438,11 @@ namespace PriceUploader
                     tableExcel = new DataTable();
 
                     countRowsExcel = this.Model.ImportExcel(fileName, ref tableExcel);
-                    
+                    listImportToDB = new List<ImportToDB>();
+
                     if (countRowsExcel > 0)
                     {
-                        string tableName = "Table_import_excel";
+                        //string tableName = "Table_import_excel";
 
                         //this.dataGrid_import_excel.DataSource = null;
                         //this.dataGrid_import_excel.Rows.Clear();
@@ -605,76 +607,102 @@ namespace PriceUploader
             }));
         }
 
-
+        
 
         private void AddRows(int indexBeg, int indexEnd, int indexColumnName, int indexColumnCode, int indexColumnPrice, int indexColumnPresense1, int indexColumnPresense2, int indexColumnCurrency)
         {
-            string code = string.Empty;
-            Product prod = null;
-            ImportToDB importToDB = null;
+            //string code = string.Empty;
+            //Product prod = null;
+
+            listImportToDB = new List<ImportToDB>();
 
             for (int i = indexBeg; i < indexEnd; i++)
             {
-                importToDB = new ImportToDB();
-                importToDB.number = i;
+                listImportToDB.Add(
+                    new ImportToDB()
+                    {
+                        number = i,
+                        prod_code = GetValue(ref tableExcel, i, indexColumnCode),
+                        prod_name = GetValue(ref tableExcel, i, indexColumnName),
+                        prod_income_price = GetValue(ref tableExcel, i, indexColumnPrice),
+                        prod_presense1 = GetValue(ref tableExcel, i, indexColumnPresense1),
+                        prod_presense2 = GetValue(ref tableExcel, i, indexColumnPresense2),
+                        prod_currency = GetValue(ref tableExcel, i, indexColumnCurrency)
+                    });
+            }
 
-                prod = null;
-                importToDB.prod_code = GetValue(ref tableExcel, i, indexColumnCode);
 
-                if (!string.IsNullOrEmpty(importToDB.prod_code))
+            var importQuery = (
+                from l in listImportToDB
+                from p in products.Where(p => p.pa_code == l.prod_code && p.prod_name.ToString() == l.prod_name.ToString()).DefaultIfEmpty()
+                select new
                 {
-                    prod = products.FirstOrDefault(a => a.pa_code == importToDB.prod_code);
-                }
+                    number = l.number,
+                    prod_code = l.prod_code,
+                    prod_name = l.prod_name,
+                    prod_income_price = l.prod_income_price,
+                    prod_presense1 = l.prod_presense1,
+                    prod_presense2 = l.prod_presense2,
+                    prod_currency =  l.prod_currency, 
+                    product_pa_code = p == null ? "" : p.pa_code,
+                    product_prod_pc_id = p == null ? "" : p.prod_pc_id,
+                    prod_pc_id = p == null ? "" : p.prod_pc_id
+                }).ToList();
 
-                importToDB.prod_name = GetValue(ref tableExcel, i, indexColumnName);       
-                importToDB.prod_income_price = GetValue(ref tableExcel, i, indexColumnPrice);
-                importToDB.prod_presense1 = GetValue(ref tableExcel, i, indexColumnPresense1);
-                importToDB.prod_presense2 = GetValue(ref tableExcel, i, indexColumnPresense2);
-                importToDB.prod_currency = GetValue(ref tableExcel, i, indexColumnCurrency);
 
-                object recived_price = tableExcel.Rows[i].ItemArray.GetValue(indexColumnPrice);
-                if (prod != null
-                    && prod.prod_pc_id != null
-                    && categoryCharge != null
-                    && recived_price != null)
-                {
-                    int prod_pc_id = System.Convert.ToInt32(prod.prod_pc_id);
-                    double price = System.Convert.ToDouble(recived_price);
-                    importToDB.prod_client_price = CalcClientPrice(prod_pc_id, price).ToString();
-                }
+            var import = (importQuery).ToList();
 
-                if (prod != null)
-                    importToDB.prod_pc_id = prod.prod_pc_id.ToString();
 
-                //table.Rows.Add(
-                //    new object[] {
-                //                    excelList[i].number,
-                //                    excelList[i].prod_name,
-                //                    excelList[i].prod_code,
-                //                    excelList[i].prod_income_price,
-                //                    excelList[i].prod_presense1,
-                //                    excelList[i].prod_presense2,
-                //                    excelList[i].prod_currency,
-                //                    excelList[i].prod_client_price,
-                //                    excelList[i].prod_pc_id
-                //                });
+            for (int i = indexBeg; i < import.Count() /* indexEnd */; i++)
+            {
+                //НЕ НУЖНО/////////////////////////////////////////////////////////////////////////////////////////////////////
+                //На всякий случай/////////////////////////////////////////////////////////////////////////////////////////////
 
+                //importToDB = new ImportToDB();
+                //importToDB.number = i;
+
+                //prod = null;
+                //importToDB.prod_code = GetValue(ref tableExcel, i, indexColumnCode);
+
+                //if (!string.IsNullOrEmpty(importToDB.prod_code))
+                //{
+                //    prod = products.FirstOrDefault(a => a.pa_code == importToDB.prod_code);
+                //}
+
+                //importToDB.prod_name = GetValue(ref tableExcel, i, indexColumnName);
+                //importToDB.prod_income_price = GetValue(ref tableExcel, i, indexColumnPrice);
+                //importToDB.prod_presense1 = GetValue(ref tableExcel, i, indexColumnPresense1);
+                //importToDB.prod_presense2 = GetValue(ref tableExcel, i, indexColumnPresense2);
+                //importToDB.prod_currency = GetValue(ref tableExcel, i, indexColumnCurrency);
+
+                //object recived_price = tableExcel.Rows[i].ItemArray.GetValue(indexColumnPrice);
+                //if (prod != null
+                //    && prod.prod_pc_id != null
+                //    && categoryCharge != null
+                //    && recived_price != null)
+                //{
+                //    int prod_pc_id = System.Convert.ToInt32(prod.prod_pc_id);
+                //    double price = System.Convert.ToDouble(recived_price);
+                //    importToDB.prod_client_price = CalcClientPrice(prod_pc_id, price).ToString();
+                //}
+
+                //if (prod != null)
+                //    importToDB.prod_pc_id = prod.prod_pc_id.ToString();
+                
+                //На всякий случай/////////////////////////////////////////////////////////////////////////////////////////////
 
                 table.Rows.Add(
                     new object[] {
-                                    importToDB.number,
-                                    importToDB.prod_code,
-                                    importToDB.prod_name,                                   
-                                    importToDB.prod_income_price,
-                                    importToDB.prod_presense1,
-                                    importToDB.prod_presense2,
-                                    importToDB.prod_currency,
-                                    importToDB.prod_client_price,
-                                    importToDB.prod_pc_id
+                                    import[i].number,
+                                    import[i].prod_name,                                   
+                                    import[i].prod_code,
+                                    import[i].prod_income_price,
+                                    import[i].prod_presense1,
+                                    import[i].prod_presense2,
+                                    import[i].prod_currency,
+                                    CalcClientPrice(ref categoryCharge, tableExcel.Rows[i].ItemArray.GetValue(indexColumnPrice), import[i].prod_pc_id)    /* prod_client_price */,
+                                    import[i].prod_pc_id
                                 });
-
-
-                table.Rows[i].
 
 
                 ////if ( (countRowsExcel < 50 && i == countRowsExcel) || (i == 50) )
@@ -692,7 +720,7 @@ namespace PriceUploader
                 //    dr["typeFoundProduct"] = TypeFoundProduct.New;
                 //    dataGrid_import_excel.Rows[i].DefaultCellStyle.BackColor = Color.Red;
                 //}
-                
+
 
                 if (i % 100 == 0)
                 {
@@ -706,9 +734,8 @@ namespace PriceUploader
                         dataGrid1.ResumeLayout();
                         dataGrid1.RecalcCustomScrollBars();
                     }));
-
             }
-            
+
             UpdateCounter(indexEnd-1);
             UpdateTime();
 
@@ -721,10 +748,29 @@ namespace PriceUploader
         }
 
 
-        private double? CalcClientPrice(int prod_pc_id, double price)
+        private string CalcClientPrice(ref List<CategoryCharge> _categoryCharge, object _recived_price, object prod_pc_id)
         {
             double? res = null;
-            CategoryCharge findCharge = categoryCharge.FirstOrDefault(
+            if (_recived_price != null
+                && categoryCharge != null
+                && prod_pc_id != null
+                && !string.IsNullOrEmpty(prod_pc_id.ToString()) )
+            {
+                int _prod_pc_id = System.Convert.ToInt32(prod_pc_id);
+                double price = System.Convert.ToDouble(_recived_price);
+                res = CalcClientPriceSub(ref _categoryCharge, _prod_pc_id, price);
+            }
+
+            if (res != null)
+                return res.ToString();
+
+            return null;
+        }
+
+        private double? CalcClientPriceSub(ref List<CategoryCharge> _categoryCharge, int prod_pc_id, double price)
+        {
+            double? res = null;
+            CategoryCharge findCharge = _categoryCharge.FirstOrDefault(
                 f => (System.Convert.ToInt32(f.cc_pc_id) == prod_pc_id && (double)price >= System.Convert.ToDouble(f.cc_price_from) && (double)price < System.Convert.ToDouble(f.cc_price_to))
                     || (System.Convert.ToInt32(f.cc_pc_id) == prod_pc_id && (double)price > System.Convert.ToDouble(f.cc_price_from) && (double)price >= System.Convert.ToDouble(f.cc_price_to)) );
             
@@ -733,7 +779,6 @@ namespace PriceUploader
             
             return res;
         }
-
 
         private void buttonAdd_Click(object sender, EventArgs e)
         {

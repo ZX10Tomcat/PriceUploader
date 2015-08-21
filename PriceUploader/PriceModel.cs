@@ -464,6 +464,7 @@ prod_fixed_price, pa_code, prod_pc_id FROM product_alias INNER JOIN product pr O
         
     public class ImportToDB
     {
+        public int number = 0;
         public string prod_name = string.Empty;
         public string prod_code = string.Empty;
         public string prod_income_price = string.Empty;
@@ -472,8 +473,9 @@ prod_fixed_price, pa_code, prod_pc_id FROM product_alias INNER JOIN product pr O
         public string prod_currency = string.Empty;
         public string prod_client_price = string.Empty;
         public string prod_pc_id = string.Empty;
-        public int number = 0;
-    
+        public string product_pa_code = string.Empty;
+        public string product_prod_pc_id = string.Empty;
+
     }
 
 
