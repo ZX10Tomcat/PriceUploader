@@ -37,6 +37,7 @@
             this.toolStripMenuItemExit = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControlMain = new System.Windows.Forms.TabControl();
             this.tabPageImport = new System.Windows.Forms.TabPage();
+            this.dataGrid1 = new System.Windows.Forms.DataGridView();
             this.label_TimeSpan = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
             this.lbl_TotalCount = new System.Windows.Forms.Label();
@@ -96,6 +97,7 @@
             this.dataColumn20 = new System.Data.DataColumn();
             this.dataColumn21 = new System.Data.DataColumn();
             this.dataColumn22 = new System.Data.DataColumn();
+            this.dataColumn23 = new System.Data.DataColumn();
             this.comboBoxCurrency = new System.Windows.Forms.ComboBox();
             this.comboBoxAvailability2 = new System.Windows.Forms.ComboBox();
             this.comboBoxAvailability1 = new System.Windows.Forms.ComboBox();
@@ -120,10 +122,10 @@
             this.textBoxName = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.bindingSource_import_excel = new System.Windows.Forms.BindingSource(this.components);
-            this.dataGrid1 = new System.Windows.Forms.DataGridView();
             this.menuStrip1.SuspendLayout();
             this.tabControlMain.SuspendLayout();
             this.tabPageImport.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGrid1)).BeginInit();
             this.tabPageSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -135,7 +137,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataTable_import_settings)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataTable_import_excel)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource_import_excel)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGrid1)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -223,6 +224,14 @@
             this.tabPageImport.Text = "Импорт";
             this.tabPageImport.UseVisualStyleBackColor = true;
             // 
+            // dataGrid1
+            // 
+            this.dataGrid1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGrid1.Location = new System.Drawing.Point(7, 39);
+            this.dataGrid1.Name = "dataGrid1";
+            this.dataGrid1.Size = new System.Drawing.Size(1163, 492);
+            this.dataGrid1.TabIndex = 17;
+            // 
             // label_TimeSpan
             // 
             this.label_TimeSpan.AutoSize = true;
@@ -285,6 +294,7 @@
             this.button2.TabIndex = 8;
             this.button2.Text = "Загрузить файл";
             this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // buttonOpenExcel
             // 
@@ -667,7 +677,8 @@
             this.dataColumn19,
             this.dataColumn20,
             this.dataColumn21,
-            this.dataColumn22});
+            this.dataColumn22,
+            this.dataColumn23});
             this.dataTable_import_excel.TableName = "Table_import_excel";
             // 
             // dataColumn13
@@ -719,6 +730,11 @@
             // 
             this.dataColumn22.Caption = "prod_pc_id";
             this.dataColumn22.ColumnName = "prod_pc_id";
+            // 
+            // dataColumn23
+            // 
+            this.dataColumn23.Caption = "prod_id";
+            this.dataColumn23.ColumnName = "prod_id";
             // 
             // comboBoxCurrency
             // 
@@ -917,14 +933,6 @@
             this.bindingSource_import_excel.DataMember = "Table_import_excel";
             this.bindingSource_import_excel.DataSource = this.dataSet;
             // 
-            // dataGrid1
-            // 
-            this.dataGrid1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGrid1.Location = new System.Drawing.Point(7, 39);
-            this.dataGrid1.Name = "dataGrid1";
-            this.dataGrid1.Size = new System.Drawing.Size(1163, 492);
-            this.dataGrid1.TabIndex = 17;
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -942,6 +950,7 @@
             this.tabControlMain.ResumeLayout(false);
             this.tabPageImport.ResumeLayout(false);
             this.tabPageImport.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGrid1)).EndInit();
             this.tabPageSettings.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
@@ -954,7 +963,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataTable_import_settings)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataTable_import_excel)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource_import_excel)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGrid1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1055,6 +1063,7 @@
         private System.Windows.Forms.Label label_TimeSpan;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.DataGridView dataGrid1;
+        private System.Data.DataColumn dataColumn23;
 
     }
 }

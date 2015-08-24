@@ -488,7 +488,7 @@ namespace PriceUploader
                         table.Columns.Add("prod_currency", typeof(string));
                         table.Columns.Add("prod_client_price", typeof(string));
                         table.Columns.Add("prod_pc_id", typeof(string));
-
+                        table.Columns.Add("prod_id", typeof(string));
 
                         lbl_TotalCount.Text = (countRowsExcel-1).ToString();
 
@@ -530,6 +530,7 @@ namespace PriceUploader
                         AddRows(0, beginRows, indexColumnName, indexColumnCode, indexColumnPrice, indexColumnPresense1, indexColumnPresense2, indexColumnCurrency);
 
                         //dataGrid1.SelectionMode = SourceGrid.GridSelectionMode.Row;
+                        //dataGrid1.DataSource = new DevAge.ComponentModel.BoundDataView(table.DefaultView);
                         dataGrid1.DataSource = table;
                         //dataGrid1.Columns.AutoSizeView();
                         //dataGrid1.DefaultWidth = 50;
@@ -543,8 +544,8 @@ namespace PriceUploader
                         dataGrid1.Columns[5].Width = 100;
                         dataGrid1.Columns[6].Width = 100;
                         dataGrid1.Columns[7].Width = 100;
-                        dataGrid1.Columns[8].Width = 100;
-                                               
+                        dataGrid1.Columns[8].Width = 60;
+                        dataGrid1.Columns[9].Width = 60;
                         
                         dataGrid1.Invoke(new Action(() =>
                         {
@@ -637,7 +638,7 @@ namespace PriceUploader
 
             var importQuery = (
                 from l in listImportToDB
-                from p in products.Where(p => p.pa_code == l.prod_code && p.prod_name.ToString() == l.prod_name.ToString()).DefaultIfEmpty()
+                from p in products.Where(p => p.pa_code == l.prod_code && p.prod_name.ToString() == l.prod_name.ToString()) //.DefaultIfEmpty()
                 select new
                 {
                     number = l.number,
@@ -649,7 +650,8 @@ namespace PriceUploader
                     prod_currency =  l.prod_currency, 
                     product_pa_code = p == null ? "" : p.pa_code,
                     product_prod_pc_id = p == null ? "" : p.prod_pc_id,
-                    prod_pc_id = p == null ? "" : p.prod_pc_id
+                    prod_pc_id = p == null ? "" : p.prod_pc_id,
+                    prod_id = p == null ? "" : p.prod_id
                 }).ToList();
 
 
@@ -704,7 +706,8 @@ namespace PriceUploader
                                     import[i].prod_presense2,
                                     import[i].prod_currency,
                                     CalcClientPrice(ref categoryCharge, tableExcel.Rows[i].ItemArray.GetValue(indexColumnPrice), import[i].prod_pc_id)    /* prod_client_price */,
-                                    import[i].prod_pc_id
+                                    import[i].prod_pc_id,
+                                    import[i].prod_id
                                 });
 
 
@@ -823,6 +826,13 @@ namespace PriceUploader
             formCategories.Init(TableProductCategory);
             formCategories.ShowDialog();
         }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Model.InsertData(table); 
+        }
+
+
 
     }
 
