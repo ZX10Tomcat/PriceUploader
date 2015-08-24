@@ -42,33 +42,6 @@
             this.lbl_TotalCount = new System.Windows.Forms.Label();
             this.lbl_Of = new System.Windows.Forms.Label();
             this.lbl_Counter = new System.Windows.Forms.Label();
-            this.dataGrid1 = new SourceGrid.DataGrid();
-            this.bindingSource_import_excel = new System.Windows.Forms.BindingSource(this.components);
-            this.dataSet = new System.Data.DataSet();
-            this.dataTable_import_settings = new System.Data.DataTable();
-            this.dataColumn1 = new System.Data.DataColumn();
-            this.dataColumn2 = new System.Data.DataColumn();
-            this.dataColumn3 = new System.Data.DataColumn();
-            this.dataColumn4 = new System.Data.DataColumn();
-            this.dataColumn5 = new System.Data.DataColumn();
-            this.dataColumn6 = new System.Data.DataColumn();
-            this.dataColumn7 = new System.Data.DataColumn();
-            this.dataColumn8 = new System.Data.DataColumn();
-            this.dataColumn9 = new System.Data.DataColumn();
-            this.dataColumn10 = new System.Data.DataColumn();
-            this.dataColumn11 = new System.Data.DataColumn();
-            this.dataColumn12 = new System.Data.DataColumn();
-            this.dataTable_import_excel = new System.Data.DataTable();
-            this.dataColumn13 = new System.Data.DataColumn();
-            this.dataColumn14 = new System.Data.DataColumn();
-            this.dataColumn15 = new System.Data.DataColumn();
-            this.dataColumn16 = new System.Data.DataColumn();
-            this.dataColumn17 = new System.Data.DataColumn();
-            this.dataColumn18 = new System.Data.DataColumn();
-            this.dataColumn19 = new System.Data.DataColumn();
-            this.dataColumn20 = new System.Data.DataColumn();
-            this.dataColumn21 = new System.Data.DataColumn();
-            this.dataColumn22 = new System.Data.DataColumn();
             this.label_file_name = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
             this.buttonOpenExcel = new System.Windows.Forms.Button();
@@ -98,6 +71,31 @@
             this.isuahflagDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.isidDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.bindingSource__import_settings = new System.Windows.Forms.BindingSource(this.components);
+            this.dataSet = new System.Data.DataSet();
+            this.dataTable_import_settings = new System.Data.DataTable();
+            this.dataColumn1 = new System.Data.DataColumn();
+            this.dataColumn2 = new System.Data.DataColumn();
+            this.dataColumn3 = new System.Data.DataColumn();
+            this.dataColumn4 = new System.Data.DataColumn();
+            this.dataColumn5 = new System.Data.DataColumn();
+            this.dataColumn6 = new System.Data.DataColumn();
+            this.dataColumn7 = new System.Data.DataColumn();
+            this.dataColumn8 = new System.Data.DataColumn();
+            this.dataColumn9 = new System.Data.DataColumn();
+            this.dataColumn10 = new System.Data.DataColumn();
+            this.dataColumn11 = new System.Data.DataColumn();
+            this.dataColumn12 = new System.Data.DataColumn();
+            this.dataTable_import_excel = new System.Data.DataTable();
+            this.dataColumn13 = new System.Data.DataColumn();
+            this.dataColumn14 = new System.Data.DataColumn();
+            this.dataColumn15 = new System.Data.DataColumn();
+            this.dataColumn16 = new System.Data.DataColumn();
+            this.dataColumn17 = new System.Data.DataColumn();
+            this.dataColumn18 = new System.Data.DataColumn();
+            this.dataColumn19 = new System.Data.DataColumn();
+            this.dataColumn20 = new System.Data.DataColumn();
+            this.dataColumn21 = new System.Data.DataColumn();
+            this.dataColumn22 = new System.Data.DataColumn();
             this.comboBoxCurrency = new System.Windows.Forms.ComboBox();
             this.comboBoxAvailability2 = new System.Windows.Forms.ComboBox();
             this.comboBoxAvailability1 = new System.Windows.Forms.ComboBox();
@@ -121,13 +119,11 @@
             this.label2 = new System.Windows.Forms.Label();
             this.textBoxName = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.bindingSource_import_excel = new System.Windows.Forms.BindingSource(this.components);
+            this.dataGrid1 = new System.Windows.Forms.DataGridView();
             this.menuStrip1.SuspendLayout();
             this.tabControlMain.SuspendLayout();
             this.tabPageImport.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.bindingSource_import_excel)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataSet)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataTable_import_settings)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataTable_import_excel)).BeginInit();
             this.tabPageSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -135,6 +131,11 @@
             this.splitContainer1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGrid_import_settings)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource__import_settings)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataSet)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataTable_import_settings)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataTable_import_excel)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bindingSource_import_excel)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGrid1)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -199,12 +200,12 @@
             // 
             // tabPageImport
             // 
+            this.tabPageImport.Controls.Add(this.dataGrid1);
             this.tabPageImport.Controls.Add(this.label_TimeSpan);
             this.tabPageImport.Controls.Add(this.label15);
             this.tabPageImport.Controls.Add(this.lbl_TotalCount);
             this.tabPageImport.Controls.Add(this.lbl_Of);
             this.tabPageImport.Controls.Add(this.lbl_Counter);
-            this.tabPageImport.Controls.Add(this.dataGrid1);
             this.tabPageImport.Controls.Add(this.label_file_name);
             this.tabPageImport.Controls.Add(this.button2);
             this.tabPageImport.Controls.Add(this.buttonOpenExcel);
@@ -266,176 +267,6 @@
             this.lbl_Counter.Size = new System.Drawing.Size(13, 13);
             this.lbl_Counter.TabIndex = 12;
             this.lbl_Counter.Text = "0";
-            // 
-            // dataGrid1
-            // 
-            this.dataGrid1.DeleteQuestionMessage = "Are you sure to delete all the selected rows?";
-            this.dataGrid1.EnableSort = false;
-            this.dataGrid1.FixedRows = 1;
-            this.dataGrid1.Location = new System.Drawing.Point(14, 36);
-            this.dataGrid1.Name = "dataGrid1";
-            this.dataGrid1.SelectionMode = SourceGrid.GridSelectionMode.Row;
-            this.dataGrid1.Size = new System.Drawing.Size(1156, 489);
-            this.dataGrid1.TabIndex = 11;
-            this.dataGrid1.TabStop = true;
-            this.dataGrid1.ToolTipText = "";
-            // 
-            // bindingSource_import_excel
-            // 
-            this.bindingSource_import_excel.DataMember = "Table_import_excel";
-            this.bindingSource_import_excel.DataSource = this.dataSet;
-            // 
-            // dataSet
-            // 
-            this.dataSet.DataSetName = "dataSet";
-            this.dataSet.Tables.AddRange(new System.Data.DataTable[] {
-            this.dataTable_import_settings,
-            this.dataTable_import_excel});
-            // 
-            // dataTable_import_settings
-            // 
-            this.dataTable_import_settings.Columns.AddRange(new System.Data.DataColumn[] {
-            this.dataColumn1,
-            this.dataColumn2,
-            this.dataColumn3,
-            this.dataColumn4,
-            this.dataColumn5,
-            this.dataColumn6,
-            this.dataColumn7,
-            this.dataColumn8,
-            this.dataColumn9,
-            this.dataColumn10,
-            this.dataColumn11,
-            this.dataColumn12});
-            this.dataTable_import_settings.TableName = "Table_import_settings";
-            // 
-            // dataColumn1
-            // 
-            this.dataColumn1.Caption = "is_id";
-            this.dataColumn1.ColumnName = "is_id";
-            this.dataColumn1.DataType = typeof(int);
-            // 
-            // dataColumn2
-            // 
-            this.dataColumn2.Caption = "is_name";
-            this.dataColumn2.ColumnName = "is_name";
-            // 
-            // dataColumn3
-            // 
-            this.dataColumn3.Caption = "is_start_row";
-            this.dataColumn3.ColumnName = "is_start_row";
-            this.dataColumn3.DataType = typeof(int);
-            // 
-            // dataColumn4
-            // 
-            this.dataColumn4.Caption = "is_code_col";
-            this.dataColumn4.ColumnName = "is_code_col";
-            // 
-            // dataColumn5
-            // 
-            this.dataColumn5.Caption = "is_price_col";
-            this.dataColumn5.ColumnName = "is_price_col";
-            // 
-            // dataColumn6
-            // 
-            this.dataColumn6.Caption = "is_name_col";
-            this.dataColumn6.ColumnName = "is_name_col";
-            // 
-            // dataColumn7
-            // 
-            this.dataColumn7.Caption = "is_actuality";
-            this.dataColumn7.ColumnName = "is_actuality";
-            this.dataColumn7.DataType = typeof(int);
-            // 
-            // dataColumn8
-            // 
-            this.dataColumn8.Caption = "is_presense1_col";
-            this.dataColumn8.ColumnName = "is_presense1_col";
-            // 
-            // dataColumn9
-            // 
-            this.dataColumn9.Caption = "is_presense2_col";
-            this.dataColumn9.ColumnName = "is_presense2_col";
-            // 
-            // dataColumn10
-            // 
-            this.dataColumn10.Caption = "is_presense_symbol";
-            this.dataColumn10.ColumnName = "is_presense_symbol";
-            // 
-            // dataColumn11
-            // 
-            this.dataColumn11.Caption = "is_currency_col";
-            this.dataColumn11.ColumnName = "is_currency_col";
-            // 
-            // dataColumn12
-            // 
-            this.dataColumn12.Caption = "is_uah_flag";
-            this.dataColumn12.ColumnName = "is_uah_flag";
-            // 
-            // dataTable_import_excel
-            // 
-            this.dataTable_import_excel.Columns.AddRange(new System.Data.DataColumn[] {
-            this.dataColumn13,
-            this.dataColumn14,
-            this.dataColumn15,
-            this.dataColumn16,
-            this.dataColumn17,
-            this.dataColumn18,
-            this.dataColumn19,
-            this.dataColumn20,
-            this.dataColumn21,
-            this.dataColumn22});
-            this.dataTable_import_excel.TableName = "Table_import_excel";
-            // 
-            // dataColumn13
-            // 
-            this.dataColumn13.Caption = "prod_name";
-            this.dataColumn13.ColumnName = "prod_name";
-            // 
-            // dataColumn14
-            // 
-            this.dataColumn14.Caption = "prod_code";
-            this.dataColumn14.ColumnName = "prod_code";
-            // 
-            // dataColumn15
-            // 
-            this.dataColumn15.Caption = "prod_income_price";
-            this.dataColumn15.ColumnName = "prod_income_price";
-            // 
-            // dataColumn16
-            // 
-            this.dataColumn16.Caption = "number";
-            this.dataColumn16.ColumnName = "number";
-            // 
-            // dataColumn17
-            // 
-            this.dataColumn17.Caption = "typeFoundProduct";
-            this.dataColumn17.ColumnName = "typeFoundProduct";
-            // 
-            // dataColumn18
-            // 
-            this.dataColumn18.Caption = "prod_presense1";
-            this.dataColumn18.ColumnName = "prod_presense1";
-            // 
-            // dataColumn19
-            // 
-            this.dataColumn19.Caption = "prod_presense2";
-            this.dataColumn19.ColumnName = "prod_presense2";
-            // 
-            // dataColumn20
-            // 
-            this.dataColumn20.Caption = "prod_currency";
-            this.dataColumn20.ColumnName = "prod_currency";
-            // 
-            // dataColumn21
-            // 
-            this.dataColumn21.Caption = "prod_client_price";
-            this.dataColumn21.ColumnName = "prod_client_price";
-            // 
-            // dataColumn22
-            // 
-            this.dataColumn22.Caption = "prod_pc_id";
-            this.dataColumn22.ColumnName = "prod_pc_id";
             // 
             // label_file_name
             // 
@@ -737,6 +568,158 @@
             this.bindingSource__import_settings.DataMember = "Table_import_settings";
             this.bindingSource__import_settings.DataSource = this.dataSet;
             // 
+            // dataSet
+            // 
+            this.dataSet.DataSetName = "dataSet";
+            this.dataSet.Tables.AddRange(new System.Data.DataTable[] {
+            this.dataTable_import_settings,
+            this.dataTable_import_excel});
+            // 
+            // dataTable_import_settings
+            // 
+            this.dataTable_import_settings.Columns.AddRange(new System.Data.DataColumn[] {
+            this.dataColumn1,
+            this.dataColumn2,
+            this.dataColumn3,
+            this.dataColumn4,
+            this.dataColumn5,
+            this.dataColumn6,
+            this.dataColumn7,
+            this.dataColumn8,
+            this.dataColumn9,
+            this.dataColumn10,
+            this.dataColumn11,
+            this.dataColumn12});
+            this.dataTable_import_settings.TableName = "Table_import_settings";
+            // 
+            // dataColumn1
+            // 
+            this.dataColumn1.Caption = "is_id";
+            this.dataColumn1.ColumnName = "is_id";
+            this.dataColumn1.DataType = typeof(int);
+            // 
+            // dataColumn2
+            // 
+            this.dataColumn2.Caption = "is_name";
+            this.dataColumn2.ColumnName = "is_name";
+            // 
+            // dataColumn3
+            // 
+            this.dataColumn3.Caption = "is_start_row";
+            this.dataColumn3.ColumnName = "is_start_row";
+            this.dataColumn3.DataType = typeof(int);
+            // 
+            // dataColumn4
+            // 
+            this.dataColumn4.Caption = "is_code_col";
+            this.dataColumn4.ColumnName = "is_code_col";
+            // 
+            // dataColumn5
+            // 
+            this.dataColumn5.Caption = "is_price_col";
+            this.dataColumn5.ColumnName = "is_price_col";
+            // 
+            // dataColumn6
+            // 
+            this.dataColumn6.Caption = "is_name_col";
+            this.dataColumn6.ColumnName = "is_name_col";
+            // 
+            // dataColumn7
+            // 
+            this.dataColumn7.Caption = "is_actuality";
+            this.dataColumn7.ColumnName = "is_actuality";
+            this.dataColumn7.DataType = typeof(int);
+            // 
+            // dataColumn8
+            // 
+            this.dataColumn8.Caption = "is_presense1_col";
+            this.dataColumn8.ColumnName = "is_presense1_col";
+            // 
+            // dataColumn9
+            // 
+            this.dataColumn9.Caption = "is_presense2_col";
+            this.dataColumn9.ColumnName = "is_presense2_col";
+            // 
+            // dataColumn10
+            // 
+            this.dataColumn10.Caption = "is_presense_symbol";
+            this.dataColumn10.ColumnName = "is_presense_symbol";
+            // 
+            // dataColumn11
+            // 
+            this.dataColumn11.Caption = "is_currency_col";
+            this.dataColumn11.ColumnName = "is_currency_col";
+            // 
+            // dataColumn12
+            // 
+            this.dataColumn12.Caption = "is_uah_flag";
+            this.dataColumn12.ColumnName = "is_uah_flag";
+            // 
+            // dataTable_import_excel
+            // 
+            this.dataTable_import_excel.Columns.AddRange(new System.Data.DataColumn[] {
+            this.dataColumn13,
+            this.dataColumn14,
+            this.dataColumn15,
+            this.dataColumn16,
+            this.dataColumn17,
+            this.dataColumn18,
+            this.dataColumn19,
+            this.dataColumn20,
+            this.dataColumn21,
+            this.dataColumn22});
+            this.dataTable_import_excel.TableName = "Table_import_excel";
+            // 
+            // dataColumn13
+            // 
+            this.dataColumn13.Caption = "prod_name";
+            this.dataColumn13.ColumnName = "prod_name";
+            // 
+            // dataColumn14
+            // 
+            this.dataColumn14.Caption = "prod_code";
+            this.dataColumn14.ColumnName = "prod_code";
+            // 
+            // dataColumn15
+            // 
+            this.dataColumn15.Caption = "prod_income_price";
+            this.dataColumn15.ColumnName = "prod_income_price";
+            // 
+            // dataColumn16
+            // 
+            this.dataColumn16.Caption = "number";
+            this.dataColumn16.ColumnName = "number";
+            // 
+            // dataColumn17
+            // 
+            this.dataColumn17.Caption = "typeFoundProduct";
+            this.dataColumn17.ColumnName = "typeFoundProduct";
+            // 
+            // dataColumn18
+            // 
+            this.dataColumn18.Caption = "prod_presense1";
+            this.dataColumn18.ColumnName = "prod_presense1";
+            // 
+            // dataColumn19
+            // 
+            this.dataColumn19.Caption = "prod_presense2";
+            this.dataColumn19.ColumnName = "prod_presense2";
+            // 
+            // dataColumn20
+            // 
+            this.dataColumn20.Caption = "prod_currency";
+            this.dataColumn20.ColumnName = "prod_currency";
+            // 
+            // dataColumn21
+            // 
+            this.dataColumn21.Caption = "prod_client_price";
+            this.dataColumn21.ColumnName = "prod_client_price";
+            // 
+            // dataColumn22
+            // 
+            this.dataColumn22.Caption = "prod_pc_id";
+            this.dataColumn22.ColumnName = "prod_pc_id";
+            // 
             // comboBoxCurrency
             // 
             this.comboBoxCurrency.FormattingEnabled = true;
@@ -929,6 +912,19 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Название";
             // 
+            // bindingSource_import_excel
+            // 
+            this.bindingSource_import_excel.DataMember = "Table_import_excel";
+            this.bindingSource_import_excel.DataSource = this.dataSet;
+            // 
+            // dataGrid1
+            // 
+            this.dataGrid1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGrid1.Location = new System.Drawing.Point(7, 39);
+            this.dataGrid1.Name = "dataGrid1";
+            this.dataGrid1.Size = new System.Drawing.Size(1163, 492);
+            this.dataGrid1.TabIndex = 17;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -946,10 +942,6 @@
             this.tabControlMain.ResumeLayout(false);
             this.tabPageImport.ResumeLayout(false);
             this.tabPageImport.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.bindingSource_import_excel)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataSet)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataTable_import_settings)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataTable_import_excel)).EndInit();
             this.tabPageSettings.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
@@ -958,6 +950,11 @@
             this.splitContainer1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGrid_import_settings)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource__import_settings)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataSet)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataTable_import_settings)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataTable_import_excel)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bindingSource_import_excel)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGrid1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1052,12 +1049,12 @@
         private System.Data.DataColumn dataColumn21;
         private System.Windows.Forms.Button button1;
         private System.Data.DataColumn dataColumn22;
-        private SourceGrid.DataGrid dataGrid1;
         private System.Windows.Forms.Label lbl_TotalCount;
         private System.Windows.Forms.Label lbl_Of;
         private System.Windows.Forms.Label lbl_Counter;
         private System.Windows.Forms.Label label_TimeSpan;
         private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.DataGridView dataGrid1;
 
     }
 }

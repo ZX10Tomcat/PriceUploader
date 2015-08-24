@@ -529,10 +529,10 @@ namespace PriceUploader
                         timeBeg = DateTime.Now;
                         AddRows(0, beginRows, indexColumnName, indexColumnCode, indexColumnPrice, indexColumnPresense1, indexColumnPresense2, indexColumnCurrency);
 
-                        dataGrid1.SelectionMode = SourceGrid.GridSelectionMode.Row;
-                        dataGrid1.DataSource = new DevAge.ComponentModel.BoundDataView(table.DefaultView);
+                        //dataGrid1.SelectionMode = SourceGrid.GridSelectionMode.Row;
+                        dataGrid1.DataSource = table;
                         //dataGrid1.Columns.AutoSizeView();
-                        dataGrid1.DefaultWidth = 50;
+                        //dataGrid1.DefaultWidth = 50;
                         
                         // Columns width
                         dataGrid1.Columns[0].Width = 50;
@@ -549,7 +549,7 @@ namespace PriceUploader
                         dataGrid1.Invoke(new Action(() =>
                         {
                             dataGrid1.ResumeLayout();
-                            dataGrid1.RecalcCustomScrollBars();
+                            //dataGrid1.RecalcCustomScrollBars();
                         }));
 
                         new Thread(CreateData).Start();
@@ -606,7 +606,7 @@ namespace PriceUploader
             dataGrid1.Invoke(new Action(() =>
             {
                 dataGrid1.ResumeLayout();
-                dataGrid1.RecalcCustomScrollBars();
+                //dataGrid1.RecalcCustomScrollBars();
             }));
         }
 
@@ -735,7 +735,7 @@ namespace PriceUploader
                     dataGrid1.Invoke(new Action(() =>
                     {
                         dataGrid1.ResumeLayout();
-                        dataGrid1.RecalcCustomScrollBars();
+                        //dataGrid1.RecalcCustomScrollBars();
                     }));
             }
 
@@ -745,7 +745,7 @@ namespace PriceUploader
             dataGrid1.Invoke(new Action(() =>
             {
                 dataGrid1.ResumeLayout();
-                dataGrid1.RecalcCustomScrollBars();
+                //dataGrid1.RecalcCustomScrollBars();
             }));
 
         }

@@ -3,3 +3,16 @@ PriceUploader/bin/Debug/PriceUploader.exe
 *.exe
 PriceUploader/obj/Debug/PriceUploader.pdb
 *.pdb
+LAny/bin/Debug/LAny2.dll
+*.cache
+LAny/obj/Debug/LAny.csproj.FileListAbsolute.txt
+*.dll
+LOffice/obj/Debug/LOffice.csproj.FileListAbsolute.txt
+*.suo
+PriceUploader.v12.suo
+*.config
+PriceUploader/bin/Debug/PriceUploader.vshost.exe.manifest
+*.txt
+PriceUploader/obj/Debug/PriceUploader.csproj.FileListAbsolute.txt
+*.resources
+PriceUploader/obj/Debug/TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs
