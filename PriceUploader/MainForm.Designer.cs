@@ -37,7 +37,47 @@
             this.toolStripMenuItemExit = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControlMain = new System.Windows.Forms.TabControl();
             this.tabPageImport = new System.Windows.Forms.TabPage();
-            this.dataGrid1 = new System.Windows.Forms.DataGridView();
+            this.dataGrid_import_excel = new System.Windows.Forms.DataGridView();
+            this.V = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.AddCode = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.AddCategory = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.numberDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.prodnameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.prodcodeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.prodincomepriceDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.prodpresense1DataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.prodpresense2DataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.prodcurrencyDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.prodclientpriceDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.prodpcidDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.prodidDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.bindingSource_import_excel = new System.Windows.Forms.BindingSource(this.components);
+            this.dataSet = new System.Data.DataSet();
+            this.dataTable_import_settings = new System.Data.DataTable();
+            this.dataColumn1 = new System.Data.DataColumn();
+            this.dataColumn2 = new System.Data.DataColumn();
+            this.dataColumn3 = new System.Data.DataColumn();
+            this.dataColumn4 = new System.Data.DataColumn();
+            this.dataColumn5 = new System.Data.DataColumn();
+            this.dataColumn6 = new System.Data.DataColumn();
+            this.dataColumn7 = new System.Data.DataColumn();
+            this.dataColumn8 = new System.Data.DataColumn();
+            this.dataColumn9 = new System.Data.DataColumn();
+            this.dataColumn10 = new System.Data.DataColumn();
+            this.dataColumn11 = new System.Data.DataColumn();
+            this.dataColumn12 = new System.Data.DataColumn();
+            this.dataTable_import_excel = new System.Data.DataTable();
+            this.dataColumn13 = new System.Data.DataColumn();
+            this.dataColumn14 = new System.Data.DataColumn();
+            this.dataColumn15 = new System.Data.DataColumn();
+            this.dataColumn16 = new System.Data.DataColumn();
+            this.dataColumn17 = new System.Data.DataColumn();
+            this.dataColumn18 = new System.Data.DataColumn();
+            this.dataColumn19 = new System.Data.DataColumn();
+            this.dataColumn20 = new System.Data.DataColumn();
+            this.dataColumn21 = new System.Data.DataColumn();
+            this.dataColumn22 = new System.Data.DataColumn();
+            this.dataColumn23 = new System.Data.DataColumn();
             this.label_TimeSpan = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
             this.lbl_TotalCount = new System.Windows.Forms.Label();
@@ -72,32 +112,6 @@
             this.isuahflagDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.isidDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.bindingSource__import_settings = new System.Windows.Forms.BindingSource(this.components);
-            this.dataSet = new System.Data.DataSet();
-            this.dataTable_import_settings = new System.Data.DataTable();
-            this.dataColumn1 = new System.Data.DataColumn();
-            this.dataColumn2 = new System.Data.DataColumn();
-            this.dataColumn3 = new System.Data.DataColumn();
-            this.dataColumn4 = new System.Data.DataColumn();
-            this.dataColumn5 = new System.Data.DataColumn();
-            this.dataColumn6 = new System.Data.DataColumn();
-            this.dataColumn7 = new System.Data.DataColumn();
-            this.dataColumn8 = new System.Data.DataColumn();
-            this.dataColumn9 = new System.Data.DataColumn();
-            this.dataColumn10 = new System.Data.DataColumn();
-            this.dataColumn11 = new System.Data.DataColumn();
-            this.dataColumn12 = new System.Data.DataColumn();
-            this.dataTable_import_excel = new System.Data.DataTable();
-            this.dataColumn13 = new System.Data.DataColumn();
-            this.dataColumn14 = new System.Data.DataColumn();
-            this.dataColumn15 = new System.Data.DataColumn();
-            this.dataColumn16 = new System.Data.DataColumn();
-            this.dataColumn17 = new System.Data.DataColumn();
-            this.dataColumn18 = new System.Data.DataColumn();
-            this.dataColumn19 = new System.Data.DataColumn();
-            this.dataColumn20 = new System.Data.DataColumn();
-            this.dataColumn21 = new System.Data.DataColumn();
-            this.dataColumn22 = new System.Data.DataColumn();
-            this.dataColumn23 = new System.Data.DataColumn();
             this.comboBoxCurrency = new System.Windows.Forms.ComboBox();
             this.comboBoxAvailability2 = new System.Windows.Forms.ComboBox();
             this.comboBoxAvailability1 = new System.Windows.Forms.ComboBox();
@@ -121,11 +135,14 @@
             this.label2 = new System.Windows.Forms.Label();
             this.textBoxName = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.bindingSource_import_excel = new System.Windows.Forms.BindingSource(this.components);
             this.menuStrip1.SuspendLayout();
             this.tabControlMain.SuspendLayout();
             this.tabPageImport.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGrid1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGrid_import_excel)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bindingSource_import_excel)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataSet)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataTable_import_settings)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataTable_import_excel)).BeginInit();
             this.tabPageSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -133,10 +150,6 @@
             this.splitContainer1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGrid_import_settings)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource__import_settings)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataSet)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataTable_import_settings)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataTable_import_excel)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.bindingSource_import_excel)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -201,7 +214,7 @@
             // 
             // tabPageImport
             // 
-            this.tabPageImport.Controls.Add(this.dataGrid1);
+            this.tabPageImport.Controls.Add(this.dataGrid_import_excel);
             this.tabPageImport.Controls.Add(this.label_TimeSpan);
             this.tabPageImport.Controls.Add(this.label15);
             this.tabPageImport.Controls.Add(this.lbl_TotalCount);
@@ -224,13 +237,272 @@
             this.tabPageImport.Text = "Импорт";
             this.tabPageImport.UseVisualStyleBackColor = true;
             // 
-            // dataGrid1
+            // dataGrid_import_excel
             // 
-            this.dataGrid1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGrid1.Location = new System.Drawing.Point(7, 39);
-            this.dataGrid1.Name = "dataGrid1";
-            this.dataGrid1.Size = new System.Drawing.Size(1163, 492);
-            this.dataGrid1.TabIndex = 17;
+            this.dataGrid_import_excel.AllowUserToAddRows = false;
+            this.dataGrid_import_excel.AllowUserToDeleteRows = false;
+            this.dataGrid_import_excel.AutoGenerateColumns = false;
+            this.dataGrid_import_excel.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGrid_import_excel.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.V,
+            this.AddCode,
+            this.AddCategory,
+            this.numberDataGridViewTextBoxColumn,
+            this.prodnameDataGridViewTextBoxColumn,
+            this.prodcodeDataGridViewTextBoxColumn,
+            this.prodincomepriceDataGridViewTextBoxColumn,
+            this.prodpresense1DataGridViewTextBoxColumn,
+            this.prodpresense2DataGridViewTextBoxColumn,
+            this.prodcurrencyDataGridViewTextBoxColumn,
+            this.prodclientpriceDataGridViewTextBoxColumn,
+            this.prodpcidDataGridViewTextBoxColumn,
+            this.prodidDataGridViewTextBoxColumn});
+            this.dataGrid_import_excel.DataSource = this.bindingSource_import_excel;
+            this.dataGrid_import_excel.Location = new System.Drawing.Point(7, 39);
+            this.dataGrid_import_excel.Name = "dataGrid_import_excel";
+            this.dataGrid_import_excel.Size = new System.Drawing.Size(1163, 492);
+            this.dataGrid_import_excel.TabIndex = 17;
+            this.dataGrid_import_excel.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.dataGrid_import_excel_RowsAdded);
+            // 
+            // V
+            // 
+            this.V.HeaderText = "V";
+            this.V.Name = "V";
+            this.V.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.V.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            // 
+            // AddCode
+            // 
+            this.AddCode.HeaderText = "Сопоставить";
+            this.AddCode.Name = "AddCode";
+            // 
+            // AddCategory
+            // 
+            this.AddCategory.HeaderText = "Категория";
+            this.AddCategory.Name = "AddCategory";
+            // 
+            // numberDataGridViewTextBoxColumn
+            // 
+            this.numberDataGridViewTextBoxColumn.DataPropertyName = "number";
+            this.numberDataGridViewTextBoxColumn.HeaderText = "№";
+            this.numberDataGridViewTextBoxColumn.Name = "numberDataGridViewTextBoxColumn";
+            // 
+            // prodnameDataGridViewTextBoxColumn
+            // 
+            this.prodnameDataGridViewTextBoxColumn.DataPropertyName = "prod_name";
+            this.prodnameDataGridViewTextBoxColumn.HeaderText = "Имя";
+            this.prodnameDataGridViewTextBoxColumn.Name = "prodnameDataGridViewTextBoxColumn";
+            // 
+            // prodcodeDataGridViewTextBoxColumn
+            // 
+            this.prodcodeDataGridViewTextBoxColumn.DataPropertyName = "prod_code";
+            this.prodcodeDataGridViewTextBoxColumn.HeaderText = "Код";
+            this.prodcodeDataGridViewTextBoxColumn.Name = "prodcodeDataGridViewTextBoxColumn";
+            // 
+            // prodincomepriceDataGridViewTextBoxColumn
+            // 
+            this.prodincomepriceDataGridViewTextBoxColumn.DataPropertyName = "prod_income_price";
+            this.prodincomepriceDataGridViewTextBoxColumn.HeaderText = "Входная цена";
+            this.prodincomepriceDataGridViewTextBoxColumn.Name = "prodincomepriceDataGridViewTextBoxColumn";
+            // 
+            // prodpresense1DataGridViewTextBoxColumn
+            // 
+            this.prodpresense1DataGridViewTextBoxColumn.DataPropertyName = "prod_presense1";
+            this.prodpresense1DataGridViewTextBoxColumn.HeaderText = "prod_presense1";
+            this.prodpresense1DataGridViewTextBoxColumn.Name = "prodpresense1DataGridViewTextBoxColumn";
+            // 
+            // prodpresense2DataGridViewTextBoxColumn
+            // 
+            this.prodpresense2DataGridViewTextBoxColumn.DataPropertyName = "prod_presense2";
+            this.prodpresense2DataGridViewTextBoxColumn.HeaderText = "prod_presense2";
+            this.prodpresense2DataGridViewTextBoxColumn.Name = "prodpresense2DataGridViewTextBoxColumn";
+            // 
+            // prodcurrencyDataGridViewTextBoxColumn
+            // 
+            this.prodcurrencyDataGridViewTextBoxColumn.DataPropertyName = "prod_currency";
+            this.prodcurrencyDataGridViewTextBoxColumn.HeaderText = "prod_currency";
+            this.prodcurrencyDataGridViewTextBoxColumn.Name = "prodcurrencyDataGridViewTextBoxColumn";
+            // 
+            // prodclientpriceDataGridViewTextBoxColumn
+            // 
+            this.prodclientpriceDataGridViewTextBoxColumn.DataPropertyName = "prod_client_price";
+            this.prodclientpriceDataGridViewTextBoxColumn.HeaderText = "prod_client_price";
+            this.prodclientpriceDataGridViewTextBoxColumn.Name = "prodclientpriceDataGridViewTextBoxColumn";
+            // 
+            // prodpcidDataGridViewTextBoxColumn
+            // 
+            this.prodpcidDataGridViewTextBoxColumn.DataPropertyName = "prod_pc_id";
+            this.prodpcidDataGridViewTextBoxColumn.HeaderText = "prod_pc_id";
+            this.prodpcidDataGridViewTextBoxColumn.Name = "prodpcidDataGridViewTextBoxColumn";
+            // 
+            // prodidDataGridViewTextBoxColumn
+            // 
+            this.prodidDataGridViewTextBoxColumn.DataPropertyName = "prod_id";
+            this.prodidDataGridViewTextBoxColumn.HeaderText = "prod_id";
+            this.prodidDataGridViewTextBoxColumn.Name = "prodidDataGridViewTextBoxColumn";
+            // 
+            // bindingSource_import_excel
+            // 
+            this.bindingSource_import_excel.DataMember = "Table_import_excel";
+            this.bindingSource_import_excel.DataSource = this.dataSet;
+            // 
+            // dataSet
+            // 
+            this.dataSet.DataSetName = "dataSet";
+            this.dataSet.Tables.AddRange(new System.Data.DataTable[] {
+            this.dataTable_import_settings,
+            this.dataTable_import_excel});
+            // 
+            // dataTable_import_settings
+            // 
+            this.dataTable_import_settings.Columns.AddRange(new System.Data.DataColumn[] {
+            this.dataColumn1,
+            this.dataColumn2,
+            this.dataColumn3,
+            this.dataColumn4,
+            this.dataColumn5,
+            this.dataColumn6,
+            this.dataColumn7,
+            this.dataColumn8,
+            this.dataColumn9,
+            this.dataColumn10,
+            this.dataColumn11,
+            this.dataColumn12});
+            this.dataTable_import_settings.TableName = "Table_import_settings";
+            // 
+            // dataColumn1
+            // 
+            this.dataColumn1.Caption = "is_id";
+            this.dataColumn1.ColumnName = "is_id";
+            this.dataColumn1.DataType = typeof(int);
+            // 
+            // dataColumn2
+            // 
+            this.dataColumn2.Caption = "is_name";
+            this.dataColumn2.ColumnName = "is_name";
+            // 
+            // dataColumn3
+            // 
+            this.dataColumn3.Caption = "is_start_row";
+            this.dataColumn3.ColumnName = "is_start_row";
+            this.dataColumn3.DataType = typeof(int);
+            // 
+            // dataColumn4
+            // 
+            this.dataColumn4.Caption = "is_code_col";
+            this.dataColumn4.ColumnName = "is_code_col";
+            // 
+            // dataColumn5
+            // 
+            this.dataColumn5.Caption = "is_price_col";
+            this.dataColumn5.ColumnName = "is_price_col";
+            // 
+            // dataColumn6
+            // 
+            this.dataColumn6.Caption = "is_name_col";
+            this.dataColumn6.ColumnName = "is_name_col";
+            // 
+            // dataColumn7
+            // 
+            this.dataColumn7.Caption = "is_actuality";
+            this.dataColumn7.ColumnName = "is_actuality";
+            this.dataColumn7.DataType = typeof(int);
+            // 
+            // dataColumn8
+            // 
+            this.dataColumn8.Caption = "is_presense1_col";
+            this.dataColumn8.ColumnName = "is_presense1_col";
+            // 
+            // dataColumn9
+            // 
+            this.dataColumn9.Caption = "is_presense2_col";
+            this.dataColumn9.ColumnName = "is_presense2_col";
+            // 
+            // dataColumn10
+            // 
+            this.dataColumn10.Caption = "is_presense_symbol";
+            this.dataColumn10.ColumnName = "is_presense_symbol";
+            // 
+            // dataColumn11
+            // 
+            this.dataColumn11.Caption = "is_currency_col";
+            this.dataColumn11.ColumnName = "is_currency_col";
+            // 
+            // dataColumn12
+            // 
+            this.dataColumn12.Caption = "is_uah_flag";
+            this.dataColumn12.ColumnName = "is_uah_flag";
+            // 
+            // dataTable_import_excel
+            // 
+            this.dataTable_import_excel.Columns.AddRange(new System.Data.DataColumn[] {
+            this.dataColumn13,
+            this.dataColumn14,
+            this.dataColumn15,
+            this.dataColumn16,
+            this.dataColumn17,
+            this.dataColumn18,
+            this.dataColumn19,
+            this.dataColumn20,
+            this.dataColumn21,
+            this.dataColumn22,
+            this.dataColumn23});
+            this.dataTable_import_excel.TableName = "Table_import_excel";
+            // 
+            // dataColumn13
+            // 
+            this.dataColumn13.Caption = "prod_name";
+            this.dataColumn13.ColumnName = "prod_name";
+            // 
+            // dataColumn14
+            // 
+            this.dataColumn14.Caption = "prod_code";
+            this.dataColumn14.ColumnName = "prod_code";
+            // 
+            // dataColumn15
+            // 
+            this.dataColumn15.Caption = "prod_income_price";
+            this.dataColumn15.ColumnName = "prod_income_price";
+            // 
+            // dataColumn16
+            // 
+            this.dataColumn16.Caption = "number";
+            this.dataColumn16.ColumnName = "number";
+            // 
+            // dataColumn17
+            // 
+            this.dataColumn17.Caption = "typeFoundProduct";
+            this.dataColumn17.ColumnName = "typeFoundProduct";
+            // 
+            // dataColumn18
+            // 
+            this.dataColumn18.Caption = "prod_presense1";
+            this.dataColumn18.ColumnName = "prod_presense1";
+            // 
+            // dataColumn19
+            // 
+            this.dataColumn19.Caption = "prod_presense2";
+            this.dataColumn19.ColumnName = "prod_presense2";
+            // 
+            // dataColumn20
+            // 
+            this.dataColumn20.Caption = "prod_currency";
+            this.dataColumn20.ColumnName = "prod_currency";
+            // 
+            // dataColumn21
+            // 
+            this.dataColumn21.Caption = "prod_client_price";
+            this.dataColumn21.ColumnName = "prod_client_price";
+            // 
+            // dataColumn22
+            // 
+            this.dataColumn22.Caption = "prod_pc_id";
+            this.dataColumn22.ColumnName = "prod_pc_id";
+            // 
+            // dataColumn23
+            // 
+            this.dataColumn23.Caption = "prod_id";
+            this.dataColumn23.ColumnName = "prod_id";
             // 
             // label_TimeSpan
             // 
@@ -578,164 +850,6 @@
             this.bindingSource__import_settings.DataMember = "Table_import_settings";
             this.bindingSource__import_settings.DataSource = this.dataSet;
             // 
-            // dataSet
-            // 
-            this.dataSet.DataSetName = "dataSet";
-            this.dataSet.Tables.AddRange(new System.Data.DataTable[] {
-            this.dataTable_import_settings,
-            this.dataTable_import_excel});
-            // 
-            // dataTable_import_settings
-            // 
-            this.dataTable_import_settings.Columns.AddRange(new System.Data.DataColumn[] {
-            this.dataColumn1,
-            this.dataColumn2,
-            this.dataColumn3,
-            this.dataColumn4,
-            this.dataColumn5,
-            this.dataColumn6,
-            this.dataColumn7,
-            this.dataColumn8,
-            this.dataColumn9,
-            this.dataColumn10,
-            this.dataColumn11,
-            this.dataColumn12});
-            this.dataTable_import_settings.TableName = "Table_import_settings";
-            // 
-            // dataColumn1
-            // 
-            this.dataColumn1.Caption = "is_id";
-            this.dataColumn1.ColumnName = "is_id";
-            this.dataColumn1.DataType = typeof(int);
-            // 
-            // dataColumn2
-            // 
-            this.dataColumn2.Caption = "is_name";
-            this.dataColumn2.ColumnName = "is_name";
-            // 
-            // dataColumn3
-            // 
-            this.dataColumn3.Caption = "is_start_row";
-            this.dataColumn3.ColumnName = "is_start_row";
-            this.dataColumn3.DataType = typeof(int);
-            // 
-            // dataColumn4
-            // 
-            this.dataColumn4.Caption = "is_code_col";
-            this.dataColumn4.ColumnName = "is_code_col";
-            // 
-            // dataColumn5
-            // 
-            this.dataColumn5.Caption = "is_price_col";
-            this.dataColumn5.ColumnName = "is_price_col";
-            // 
-            // dataColumn6
-            // 
-            this.dataColumn6.Caption = "is_name_col";
-            this.dataColumn6.ColumnName = "is_name_col";
-            // 
-            // dataColumn7
-            // 
-            this.dataColumn7.Caption = "is_actuality";
-            this.dataColumn7.ColumnName = "is_actuality";
-            this.dataColumn7.DataType = typeof(int);
-            // 
-            // dataColumn8
-            // 
-            this.dataColumn8.Caption = "is_presense1_col";
-            this.dataColumn8.ColumnName = "is_presense1_col";
-            // 
-            // dataColumn9
-            // 
-            this.dataColumn9.Caption = "is_presense2_col";
-            this.dataColumn9.ColumnName = "is_presense2_col";
-            // 
-            // dataColumn10
-            // 
-            this.dataColumn10.Caption = "is_presense_symbol";
-            this.dataColumn10.ColumnName = "is_presense_symbol";
-            // 
-            // dataColumn11
-            // 
-            this.dataColumn11.Caption = "is_currency_col";
-            this.dataColumn11.ColumnName = "is_currency_col";
-            // 
-            // dataColumn12
-            // 
-            this.dataColumn12.Caption = "is_uah_flag";
-            this.dataColumn12.ColumnName = "is_uah_flag";
-            // 
-            // dataTable_import_excel
-            // 
-            this.dataTable_import_excel.Columns.AddRange(new System.Data.DataColumn[] {
-            this.dataColumn13,
-            this.dataColumn14,
-            this.dataColumn15,
-            this.dataColumn16,
-            this.dataColumn17,
-            this.dataColumn18,
-            this.dataColumn19,
-            this.dataColumn20,
-            this.dataColumn21,
-            this.dataColumn22,
-            this.dataColumn23});
-            this.dataTable_import_excel.TableName = "Table_import_excel";
-            // 
-            // dataColumn13
-            // 
-            this.dataColumn13.Caption = "prod_name";
-            this.dataColumn13.ColumnName = "prod_name";
-            // 
-            // dataColumn14
-            // 
-            this.dataColumn14.Caption = "prod_code";
-            this.dataColumn14.ColumnName = "prod_code";
-            // 
-            // dataColumn15
-            // 
-            this.dataColumn15.Caption = "prod_income_price";
-            this.dataColumn15.ColumnName = "prod_income_price";
-            // 
-            // dataColumn16
-            // 
-            this.dataColumn16.Caption = "number";
-            this.dataColumn16.ColumnName = "number";
-            // 
-            // dataColumn17
-            // 
-            this.dataColumn17.Caption = "typeFoundProduct";
-            this.dataColumn17.ColumnName = "typeFoundProduct";
-            // 
-            // dataColumn18
-            // 
-            this.dataColumn18.Caption = "prod_presense1";
-            this.dataColumn18.ColumnName = "prod_presense1";
-            // 
-            // dataColumn19
-            // 
-            this.dataColumn19.Caption = "prod_presense2";
-            this.dataColumn19.ColumnName = "prod_presense2";
-            // 
-            // dataColumn20
-            // 
-            this.dataColumn20.Caption = "prod_currency";
-            this.dataColumn20.ColumnName = "prod_currency";
-            // 
-            // dataColumn21
-            // 
-            this.dataColumn21.Caption = "prod_client_price";
-            this.dataColumn21.ColumnName = "prod_client_price";
-            // 
-            // dataColumn22
-            // 
-            this.dataColumn22.Caption = "prod_pc_id";
-            this.dataColumn22.ColumnName = "prod_pc_id";
-            // 
-            // dataColumn23
-            // 
-            this.dataColumn23.Caption = "prod_id";
-            this.dataColumn23.ColumnName = "prod_id";
-            // 
             // comboBoxCurrency
             // 
             this.comboBoxCurrency.FormattingEnabled = true;
@@ -928,11 +1042,6 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Название";
             // 
-            // bindingSource_import_excel
-            // 
-            this.bindingSource_import_excel.DataMember = "Table_import_excel";
-            this.bindingSource_import_excel.DataSource = this.dataSet;
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -950,7 +1059,11 @@
             this.tabControlMain.ResumeLayout(false);
             this.tabPageImport.ResumeLayout(false);
             this.tabPageImport.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGrid1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGrid_import_excel)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bindingSource_import_excel)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataSet)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataTable_import_settings)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataTable_import_excel)).EndInit();
             this.tabPageSettings.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
@@ -959,10 +1072,6 @@
             this.splitContainer1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGrid_import_settings)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource__import_settings)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataSet)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataTable_import_settings)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataTable_import_excel)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.bindingSource_import_excel)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1062,8 +1171,21 @@
         private System.Windows.Forms.Label lbl_Counter;
         private System.Windows.Forms.Label label_TimeSpan;
         private System.Windows.Forms.Label label15;
-        private System.Windows.Forms.DataGridView dataGrid1;
+        private System.Windows.Forms.DataGridView dataGrid_import_excel;
         private System.Data.DataColumn dataColumn23;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn V;
+        private System.Windows.Forms.DataGridViewButtonColumn AddCode;
+        private System.Windows.Forms.DataGridViewButtonColumn AddCategory;
+        private System.Windows.Forms.DataGridViewTextBoxColumn numberDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn prodnameDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn prodcodeDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn prodincomepriceDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn prodpresense1DataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn prodpresense2DataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn prodcurrencyDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn prodclientpriceDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn prodpcidDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn prodidDataGridViewTextBoxColumn;
 
     }
 }

@@ -416,7 +416,8 @@ namespace PriceUploader
         private DateTime timeBeg = DateTime.Now;
         private List<ImportToDB> listImportToDB = new List<ImportToDB>();
         private int beginRows = 0;
-
+        private string tableName = "Table_import_excel";
+        
         private void buttonOpenExcel_Click(object sender, EventArgs e)
         {
             label_file_name.Text = string.Empty;
@@ -443,14 +444,13 @@ namespace PriceUploader
 
                     if (countRowsExcel > 0)
                     {
-                        beginRows = countRowsExcel / 3;
+                        beginRows = countRowsExcel /* / 3 */;
+                                              
 
-                        //string tableName = "Table_import_excel";
+                        this.dataGrid_import_excel.DataSource = null;
+                        this.dataGrid_import_excel.Rows.Clear();
 
-                        //this.dataGrid_import_excel.DataSource = null;
-                        //this.dataGrid_import_excel.Rows.Clear();
-
-                        //dataSet.Tables[tableName].Clear();
+                        dataSet.Tables[tableName].Clear();
 
                         //IEnumerable<DataRow> aliasQuery =
                         //    from productAlias in TableProductAlias.AsEnumerable()
@@ -479,16 +479,17 @@ namespace PriceUploader
                         indexColumnCurrency = LetterNumber(importSettings["is_currency_col"].ToString()) - 1;
                         
                         // Set columns
-                        table.Columns.Add("№", typeof(int));
-                        table.Columns.Add("Наименование", typeof(string));
-                        table.Columns.Add("Код", typeof(string));
-                        table.Columns.Add("Цена", typeof(string));
-                        table.Columns.Add("prod_presense1", typeof(string));
-                        table.Columns.Add("prod_presense2", typeof(string));
-                        table.Columns.Add("prod_currency", typeof(string));
-                        table.Columns.Add("prod_client_price", typeof(string));
-                        table.Columns.Add("prod_pc_id", typeof(string));
-                        table.Columns.Add("prod_id", typeof(string));
+                        //table.Columns.Add("№", typeof(int));
+                        //table.Columns.Add("V", typeof(bool));
+                        //table.Columns.Add("Наименование", typeof(string));
+                        //table.Columns.Add("Код", typeof(string));
+                        //table.Columns.Add("Цена", typeof(string));
+                        //table.Columns.Add("prod_presense1", typeof(string));
+                        //table.Columns.Add("prod_presense2", typeof(string));
+                        //table.Columns.Add("prod_currency", typeof(string));
+                        //table.Columns.Add("prod_client_price", typeof(string));
+                        //table.Columns.Add("prod_pc_id", typeof(string));
+                        //table.Columns.Add("prod_id", typeof(string));
 
                         lbl_TotalCount.Text = (countRowsExcel-1).ToString();
 
@@ -531,25 +532,45 @@ namespace PriceUploader
 
                         //dataGrid1.SelectionMode = SourceGrid.GridSelectionMode.Row;
                         //dataGrid1.DataSource = new DevAge.ComponentModel.BoundDataView(table.DefaultView);
-                        dataGrid1.DataSource = table;
+                        dataGrid_import_excel.DataSource = dataSet.Tables[tableName];
                         //dataGrid1.Columns.AutoSizeView();
                         //dataGrid1.DefaultWidth = 50;
                         
                         // Columns width
-                        dataGrid1.Columns[0].Width = 50;
-                        dataGrid1.Columns[1].Width = 300;
-                        dataGrid1.Columns[2].Width = 100;
-                        dataGrid1.Columns[3].Width = 100;
-                        dataGrid1.Columns[4].Width = 100;
-                        dataGrid1.Columns[5].Width = 100;
-                        dataGrid1.Columns[6].Width = 100;
-                        dataGrid1.Columns[7].Width = 100;
-                        dataGrid1.Columns[8].Width = 60;
-                        dataGrid1.Columns[9].Width = 60;
-                        
-                        dataGrid1.Invoke(new Action(() =>
+                        dataGrid_import_excel.Columns[0].Width = 50;
+                        dataGrid_import_excel.Columns[1].Width = 75;
+                        dataGrid_import_excel.Columns[2].Width = 75;
+                        dataGrid_import_excel.Columns[3].Width = 60;
+                        dataGrid_import_excel.Columns[4].Width = 400;
+                        dataGrid_import_excel.Columns[5].Width = 100;
+                        dataGrid_import_excel.Columns[6].Width = 100;
+                        dataGrid_import_excel.Columns[7].Width = 100;
+                        dataGrid_import_excel.Columns[8].Width = 100;
+                        dataGrid_import_excel.Columns[9].Width = 100;
+                        dataGrid_import_excel.Columns[10].Width = 100;
+                        dataGrid_import_excel.Columns[11].Width = 60;
+                        dataGrid_import_excel.Columns[12].Width = 60;
+
+
+                        // Set ReadOnly columns
+                        dataGrid_import_excel.Columns[0].ReadOnly = false;
+                        dataGrid_import_excel.Columns[1].ReadOnly = true;
+                        dataGrid_import_excel.Columns[2].ReadOnly = true;
+                        dataGrid_import_excel.Columns[3].ReadOnly = true;
+                        dataGrid_import_excel.Columns[4].ReadOnly = true;
+                        dataGrid_import_excel.Columns[5].ReadOnly = true;
+                        dataGrid_import_excel.Columns[6].ReadOnly = true;
+                        dataGrid_import_excel.Columns[7].ReadOnly = true;
+                        dataGrid_import_excel.Columns[8].ReadOnly = true;
+                        dataGrid_import_excel.Columns[9].ReadOnly = true;
+                        dataGrid_import_excel.Columns[10].ReadOnly = true;
+                        dataGrid_import_excel.Columns[11].ReadOnly = true;
+                        dataGrid_import_excel.Columns[12].ReadOnly = true;
+
+
+                        dataGrid_import_excel.Invoke(new Action(() =>
                         {
-                            dataGrid1.ResumeLayout();
+                            dataGrid_import_excel.ResumeLayout();
                             //dataGrid1.RecalcCustomScrollBars();
                         }));
 
@@ -600,13 +621,13 @@ namespace PriceUploader
 
         private void CreateData()
         {
-            dataGrid1.SuspendLayout();
+            dataGrid_import_excel.SuspendLayout();
 
-            AddRows(beginRows, countRowsExcel, indexColumnName, indexColumnCode, indexColumnPrice, indexColumnPresense1, indexColumnPresense2, indexColumnCurrency);
-            
-            dataGrid1.Invoke(new Action(() =>
+            //AddRows(beginRows, countRowsExcel, indexColumnName, indexColumnCode, indexColumnPrice, indexColumnPresense1, indexColumnPresense2, indexColumnCurrency);
+
+            dataGrid_import_excel.Invoke(new Action(() =>
             {
-                dataGrid1.ResumeLayout();
+                dataGrid_import_excel.ResumeLayout();
                 //dataGrid1.RecalcCustomScrollBars();
             }));
         }
@@ -635,10 +656,9 @@ namespace PriceUploader
                     });
             }
 
-
             var importQuery = (
                 from l in listImportToDB
-                from p in products.Where(p => p.pa_code == l.prod_code && p.prod_name.ToString() == l.prod_name.ToString()) //.DefaultIfEmpty()
+                from p in products.Where(p => p.pa_code == l.prod_code && p.prod_name.ToString() == l.prod_name.ToString()).DefaultIfEmpty()
                 select new
                 {
                     number = l.number,
@@ -696,12 +716,12 @@ namespace PriceUploader
                 
                 //На всякий случай/////////////////////////////////////////////////////////////////////////////////////////////
 
-                table.Rows.Add(
-                    new object[] {
-                                    import[i].number,
+                dataSet.Tables[tableName].Rows.Add(
+                    new object[] {                                                                     
                                     import[i].prod_name,                                   
                                     import[i].prod_code,
                                     import[i].prod_income_price,
+                                    import[i].number, 
                                     import[i].prod_presense1,
                                     import[i].prod_presense2,
                                     import[i].prod_currency,
@@ -715,19 +735,6 @@ namespace PriceUploader
                 //if (i == 0)
                 //    this.dataGrid_import_excel.DataSource = this.bindingSource_import_excel;
 
-                //// Set Row Color
-                //if (countFound > 0)
-                //{
-                //    dr["typeFoundProduct"] = TypeFoundProduct.Exist;
-                //    dataGrid_import_excel.Rows[i].DefaultCellStyle.BackColor = Color.Green;
-                //}
-                //else
-                //{
-                //    dr["typeFoundProduct"] = TypeFoundProduct.New;
-                //    dataGrid_import_excel.Rows[i].DefaultCellStyle.BackColor = Color.Red;
-                //}
-
-
                 if (i % 100 == 0)
                 {
                     UpdateCounter(i);
@@ -735,25 +742,25 @@ namespace PriceUploader
                 }
 
                 if (i % 500 == 0)
-                    dataGrid1.Invoke(new Action(() =>
+                    dataGrid_import_excel.Invoke(new Action(() =>
                     {
-                        dataGrid1.ResumeLayout();
+                        dataGrid_import_excel.ResumeLayout();
                         //dataGrid1.RecalcCustomScrollBars();
                     }));
+
             }
 
             UpdateCounter(indexEnd-1);
             UpdateTime();
 
-            dataGrid1.Invoke(new Action(() =>
+            dataGrid_import_excel.Invoke(new Action(() =>
             {
-                dataGrid1.ResumeLayout();
+                dataGrid_import_excel.ResumeLayout();
                 //dataGrid1.RecalcCustomScrollBars();
             }));
 
         }
-
-
+        
         private string CalcClientPrice(ref List<CategoryCharge> _categoryCharge, object _recived_price, object prod_pc_id)
         {
             double? res = null;
@@ -830,6 +837,26 @@ namespace PriceUploader
         private void button2_Click(object sender, EventArgs e)
         {
             Model.InsertData(table); 
+        }
+
+        private void dataGrid_import_excel_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
+        {
+            for (int index = e.RowIndex; index <= e.RowIndex + e.RowCount - 1; index++)
+            {
+                DataGridViewRow row = dataGrid_import_excel.Rows[index];
+                // Set Row Color
+                if (row.Cells[10].Value.ToString() != "" && row.Cells[11].Value.ToString() != "")
+                {
+                    //dr["typeFoundProduct"] = TypeFoundProduct.Exist;
+                    dataGrid_import_excel.Rows[index].DefaultCellStyle.BackColor = Color.Green;
+                }
+                else
+                {
+                    //dr["typeFoundProduct"] = TypeFoundProduct.New;
+                    dataGrid_import_excel.Rows[index].DefaultCellStyle.BackColor = Color.Red;
+                }
+
+            }
         }
 
 
