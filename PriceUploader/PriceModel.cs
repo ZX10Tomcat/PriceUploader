@@ -112,8 +112,7 @@ namespace PriceUploader
             this.GetStrConn();
             this.conn = GetConn();
         }
-
-
+        
         public string GetStrConn()
         {
             strConn = string.Format("server={0};user id={1};password={2};port={3};", 
@@ -121,8 +120,7 @@ namespace PriceUploader
 
             return strConn;
         }
-
-
+        
         public int SaveDatabaseSettings()
         {
             cAppConfig.UpdateAppSetting("database", strDatabase);
@@ -132,8 +130,7 @@ namespace PriceUploader
             cAppConfig.UpdateAppSetting("port", strPort);
             return 0;
         }
-
-
+        
         public MySqlConnection GetConn()
         {
 			try 
@@ -150,8 +147,7 @@ namespace PriceUploader
 
             return conn;
         }
-
-
+        
         private int FillData(string sqlQuery, ref DataTable dataTable)
         {
             int rows = -1;
@@ -188,7 +184,28 @@ namespace PriceUploader
                 //select set_value from engine_settings where set_name = 'euro_rate'
                 //select set_value from engine_settings where set_name = 'currency_rate_cash'
                 //$price = $price * EURO_RATE / CURRENCY_RATE_CASH;
+                double euro_rate = 0;
+                double currency_rate_cash = 0;
 
+                try
+                {
+                    sql = string.Format("select set_value from engine_settings where set_name = 'euro_rate'");
+                    MySqlDataReader rdr = null;
+                    rdr = cmd.ExecuteReader();
+                    rdr.Read();
+                    euro_rate = rdr.GetDouble(0);
+
+                    sql = string.Format("select set_value from engine_settings where set_name = 'currency_rate_cash'");
+                    rdr = null;
+                    rdr = cmd.ExecuteReader();
+                    rdr.Read();
+                    currency_rate_cash = rdr.GetDouble(0);
+                }
+                catch (Exception ex)
+                {
+                    string error = ex.Source;
+                    throw;
+                }
 
                 foreach (DataRow row in table.Rows)
                 {
@@ -200,7 +217,6 @@ namespace PriceUploader
                     string code = row.Field<string>("prod_code");
                     string prod_income_price = row.Field<string>("prod_income_price");
                     string prod_client_price = row.Field<string>("prod_client_price");
-
 
                     if (is_new && is_selected)
                     {
@@ -232,7 +248,6 @@ namespace PriceUploader
 
                                 sql = string.Format("INSERT INTO product SET prod_pc_id={0}, prod_name='{1}', prod_text='', prod_disabled='Y', prod_vat='Y', prod_actuality={2}, prod_postdate={3}, prod_last_update={4}, prod_last_user_id={5}",
                                     "", prod_name, true, 0, code);
-
                                 cmd = new MySqlCommand(sql, conn);
                                 cmd.ExecuteNonQuery();
 
@@ -242,13 +257,11 @@ namespace PriceUploader
                                 rdr = cmd.ExecuteReader();
                                 rdr.Read();
                                 product_id = rdr.GetInt32(0);
-
-
+                                
                                 sql = string.Format("INSERT INTO product_alias SET pa_prod_id={0}, pa_code='{1}'",
                                     product_id, code);
                                 cmd = new MySqlCommand(sql, conn);
                                 cmd.ExecuteNonQuery();
-
                             }
                             catch (Exception ex)
                             {
@@ -260,10 +273,7 @@ namespace PriceUploader
 
                         if (product_id > 0 /* && product_price > 0 */ )
                         {
-                            //проверка на price_type
-
                             //$sql = sprintf('UPDATE %sproduct SET prod_price_sup_id=%d, prod_fixed_price=%f WHERE prod_id=%d', DB_PREFIX, $supplier, $price, $product_info['prod_id']);
-
 
                             if (price_type == "RRC" && product_fixed_price > 0)
                             {
@@ -271,7 +281,6 @@ namespace PriceUploader
                                 {
                                     sql = string.Format("UPDATE product SET prod_price_sup_id={0}, prod_fixed_price={1} WHERE prod_id={2}",
                                         supplier_id, product_fixed_price, product_id);
-
                                     cmd = new MySqlCommand(sql, conn);
                                     cmd.ExecuteNonQuery();
                                 }
@@ -292,15 +301,16 @@ namespace PriceUploader
 
                                 try
                                 {
+                                    if (price_type == "EURO" && currency_rate_cash > 0)
+                                        product_client_price = currency_rate_cash * euro_rate / currency_rate_cash;
+
                                     sql = string.Format("INSERT INTO product_price SET pp_prod_id={0}, pp_sup_id={1}, pp_price={2}, pp_postdate={3}",
                                         product_id, supplier_id, product_client_price, DateTime.Now);
-
                                     cmd = new MySqlCommand(sql, conn);
                                     cmd.ExecuteNonQuery();
 
                                     sql = string.Format("UPDATE product SET prod_price_sup_id={0}, prod_price_update_timestamp={1}, prod_income_price={2}, prod_client_price={3}, prod_actuality={4} WHERE prod_id={5}",
                                         supplier_id, DateTime.Now, product_fixed_price, product_client_price, true, product_id);
-
                                     cmd = new MySqlCommand(sql, conn);
                                     cmd.ExecuteNonQuery();
                                 }
@@ -319,7 +329,6 @@ namespace PriceUploader
                                     //$sql = sprintf("INSERT INTO %sproduct_alias SET pa_prod_id=%d, pa_code='%s'", DB_PREFIX, $prod_id, tosql($code));
                                     sql = string.Format("INSERT INTO product_alias SET pa_prod_id={0}, pa_code='{1}'",
                                         product_id, code);
-
                                     cmd = new MySqlCommand(sql, conn);
                                     cmd.ExecuteNonQuery();
                                 }
@@ -339,7 +348,6 @@ namespace PriceUploader
 
                             sql = string.Format("INSERT INTO product_price SET pp_prod_id={0}, pp_sup_id={1}, pp_price={2}, pp_postdate={3}",
                                 product_id, supplier_id, product_fixed_price, DateTime.Now);
-
                             cmd = new MySqlCommand(sql, conn);
                             cmd.ExecuteNonQuery();
                         }
@@ -355,9 +363,7 @@ namespace PriceUploader
             }
 
         }
-
-
-
+        
         #region load
         public int Load_category_charge(ref DataTable dataTable)
         {
@@ -405,8 +411,7 @@ namespace PriceUploader
         }
         
         #endregion load
-
-
+        
         public Task<DataTable> Load_category_charge()
         {
             return Task<DataTable>.Factory.StartNew(() =>
@@ -428,8 +433,7 @@ namespace PriceUploader
                 
             });
         }
-
-        
+                
         public Task<DataTable> Load_product_and_alias()
         {
             return Task<DataTable>.Factory.StartNew(() =>
@@ -610,8 +614,6 @@ prod_fixed_price, pa_code, prod_pc_id FROM product_alias INNER JOIN product pr O
                 return dt;
             });
         }
-
-
 
         public int ImportExcel(string fileName, ref DataTable data)
         {
