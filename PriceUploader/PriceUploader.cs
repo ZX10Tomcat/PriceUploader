@@ -14,7 +14,7 @@ using System.Windows.Forms;
 
 namespace PriceUploader
 {
-    public partial class MainForm : Form
+    public partial class PriceUploader : Form
     {
         private PriceModel Model = null;
         private DataTable TableCategoryCharge = null; 
@@ -32,7 +32,7 @@ namespace PriceUploader
         private List<CategoryCharge> categoryCharge = new List<CategoryCharge>();
         private List<ImportToDB> excelList = new List<ImportToDB>();
 
-        public MainForm()
+        public PriceUploader()
         {
             InitializeComponent();
             Init();

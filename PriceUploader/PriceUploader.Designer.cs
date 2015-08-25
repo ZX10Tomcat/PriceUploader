@@ -1,6 +1,6 @@
 ﻿namespace PriceUploader
 {
-    partial class MainForm
+    partial class PriceUploader
     {
         /// <summary>
         /// Required designer variable.
