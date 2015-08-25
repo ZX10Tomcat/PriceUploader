@@ -187,7 +187,6 @@ namespace PriceUploader
             return;
         }
 
-
         private void instance_OnLoaded()
         {
             buttonOpenExcel.Invoke(new Action(() =>
@@ -389,8 +388,7 @@ namespace PriceUploader
                 }));
             });
         }
-
-
+        
         private void buttonDelete_Click(object sender, EventArgs e)
         {
             if (MessageBox.Show("Вы хотите удалить выбраную строку?", "Удаление", MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.Yes)
@@ -402,8 +400,7 @@ namespace PriceUploader
                 }
             }
         }
-
-
+        
         private DataTable table = new DataTable();
         private DataTable tableExcel = new DataTable();
         private int countRowsExcel = 0;
@@ -587,8 +584,7 @@ namespace PriceUploader
                 label_file_name.Text = "Файл не выбран";
 
         }
-
-
+        
         private string GetValue(ref DataTable tbl, int row, int column)
         {
             string temp = string.Empty;
@@ -596,9 +592,7 @@ namespace PriceUploader
                 temp = tbl.Rows[row].ItemArray.GetValue(column) != null ? tbl.Rows[row].ItemArray.GetValue(column).ToString() : string.Empty;
             return temp;
         }
-
-
-
+        
         private void UpdateTime()
         {
             label_TimeSpan.Invoke(new Action(() =>
@@ -609,7 +603,6 @@ namespace PriceUploader
             }));
         }
         
-
         private void UpdateCounter(int index)
         {
             lbl_Counter.Invoke(new Action(() =>
@@ -617,8 +610,7 @@ namespace PriceUploader
                 lbl_Counter.Text = index.ToString();
             }));
         }
-
-
+        
         private void CreateData()
         {
             dataGrid_import_excel.SuspendLayout();
@@ -631,8 +623,6 @@ namespace PriceUploader
                 //dataGrid1.RecalcCustomScrollBars();
             }));
         }
-
-        
 
         private void AddRows(int indexBeg, int indexEnd, int indexColumnName, int indexColumnCode, int indexColumnPrice, int indexColumnPresense1, int indexColumnPresense2, int indexColumnCurrency)
         {
@@ -727,7 +717,8 @@ namespace PriceUploader
                                     import[i].prod_currency,
                                     CalcClientPrice(ref categoryCharge, tableExcel.Rows[i].ItemArray.GetValue(indexColumnPrice), import[i].prod_pc_id)    /* prod_client_price */,
                                     import[i].prod_pc_id,
-                                    import[i].prod_id
+                                    import[i].prod_id,
+                                    (import[i].prod_pc_id == null && import[i].prod_id == null)
                                 });
 
 
@@ -819,7 +810,6 @@ namespace PriceUploader
             
         }
 
-
         public int LetterNumber(string charValue)
         {
             char c = Convert.ToChar(charValue);
@@ -836,7 +826,7 @@ namespace PriceUploader
 
         private void button2_Click(object sender, EventArgs e)
         {
-            Model.InsertData(table); 
+            Model.InsertData(table, "", ""); 
         }
 
         private void dataGrid_import_excel_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
@@ -845,7 +835,10 @@ namespace PriceUploader
             {
                 DataGridViewRow row = dataGrid_import_excel.Rows[index];
                 // Set Row Color
-                if (row.Cells[10].Value.ToString() != "" && row.Cells[11].Value.ToString() != "")
+
+                //string prod_id = row.Field<string>("prod_id");
+
+                if (row.Cells[11].Value.ToString() != "" && row.Cells[12].Value.ToString() != "")
                 {
                     //dr["typeFoundProduct"] = TypeFoundProduct.Exist;
                     dataGrid_import_excel.Rows[index].DefaultCellStyle.BackColor = Color.Green;

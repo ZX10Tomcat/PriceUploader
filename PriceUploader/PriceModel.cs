@@ -170,13 +170,7 @@ namespace PriceUploader
             return rows;
         }
 
-
-
-          
-
-
-
-        public void InsertData(DataTable table)
+        public void InsertData(DataTable table, string supplier_id, string price_type)
         {
             int product_id = 0;
             double product_price = 0;
@@ -226,7 +220,8 @@ namespace PriceUploader
 
                             product_id = 0;    //нужно получить ID
 
-                            sql = string.Format("INSERT INTO product_alias SET pa_prod_id={0}, pa_code='{1}'", product_id, code);
+                            sql = string.Format("INSERT INTO product_alias SET pa_prod_id={0}, pa_code='{1}'", 
+                                product_id, code);
                             cmd = new MySqlCommand(sql, conn);
                             cmd.ExecuteNonQuery();
                     
@@ -238,9 +233,11 @@ namespace PriceUploader
                         }
                     }
 
-                    string supplier_id = "0"; // нужно определить
+                    
                     if (product_id > 0 && product_price > 0)
                     {
+                        //проверка на price_type
+
                         //$sql = sprintf('UPDATE %sproduct SET prod_price_sup_id=%d, prod_fixed_price=%f WHERE prod_id=%d', DB_PREFIX, $supplier, $price, $product_info['prod_id']);
                         try
                         {
@@ -255,6 +252,13 @@ namespace PriceUploader
                             string error = ex.Source;
                             throw;
                         }
+
+
+
+                        //$client_price = $this->get_product_custom_price($price, $product_info['prod_pc_id']);
+                        //$sql = sprintf('UPDATE %sproduct SET prod_price_sup_id=%d, prod_price_update_timestamp=%d, prod_income_price=%f, prod_client_price=%f, prod_actuality=%d WHERE prod_id=%d', DB_PREFIX, $supplier, ctime(), $price, $client_price, $preset['is_actuality'], $product_info['prod_id']);
+                        //$this->db->query($sql);
+
                     }
 
 
@@ -280,8 +284,24 @@ namespace PriceUploader
                     
 
 
+                    //$sql = sprintf('INSERT INTO %sproduct_price SET pp_prod_id=%d, pp_sup_id=%d, pp_price=%f, pp_postdate=%d', DB_PREFIX, $prod_id, $supplier, $price, ctime());                        
 
+                    string pp_prod_id = string.Empty; 
+                    string pp_sup_id = string.Empty;
+                    string pp_price = string.Empty;
+                    try
+                    {
+                        sql = string.Format("INSERT INTO product_price SET pp_prod_id={0}, pp_sup_id={1}, pp_price={2}, pp_postdate={2}", 
+                            pp_prod_id, pp_sup_id, pp_price, DateTime.Now);
 
+                        cmd = new MySqlCommand(sql, conn);
+                        cmd.ExecuteNonQuery();
+                    }
+                    catch (Exception ex)
+                    {
+                        string error = ex.Source;
+                        throw;
+                    }
 
 
 
@@ -563,7 +583,6 @@ prod_fixed_price, pa_code, prod_pc_id FROM product_alias INNER JOIN product pr O
     {
         public DataTable dataTable;
         public MySqlDataAdapter mySqlDataAdapter; 
-    
     }
 
     public class Product
