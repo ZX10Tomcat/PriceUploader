@@ -642,7 +642,7 @@ namespace PriceUploader
                         prod_income_price = GetValue(ref tableExcel, i, indexColumnPrice),
                         prod_presense1 = GetValue(ref tableExcel, i, indexColumnPresense1),
                         prod_presense2 = GetValue(ref tableExcel, i, indexColumnPresense2),
-                        prod_currency = GetValue(ref tableExcel, i, indexColumnCurrency)
+                        prod_currency = GetValue(ref tableExcel, i, indexColumnCurrency),
                     });
             }
 
@@ -661,7 +661,7 @@ namespace PriceUploader
                     product_pa_code = p == null ? "" : p.pa_code,
                     product_prod_pc_id = p == null ? "" : p.prod_pc_id,
                     prod_pc_id = p == null ? "" : p.prod_pc_id,
-                    prod_id = p == null ? "" : p.prod_id
+                    prod_id = p == null ? "" : p.prod_id,
                 }).ToList();
 
 
@@ -718,7 +718,7 @@ namespace PriceUploader
                                     CalcClientPrice(ref categoryCharge, tableExcel.Rows[i].ItemArray.GetValue(indexColumnPrice), import[i].prod_pc_id)    /* prod_client_price */,
                                     import[i].prod_pc_id,
                                     import[i].prod_id,
-                                    (import[i].prod_pc_id == null && import[i].prod_id == null)
+                                    (import[i].prod_pc_id == "" && import[i].prod_id == "")
                                 });
 
 
@@ -841,7 +841,7 @@ namespace PriceUploader
                 if (row.Cells[11].Value.ToString() != "" && row.Cells[12].Value.ToString() != "")
                 {
                     //dr["typeFoundProduct"] = TypeFoundProduct.Exist;
-                    dataGrid_import_excel.Rows[index].DefaultCellStyle.BackColor = Color.Green;
+                    dataGrid_import_excel.Rows[index].DefaultCellStyle.BackColor = Color.Green;                 
                 }
                 else
                 {

@@ -173,7 +173,8 @@ namespace PriceUploader
         public void InsertData(DataTable table, string supplier_id, string price_type)
         {
             int product_id = 0;
-            double product_price = 0;
+            double product_client_price = 0;
+            double product_fixed_price = 0;
 
             if (conn == null || (conn != null && conn.State != ConnectionState.Open))
                 this.conn = GetConn();
@@ -183,66 +184,161 @@ namespace PriceUploader
                 MySqlCommand cmd = null;
                 string sql = string.Empty;
 
+
+                //select set_value from engine_settings where set_name = 'euro_rate'
+                //select set_value from engine_settings where set_name = 'currency_rate_cash'
+                //$price = $price * EURO_RATE / CURRENCY_RATE_CASH;
+
+
                 foreach (DataRow row in table.Rows)
                 {
+                    bool is_new = row.Field<bool>("is_new");
+                    bool is_selected = row.Field<bool>("is_selected");
+
                     string prod_id = row.Field<string>("prod_id");
                     string prod_name = row.Field<string>("prod_name");
                     string code = row.Field<string>("prod_code");
-                    string price = row.Field<string>("prod_client_price");
-                
-                    product_price = 0;
-                    if(!string.IsNullOrEmpty(price))
-                        product_price = System.Convert.ToDouble(price);
+                    string prod_income_price = row.Field<string>("prod_income_price");
+                    string prod_client_price = row.Field<string>("prod_client_price");
 
-                    product_id = 0;
-                    if (string.IsNullOrEmpty(prod_id))  //новое значение
+
+                    if (is_new && is_selected)
                     {
+                        product_client_price = 0;
+                        if (!string.IsNullOrEmpty(prod_client_price))
+                            product_client_price = System.Convert.ToDouble(prod_client_price);
+
+                        product_fixed_price = 0;
+                        if (!string.IsNullOrEmpty(prod_income_price))
+                            product_fixed_price = System.Convert.ToDouble(prod_income_price);
+
+                        product_id = 0;
+                        if (string.IsNullOrEmpty(prod_id))  //новое значение
+                        {
+
+                            try
+                            {
+                                //$sql = sprintf("INSERT INTO %sproduct SET prod_pc_id=%d, prod_name='%s', prod_text='', prod_disabled='Y', prod_vat='Y', prod_actuality=%d, prod_postdate=%d, prod_last_update=%d, prod_last_user_id=%d",
+                                //    DB_PREFIX, $new_product_category[$num], tosql($product_names[$num]), $preset['is_actuality'], ctime(), ctime(), $this->auth->get_id());
+                                //$this->db->query($sql);
+                                //if ($this->db->insert_id())
+                                //{
+                                //    $prod_id = $this->db->insert_id();
+
+                                //    $code = trim($codes[$num]);
+                                //    $sql = sprintf("INSERT INTO %sproduct_alias SET pa_prod_id=%d, pa_code='%s'", DB_PREFIX, $prod_id, tosql($code));
+                                //    $this->db->query($sql);
+                                //}
+
+                                sql = string.Format("INSERT INTO product SET prod_pc_id={0}, prod_name='{1}', prod_text='', prod_disabled='Y', prod_vat='Y', prod_actuality={2}, prod_postdate={3}, prod_last_update={4}, prod_last_user_id={5}",
+                                    "", prod_name, true, 0, code);
+
+                                cmd = new MySqlCommand(sql, conn);
+                                cmd.ExecuteNonQuery();
+
+                                product_id = 0;    //нужно получить ID
+                                sql = string.Format("SELECT max(prod_id) FROM product");
+                                MySqlDataReader rdr = null;
+                                rdr = cmd.ExecuteReader();
+                                rdr.Read();
+                                product_id = rdr.GetInt32(0);
+
+
+                                sql = string.Format("INSERT INTO product_alias SET pa_prod_id={0}, pa_code='{1}'",
+                                    product_id, code);
+                                cmd = new MySqlCommand(sql, conn);
+                                cmd.ExecuteNonQuery();
+
+                            }
+                            catch (Exception ex)
+                            {
+                                string error = ex.Source;
+                                throw;
+                            }
+                        }
+
+
+                        if (product_id > 0 /* && product_price > 0 */ )
+                        {
+                            //проверка на price_type
+
+                            //$sql = sprintf('UPDATE %sproduct SET prod_price_sup_id=%d, prod_fixed_price=%f WHERE prod_id=%d', DB_PREFIX, $supplier, $price, $product_info['prod_id']);
+
+
+                            if (price_type == "RRC" && product_fixed_price > 0)
+                            {
+                                try
+                                {
+                                    sql = string.Format("UPDATE product SET prod_price_sup_id={0}, prod_fixed_price={1} WHERE prod_id={2}",
+                                        supplier_id, product_fixed_price, product_id);
+
+                                    cmd = new MySqlCommand(sql, conn);
+                                    cmd.ExecuteNonQuery();
+                                }
+                                catch (Exception ex)
+                                {
+                                    string error = ex.Source;
+                                    throw;
+                                }
+                            }
+                            else
+                            {
+                                //$sql = sprintf('INSERT INTO %sproduct_price SET pp_prod_id=%d, pp_sup_id=%d, pp_price=%f, pp_postdate=%d', DB_PREFIX, $prod_id, $supplier, $price, ctime());
+                                //$this->db->query($sql);
+
+                                //$client_price = $this->get_product_custom_price($price, $product_info['prod_pc_id']);
+                                //$sql = sprintf('UPDATE %sproduct SET prod_price_sup_id=%d, prod_price_update_timestamp=%d, prod_income_price=%f, prod_client_price=%f, prod_actuality=%d WHERE prod_id=%d', DB_PREFIX, $supplier, ctime(), $price, $client_price, $preset['is_actuality'], $product_info['prod_id']);
+                                //$this->db->query($sql);
+
+                                try
+                                {
+                                    sql = string.Format("INSERT INTO product_price SET pp_prod_id={0}, pp_sup_id={1}, pp_price={2}, pp_postdate={3}",
+                                        product_id, supplier_id, product_client_price, DateTime.Now);
+
+                                    cmd = new MySqlCommand(sql, conn);
+                                    cmd.ExecuteNonQuery();
+
+                                    sql = string.Format("UPDATE product SET prod_price_sup_id={0}, prod_price_update_timestamp={1}, prod_income_price={2}, prod_client_price={3}, prod_actuality={4} WHERE prod_id={5}",
+                                        supplier_id, DateTime.Now, product_fixed_price, product_client_price, true, product_id);
+
+                                    cmd = new MySqlCommand(sql, conn);
+                                    cmd.ExecuteNonQuery();
+                                }
+                                catch (Exception ex)
+                                {
+                                    string error = ex.Source;
+                                    throw;
+                                }
+                            }
+
+
+                            if (is_new)
+                            {
+                                try
+                                {
+                                    //$sql = sprintf("INSERT INTO %sproduct_alias SET pa_prod_id=%d, pa_code='%s'", DB_PREFIX, $prod_id, tosql($code));
+                                    sql = string.Format("INSERT INTO product_alias SET pa_prod_id={0}, pa_code='{1}'",
+                                        product_id, code);
+
+                                    cmd = new MySqlCommand(sql, conn);
+                                    cmd.ExecuteNonQuery();
+                                }
+                                catch (Exception ex)
+                                {
+                                    string error = ex.Source;
+                                    throw;
+                                }
+                            }
+
+                        }
+
 
                         try
                         {
-                            //$sql = sprintf("INSERT INTO %sproduct SET prod_pc_id=%d, prod_name='%s', prod_text='', prod_disabled='Y', prod_vat='Y', prod_actuality=%d, prod_postdate=%d, prod_last_update=%d, prod_last_user_id=%d",
-                            //    DB_PREFIX, $new_product_category[$num], tosql($product_names[$num]), $preset['is_actuality'], ctime(), ctime(), $this->auth->get_id());
-                            //$this->db->query($sql);
-                            //if ($this->db->insert_id())
-                            //{
-                            //    $prod_id = $this->db->insert_id();
+                            //$sql = sprintf('INSERT INTO %sproduct_price SET pp_prod_id=%d, pp_sup_id=%d, pp_price=%f, pp_postdate=%d', DB_PREFIX, $prod_id, $supplier, $price, ctime());
 
-                            //    $code = trim($codes[$num]);
-                            //    $sql = sprintf("INSERT INTO %sproduct_alias SET pa_prod_id=%d, pa_code='%s'", DB_PREFIX, $prod_id, tosql($code));
-                            //    $this->db->query($sql);
-                            //}
-
-                            sql = string.Format("INSERT INTO product SET prod_pc_id={0}, prod_name='{1}', prod_text='', prod_disabled='Y', prod_vat='Y', prod_actuality={2}, prod_postdate={3}, prod_last_update={4}, prod_last_user_id={5}",
-                                "", prod_name, true, 0, code);
-                    
-                            cmd = new MySqlCommand(sql, conn);
-                            cmd.ExecuteNonQuery();
-
-                            product_id = 0;    //нужно получить ID
-
-                            sql = string.Format("INSERT INTO product_alias SET pa_prod_id={0}, pa_code='{1}'", 
-                                product_id, code);
-                            cmd = new MySqlCommand(sql, conn);
-                            cmd.ExecuteNonQuery();
-                    
-                        }
-                        catch(Exception ex)
-                        {
-                            string error = ex.Source;
-                            throw;
-                        }
-                    }
-
-                    
-                    if (product_id > 0 && product_price > 0)
-                    {
-                        //проверка на price_type
-
-                        //$sql = sprintf('UPDATE %sproduct SET prod_price_sup_id=%d, prod_fixed_price=%f WHERE prod_id=%d', DB_PREFIX, $supplier, $price, $product_info['prod_id']);
-                        try
-                        {
-                            sql = string.Format("UPDATE product SET prod_price_sup_id={0}, prod_fixed_price={1} WHERE prod_id={2}",
-                                supplier_id, product_price, product_id);
+                            sql = string.Format("INSERT INTO product_price SET pp_prod_id={0}, pp_sup_id={1}, pp_price={2}, pp_postdate={3}",
+                                product_id, supplier_id, product_fixed_price, DateTime.Now);
 
                             cmd = new MySqlCommand(sql, conn);
                             cmd.ExecuteNonQuery();
@@ -252,57 +348,7 @@ namespace PriceUploader
                             string error = ex.Source;
                             throw;
                         }
-
-
-
-                        //$client_price = $this->get_product_custom_price($price, $product_info['prod_pc_id']);
-                        //$sql = sprintf('UPDATE %sproduct SET prod_price_sup_id=%d, prod_price_update_timestamp=%d, prod_income_price=%f, prod_client_price=%f, prod_actuality=%d WHERE prod_id=%d', DB_PREFIX, $supplier, ctime(), $price, $client_price, $preset['is_actuality'], $product_info['prod_id']);
-                        //$this->db->query($sql);
-
                     }
-
-
-                    //если новый code
-                    {
-                        //$sql = sprintf("INSERT INTO %sproduct_alias SET pa_prod_id=%d, pa_code='%s'", DB_PREFIX, $prod_id, tosql($code));
-
-                        try
-                        {
-                            sql = string.Format("INSERT INTO product_alias SET pa_prod_id={0}, pa_code='{1}'", prod_id, code);
-
-                            cmd = new MySqlCommand(sql, conn);
-                            cmd.ExecuteNonQuery();
-                        }
-                        catch (Exception ex)
-                        {
-                            string error = ex.Source;
-                            throw;
-                        }
-
-
-                    }
-                    
-
-
-                    //$sql = sprintf('INSERT INTO %sproduct_price SET pp_prod_id=%d, pp_sup_id=%d, pp_price=%f, pp_postdate=%d', DB_PREFIX, $prod_id, $supplier, $price, ctime());                        
-
-                    string pp_prod_id = string.Empty; 
-                    string pp_sup_id = string.Empty;
-                    string pp_price = string.Empty;
-                    try
-                    {
-                        sql = string.Format("INSERT INTO product_price SET pp_prod_id={0}, pp_sup_id={1}, pp_price={2}, pp_postdate={2}", 
-                            pp_prod_id, pp_sup_id, pp_price, DateTime.Now);
-
-                        cmd = new MySqlCommand(sql, conn);
-                        cmd.ExecuteNonQuery();
-                    }
-                    catch (Exception ex)
-                    {
-                        string error = ex.Source;
-                        throw;
-                    }
-
 
 
                 }        
@@ -555,8 +601,8 @@ prod_fixed_price, pa_code, prod_pc_id FROM product_alias INNER JOIN product pr O
                     {
                         con.Open();
                         System.Configuration.AppSettingsReader cas = new System.Configuration.AppSettingsReader();
-                        con.ChangeDatabase(cas.GetValue("dataBase", typeof(string)).ToString());	
-                        MySqlDataAdapter da = new MySqlDataAdapter("SELECT * FROM supplier", con);
+                        con.ChangeDatabase(cas.GetValue("dataBase", typeof(string)).ToString());
+                        MySqlDataAdapter da = new MySqlDataAdapter("SELECT * FROM supplier ORDER BY sup_name", con);
                         commandBuilder = new MySqlCommandBuilder(da);
                         da.Fill(dt);
                     }
@@ -614,6 +660,7 @@ prod_fixed_price, pa_code, prod_pc_id FROM product_alias INNER JOIN product pr O
         public string product_pa_code = string.Empty;
         public string product_prod_pc_id = string.Empty;
         public string prod_id = string.Empty;
+        public string prod_fixed_price = string.Empty;
     }
 
 

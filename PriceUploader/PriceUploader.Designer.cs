@@ -122,6 +122,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.textBoxName = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.dataColumn24 = new System.Data.DataColumn();
             this.V = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.AddCode = new System.Windows.Forms.DataGridViewButtonColumn();
             this.AddCategory = new System.Windows.Forms.DataGridViewButtonColumn();
@@ -371,7 +372,8 @@
             this.dataColumn21,
             this.dataColumn22,
             this.dataColumn23,
-            this.dataColumn17});
+            this.dataColumn17,
+            this.dataColumn24});
             this.dataTable_import_excel.TableName = "Table_import_excel";
             // 
             // dataColumn13
@@ -968,8 +970,14 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Название";
             // 
+            // dataColumn24
+            // 
+            this.dataColumn24.Caption = "is_selected";
+            this.dataColumn24.ColumnName = "is_selected";
+            // 
             // V
             // 
+            this.V.DataPropertyName = "is_selected";
             this.V.HeaderText = "V";
             this.V.Name = "V";
             this.V.Resizable = System.Windows.Forms.DataGridViewTriState.True;
@@ -1048,8 +1056,11 @@
             // is_new
             // 
             this.is_new.DataPropertyName = "is_new";
+            this.is_new.FillWeight = 50F;
             this.is_new.HeaderText = "is_new";
             this.is_new.Name = "is_new";
+            this.is_new.ReadOnly = true;
+            this.is_new.Width = 50;
             // 
             // PriceUploader
             // 
@@ -1196,6 +1207,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn prodpcidDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn prodidDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewCheckBoxColumn is_new;
+        private System.Data.DataColumn dataColumn24;
 
     }
 }
