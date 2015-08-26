@@ -12,6 +12,10 @@ namespace PriceUploader
 {
     public partial class FormCategories : Form
     {
+        public string CategoryValue
+        {
+            get { return treeViewCategories.SelectedNode.Name; }
+        }
         public FormCategories()
         {
             InitializeComponent();
@@ -81,6 +85,17 @@ namespace PriceUploader
                 node = treeViewCategories.Nodes.Add(category.pc_id.ToString(), category.pc_name);
             else
                 node.Nodes.Add(category.pc_id.ToString(), category.pc_name);
+        }
+
+        private void buttonClose_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void buttonSave_Click(object sender, EventArgs e)
+        {
+            this.DialogResult = DialogResult.OK;
+            this.Close();
         }
     }
 

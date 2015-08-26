@@ -57,6 +57,8 @@ namespace PriceUploader
         public void Init()
         {
             Model = new PriceModel();
+            Model.InsertDataError += Model_InsertDataError;
+
 
             DateTime d1 = DateTime.Now;
 
@@ -179,12 +181,51 @@ namespace PriceUploader
             FillComboBoxes();
             comboBoxImportCurrency.SelectedIndex = 0;
 
-            
-
+            SetGridLayout();
 
             //dataGrid_import_excel.Columns["isChecked"].ReadOnly = false;
             Debug.WriteLine("time data loaded: " + timeout.ToString());
             return;
+        }
+
+
+        void Model_InsertDataError(object sender, EventArgs e)
+        {
+            MessageBox.Show(string.Format("Вы не указали категорию в строке №{0}", sender.ToString() ));
+        }
+
+        private void SetGridLayout()
+        {
+            // Columns width
+            dataGrid_import_excel.Columns[0].Width = 50;
+            dataGrid_import_excel.Columns[1].Width = 80;
+            dataGrid_import_excel.Columns[2].Width = 80;
+            dataGrid_import_excel.Columns[3].Width = 60;
+            dataGrid_import_excel.Columns[4].Width = 600;
+            dataGrid_import_excel.Columns[5].Width = 100;
+            dataGrid_import_excel.Columns[6].Width = 150;
+            //dataGrid_import_excel.Columns[7].Width = 100;
+            //dataGrid_import_excel.Columns[8].Width = 100;
+            //dataGrid_import_excel.Columns[9].Width = 100;
+            //dataGrid_import_excel.Columns[10].Width = 100;
+            //dataGrid_import_excel.Columns[11].Width = 60;
+            //dataGrid_import_excel.Columns[12].Width = 60;
+
+
+            // Set ReadOnly columns
+            dataGrid_import_excel.Columns[0].ReadOnly = false;
+            dataGrid_import_excel.Columns[1].ReadOnly = true;
+            dataGrid_import_excel.Columns[2].ReadOnly = true;
+            dataGrid_import_excel.Columns[3].ReadOnly = true;
+            dataGrid_import_excel.Columns[4].ReadOnly = true;
+            dataGrid_import_excel.Columns[5].ReadOnly = true;
+            dataGrid_import_excel.Columns[6].ReadOnly = true;
+            dataGrid_import_excel.Columns[7].ReadOnly = true;
+            dataGrid_import_excel.Columns[8].ReadOnly = true;
+            dataGrid_import_excel.Columns[9].ReadOnly = true;
+            dataGrid_import_excel.Columns[10].ReadOnly = true;
+            dataGrid_import_excel.Columns[11].ReadOnly = true;
+            dataGrid_import_excel.Columns[12].ReadOnly = true;
         }
 
         private void instance_OnLoaded()
@@ -255,7 +296,11 @@ namespace PriceUploader
                 comboBoxSupplier.Items.Clear();
                 for (int i = 0; i < res.Result.Rows.Count; i++)
                 {
-                    comboBoxSupplier.Items.Add(res.Result.Rows[i].ItemArray[1]);
+                    ComboboxItem item = new ComboboxItem();
+                    item.Text = res.Result.Rows[i].ItemArray[1].ToString();
+                    item.Value = res.Result.Rows[i].ItemArray[0];
+                    comboBoxSupplier.Items.Add(item);
+                    
                 }
                 comboBoxSupplier.SelectedIndex = 0;
             }));
@@ -414,25 +459,36 @@ namespace PriceUploader
         private List<ImportToDB> listImportToDB = new List<ImportToDB>();
         private int beginRows = 0;
         private string tableName = "Table_import_excel";
+        FormCode formCode = new FormCode();
+        FormCategories formCategories = new FormCategories();
+        private string fileName;
         
         private void buttonOpenExcel_Click(object sender, EventArgs e)
         {
             label_file_name.Text = string.Empty;
 
             OpenFileDialog openFileDialog = new OpenFileDialog();
-            
-            openFileDialog.InitialDirectory = "c:\\";
-            openFileDialog.Filter = "Excel files (*.xls)|*.xls|All files (*.*)|*.*";
-            openFileDialog.FilterIndex = 1;
-            openFileDialog.RestoreDirectory = true;
 
+           
+                openFileDialog.InitialDirectory = "c:\\";
+                openFileDialog.Filter = "Excel files (*.xls)|*.xls|All files (*.*)|*.*";
+                openFileDialog.FilterIndex = 1;
+                openFileDialog.RestoreDirectory = true;
             if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                fileName = openFileDialog.FileName;
+                label_file_name.Text = openFileDialog.SafeFileName;
+            }
+        }
+
+        private void buttonDownloadFile_Click(object sender, EventArgs e)
+        {
+            
+            if (fileName !="")
             {
                 try
                 {
-                    string fileName = openFileDialog.FileName;
-                    label_file_name.Text = openFileDialog.SafeFileName;
-                    
+                    buttonDownloadFile.Enabled = false;
                     table = new DataTable();
                     tableExcel = new DataTable();
 
@@ -488,7 +544,7 @@ namespace PriceUploader
                         //table.Columns.Add("prod_pc_id", typeof(string));
                         //table.Columns.Add("prod_id", typeof(string));
 
-                        lbl_TotalCount.Text = (countRowsExcel-1).ToString();
+                        lbl_TotalCount.Text = (countRowsExcel).ToString();
 
                         //string code = string.Empty;
                         //Product prod = null;
@@ -532,52 +588,22 @@ namespace PriceUploader
                         dataGrid_import_excel.DataSource = dataSet.Tables[tableName];
                         //dataGrid1.Columns.AutoSizeView();
                         //dataGrid1.DefaultWidth = 50;
-                        
-                        // Columns width
-                        dataGrid_import_excel.Columns[0].Width = 50;
-                        dataGrid_import_excel.Columns[1].Width = 75;
-                        dataGrid_import_excel.Columns[2].Width = 75;
-                        dataGrid_import_excel.Columns[3].Width = 60;
-                        dataGrid_import_excel.Columns[4].Width = 400;
-                        dataGrid_import_excel.Columns[5].Width = 100;
-                        dataGrid_import_excel.Columns[6].Width = 100;
-                        dataGrid_import_excel.Columns[7].Width = 100;
-                        dataGrid_import_excel.Columns[8].Width = 100;
-                        dataGrid_import_excel.Columns[9].Width = 100;
-                        dataGrid_import_excel.Columns[10].Width = 100;
-                        dataGrid_import_excel.Columns[11].Width = 60;
-                        dataGrid_import_excel.Columns[12].Width = 60;
-
-
-                        // Set ReadOnly columns
-                        dataGrid_import_excel.Columns[0].ReadOnly = false;
-                        dataGrid_import_excel.Columns[1].ReadOnly = true;
-                        dataGrid_import_excel.Columns[2].ReadOnly = true;
-                        dataGrid_import_excel.Columns[3].ReadOnly = true;
-                        dataGrid_import_excel.Columns[4].ReadOnly = true;
-                        dataGrid_import_excel.Columns[5].ReadOnly = true;
-                        dataGrid_import_excel.Columns[6].ReadOnly = true;
-                        dataGrid_import_excel.Columns[7].ReadOnly = true;
-                        dataGrid_import_excel.Columns[8].ReadOnly = true;
-                        dataGrid_import_excel.Columns[9].ReadOnly = true;
-                        dataGrid_import_excel.Columns[10].ReadOnly = true;
-                        dataGrid_import_excel.Columns[11].ReadOnly = true;
-                        dataGrid_import_excel.Columns[12].ReadOnly = true;
-
 
                         dataGrid_import_excel.Invoke(new Action(() =>
                         {
                             dataGrid_import_excel.ResumeLayout();
+                            buttonDownloadFile.Enabled = true;
                             //dataGrid1.RecalcCustomScrollBars();
                         }));
 
-                        new Thread(CreateData).Start();
+                        //new Thread(CreateData).Start();
                     }
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show("Error: " + ex.Message);
                     label_file_name.Text = "Oшибка";
+                    buttonDownloadFile.Enabled = true;
                 }
             }
             else
@@ -607,7 +633,7 @@ namespace PriceUploader
         {
             lbl_Counter.Invoke(new Action(() =>
             {
-                lbl_Counter.Text = index.ToString();
+                lbl_Counter.Text = (index+1).ToString();
             }));
         }
         
@@ -711,14 +737,15 @@ namespace PriceUploader
                                     import[i].prod_name,                                   
                                     import[i].prod_code,
                                     import[i].prod_income_price,
-                                    import[i].number, 
+                                    import[i].number +1, 
                                     import[i].prod_presense1,
                                     import[i].prod_presense2,
                                     import[i].prod_currency,
                                     CalcClientPrice(ref categoryCharge, tableExcel.Rows[i].ItemArray.GetValue(indexColumnPrice), import[i].prod_pc_id)    /* prod_client_price */,
                                     import[i].prod_pc_id,
                                     import[i].prod_id,
-                                    (import[i].prod_pc_id == "" && import[i].prod_id == "")
+                                    (import[i].prod_pc_id.ToString() == "" && import[i].prod_id.ToString() == "")
+                                    //(import[i].prod_pc_id == null && import[i].prod_id == null) ? "red" : "green"
                                 });
 
 
@@ -824,10 +851,6 @@ namespace PriceUploader
             formCategories.ShowDialog();
         }
 
-        private void button2_Click(object sender, EventArgs e)
-        {
-            Model.InsertData(table, "", ""); 
-        }
 
         private void dataGrid_import_excel_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
         {
@@ -861,6 +884,11 @@ namespace PriceUploader
                     dataGrid_import_excel.Rows[index].DefaultCellStyle.BackColor = Color.Red;                  
                 }
 
+                //dataSet.Tables[tableName].Rows[index].Field<string>("color").  = dataGrid_import_excel.Rows[index].DefaultCellStyle.BackColor.Name.ToLower();
+                //dataSet.Tables[tableName].AcceptChanges(); 
+
+                dataSet.Tables[tableName].Rows[index]["color"] = dataGrid_import_excel.Rows[index].DefaultCellStyle.BackColor.Name.ToLower();
+
             }
         }
         
@@ -871,6 +899,8 @@ namespace PriceUploader
             if (dataGrid_import_excel.SelectedRows.Count > 0)
                 row_Index = dataGrid_import_excel.SelectedRows[0].Index;
 
+            dataSet.Tables[tableName].Rows[row_Index].ItemArray[12] = dataGrid_import_excel.Rows[row_Index].DefaultCellStyle.BackColor.Name.ToLower();
+            //dataSet.Tables[tableName].AcceptChanges();                      
 
             switch (dataGrid_import_excel.Rows[row_Index].DefaultCellStyle.BackColor.Name.ToLower())
             {
@@ -881,11 +911,10 @@ namespace PriceUploader
                 case "blue":
                     dataGrid_import_excel.Rows[row_Index].DefaultCellStyle.BackColor = Color.Green;
                     break;
-
-
             }            
         }
 
+        private int currenRowIndex = 0;
         private void dataGrid_import_excel_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             var senderGrid = (DataGridView)sender;
@@ -893,16 +922,20 @@ namespace PriceUploader
             if (senderGrid.Columns[e.ColumnIndex] is DataGridViewButtonColumn &&
                 e.RowIndex >= 0)
             {
+                currenRowIndex = e.RowIndex;
+
                 switch (e.ColumnIndex)
                 {
                     case 1:
-                        FormCode formCode = new FormCode();
+                        
                         //formCode.Init(TableProductCategory);
+                        formCode.FormClosed += formCode_FormClosed;
                         formCode.ShowDialog();
+                        var newCode = formCode.CodeValue;                        
                         break;
 
                     case 2:
-                        FormCategories formCategories = new FormCategories();
+                        formCategories.FormClosed += formCategories_FormClosed;
                         formCategories.Init(TableProductCategory);
                         formCategories.ShowDialog();
                     break;
@@ -911,10 +944,42 @@ namespace PriceUploader
             }
         }
 
-      
+        void formCategories_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            string newCategory = "";
+            if (formCategories.DialogResult == DialogResult.OK)
+            {
+                newCategory = formCategories.CategoryValue;
+                int row_Index = currenRowIndex;
+                //8=prod_pc_id
+                dataSet.Tables[tableName].Rows[row_Index].ItemArray[8] = newCategory; 
+                dataSet.Tables[tableName].AcceptChanges();                      
+           
+            }
+                
+            formCategories.FormClosed -= formCategories_FormClosed;
+        }
+
+        void formCode_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            string newCode = "";
+            if (formCode.DialogResult == DialogResult.OK)
+            {
+                newCode = formCode.CodeValue;
+                int row_Index = currenRowIndex;
+                //13=prod_new_code
+                dataSet.Tables[tableName].Rows[row_Index].ItemArray[13] = newCode;
+                dataSet.Tables[tableName].AcceptChanges();                      
+            }
+
+            formCode.FormClosed -= formCode_FormClosed;
+        }
+
+        private void buttonSaveData_Click(object sender, EventArgs e)
+        {
+            Model.InsertData(dataSet.Tables[tableName], (this.comboBoxSupplier.SelectedItem as ComboboxItem).Value.ToString(), comboBoxImportCurrency.Text);
+        }
     }
-
-
 
     public enum TypeFoundProduct
     { 
@@ -948,6 +1013,17 @@ namespace PriceUploader
                 OnLoaded();
         }
 
+    }
+
+    public class ComboboxItem
+    {
+        public string Text { get; set; }
+        public object Value { get; set; }
+
+        public override string ToString()
+        {
+            return Text;
+        }
     }
 
 }

@@ -49,6 +49,7 @@
             this.textBoxCode.Name = "textBoxCode";
             this.textBoxCode.Size = new System.Drawing.Size(260, 20);
             this.textBoxCode.TabIndex = 1;
+            this.textBoxCode.VisibleChanged += new System.EventHandler(this.textBoxCode_VisibleChanged);
             // 
             // buttonSave
             // 
@@ -58,6 +59,7 @@
             this.buttonSave.TabIndex = 2;
             this.buttonSave.Text = "Сохранить";
             this.buttonSave.UseVisualStyleBackColor = true;
+            this.buttonSave.Click += new System.EventHandler(this.buttonSave_Click);
             // 
             // buttonClose
             // 

@@ -12,14 +12,30 @@ namespace PriceUploader
 {
     public partial class FormCode : Form
     {
+        public string CodeValue
+        {
+            get { return textBoxCode.Text; }
+        }
+
         public FormCode()
         {
-            InitializeComponent();
+            InitializeComponent();          
         }
 
         private void buttonClose_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void buttonSave_Click(object sender, EventArgs e)
+        {
+            this.DialogResult = DialogResult.OK;
+            this.Close();
+        }
+
+        private void textBoxCode_VisibleChanged(object sender, EventArgs e)
+        {
+            textBoxCode.Text = "";
         }
     }
 }

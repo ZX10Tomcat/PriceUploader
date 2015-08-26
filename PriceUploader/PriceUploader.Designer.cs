@@ -37,6 +37,7 @@
             this.toolStripMenuItemExit = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControlMain = new System.Windows.Forms.TabControl();
             this.tabPageImport = new System.Windows.Forms.TabPage();
+            this.buttonSaveData = new System.Windows.Forms.Button();
             this.dataGrid_import_excel = new System.Windows.Forms.DataGridView();
             this.V = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.AddCode = new System.Windows.Forms.DataGridViewButtonColumn();
@@ -80,13 +81,15 @@
             this.dataColumn23 = new System.Data.DataColumn();
             this.dataColumn17 = new System.Data.DataColumn();
             this.dataColumn24 = new System.Data.DataColumn();
+            this.dataColumn25 = new System.Data.DataColumn();
+            this.dataColumn26 = new System.Data.DataColumn();
             this.label_TimeSpan = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
             this.lbl_TotalCount = new System.Windows.Forms.Label();
             this.lbl_Of = new System.Windows.Forms.Label();
             this.lbl_Counter = new System.Windows.Forms.Label();
             this.label_file_name = new System.Windows.Forms.Label();
-            this.button2 = new System.Windows.Forms.Button();
+            this.buttonDownloadFile = new System.Windows.Forms.Button();
             this.buttonOpenExcel = new System.Windows.Forms.Button();
             this.comboBoxImportCurrency = new System.Windows.Forms.ComboBox();
             this.label14 = new System.Windows.Forms.Label();
@@ -96,7 +99,6 @@
             this.label12 = new System.Windows.Forms.Label();
             this.tabPageSettings = new System.Windows.Forms.TabPage();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.button1 = new System.Windows.Forms.Button();
             this.buttonDelete = new System.Windows.Forms.Button();
             this.buttonDatabaseSettings = new System.Windows.Forms.Button();
             this.buttonAdd = new System.Windows.Forms.Button();
@@ -216,6 +218,7 @@
             // 
             // tabPageImport
             // 
+            this.tabPageImport.Controls.Add(this.buttonSaveData);
             this.tabPageImport.Controls.Add(this.dataGrid_import_excel);
             this.tabPageImport.Controls.Add(this.label_TimeSpan);
             this.tabPageImport.Controls.Add(this.label15);
@@ -223,7 +226,7 @@
             this.tabPageImport.Controls.Add(this.lbl_Of);
             this.tabPageImport.Controls.Add(this.lbl_Counter);
             this.tabPageImport.Controls.Add(this.label_file_name);
-            this.tabPageImport.Controls.Add(this.button2);
+            this.tabPageImport.Controls.Add(this.buttonDownloadFile);
             this.tabPageImport.Controls.Add(this.buttonOpenExcel);
             this.tabPageImport.Controls.Add(this.comboBoxImportCurrency);
             this.tabPageImport.Controls.Add(this.label14);
@@ -238,6 +241,16 @@
             this.tabPageImport.TabIndex = 0;
             this.tabPageImport.Text = "Импорт";
             this.tabPageImport.UseVisualStyleBackColor = true;
+            // 
+            // buttonSaveData
+            // 
+            this.buttonSaveData.Location = new System.Drawing.Point(1060, 7);
+            this.buttonSaveData.Name = "buttonSaveData";
+            this.buttonSaveData.Size = new System.Drawing.Size(110, 23);
+            this.buttonSaveData.TabIndex = 18;
+            this.buttonSaveData.Text = "Сохранить в БД";
+            this.buttonSaveData.UseVisualStyleBackColor = true;
+            this.buttonSaveData.Click += new System.EventHandler(this.buttonSaveData_Click);
             // 
             // dataGrid_import_excel
             // 
@@ -261,10 +274,10 @@
             this.prodidDataGridViewTextBoxColumn,
             this.is_new});
             this.dataGrid_import_excel.DataSource = this.bindingSource_import_excel;
-            this.dataGrid_import_excel.Location = new System.Drawing.Point(7, 39);
+            this.dataGrid_import_excel.Location = new System.Drawing.Point(6, 36);
             this.dataGrid_import_excel.Name = "dataGrid_import_excel";
             this.dataGrid_import_excel.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGrid_import_excel.Size = new System.Drawing.Size(1163, 492);
+            this.dataGrid_import_excel.Size = new System.Drawing.Size(1164, 502);
             this.dataGrid_import_excel.TabIndex = 17;
             this.dataGrid_import_excel.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGrid_import_excel_CellContentClick);
             this.dataGrid_import_excel.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.dataGrid_import_excel_RowsAdded);
@@ -323,36 +336,42 @@
             this.prodpresense1DataGridViewTextBoxColumn.DataPropertyName = "prod_presense1";
             this.prodpresense1DataGridViewTextBoxColumn.HeaderText = "prod_presense1";
             this.prodpresense1DataGridViewTextBoxColumn.Name = "prodpresense1DataGridViewTextBoxColumn";
+            this.prodpresense1DataGridViewTextBoxColumn.Visible = false;
             // 
             // prodpresense2DataGridViewTextBoxColumn
             // 
             this.prodpresense2DataGridViewTextBoxColumn.DataPropertyName = "prod_presense2";
             this.prodpresense2DataGridViewTextBoxColumn.HeaderText = "prod_presense2";
             this.prodpresense2DataGridViewTextBoxColumn.Name = "prodpresense2DataGridViewTextBoxColumn";
+            this.prodpresense2DataGridViewTextBoxColumn.Visible = false;
             // 
             // prodcurrencyDataGridViewTextBoxColumn
             // 
             this.prodcurrencyDataGridViewTextBoxColumn.DataPropertyName = "prod_currency";
             this.prodcurrencyDataGridViewTextBoxColumn.HeaderText = "prod_currency";
             this.prodcurrencyDataGridViewTextBoxColumn.Name = "prodcurrencyDataGridViewTextBoxColumn";
+            this.prodcurrencyDataGridViewTextBoxColumn.Visible = false;
             // 
             // prodclientpriceDataGridViewTextBoxColumn
             // 
             this.prodclientpriceDataGridViewTextBoxColumn.DataPropertyName = "prod_client_price";
             this.prodclientpriceDataGridViewTextBoxColumn.HeaderText = "prod_client_price";
             this.prodclientpriceDataGridViewTextBoxColumn.Name = "prodclientpriceDataGridViewTextBoxColumn";
+            this.prodclientpriceDataGridViewTextBoxColumn.Visible = false;
             // 
             // prodpcidDataGridViewTextBoxColumn
             // 
             this.prodpcidDataGridViewTextBoxColumn.DataPropertyName = "prod_pc_id";
             this.prodpcidDataGridViewTextBoxColumn.HeaderText = "prod_pc_id";
             this.prodpcidDataGridViewTextBoxColumn.Name = "prodpcidDataGridViewTextBoxColumn";
+            this.prodpcidDataGridViewTextBoxColumn.Visible = false;
             // 
             // prodidDataGridViewTextBoxColumn
             // 
             this.prodidDataGridViewTextBoxColumn.DataPropertyName = "prod_id";
             this.prodidDataGridViewTextBoxColumn.HeaderText = "prod_id";
             this.prodidDataGridViewTextBoxColumn.Name = "prodidDataGridViewTextBoxColumn";
+            this.prodidDataGridViewTextBoxColumn.Visible = false;
             // 
             // is_new
             // 
@@ -361,6 +380,7 @@
             this.is_new.HeaderText = "is_new";
             this.is_new.Name = "is_new";
             this.is_new.ReadOnly = true;
+            this.is_new.Visible = false;
             this.is_new.Width = 50;
             // 
             // bindingSource_import_excel
@@ -469,7 +489,9 @@
             this.dataColumn22,
             this.dataColumn23,
             this.dataColumn17,
-            this.dataColumn24});
+            this.dataColumn24,
+            this.dataColumn25,
+            this.dataColumn26});
             this.dataTable_import_excel.TableName = "Table_import_excel";
             // 
             // dataColumn13
@@ -533,6 +555,15 @@
             this.dataColumn24.Caption = "is_selected";
             this.dataColumn24.ColumnName = "is_selected";
             // 
+            // dataColumn25
+            // 
+            this.dataColumn25.ColumnName = "color";
+            // 
+            // dataColumn26
+            // 
+            this.dataColumn26.Caption = "prod_new_code";
+            this.dataColumn26.ColumnName = "prod_new_code";
+            // 
             // label_TimeSpan
             // 
             this.label_TimeSpan.AutoSize = true;
@@ -581,26 +612,26 @@
             // label_file_name
             // 
             this.label_file_name.AutoSize = true;
-            this.label_file_name.Location = new System.Drawing.Point(734, 13);
+            this.label_file_name.Location = new System.Drawing.Point(695, 13);
             this.label_file_name.Name = "label_file_name";
             this.label_file_name.Size = new System.Drawing.Size(92, 13);
             this.label_file_name.TabIndex = 9;
             this.label_file_name.Text = "Файл не выбран";
             // 
-            // button2
+            // buttonDownloadFile
             // 
-            this.button2.Location = new System.Drawing.Point(1056, 5);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(114, 23);
-            this.button2.TabIndex = 8;
-            this.button2.Text = "Загрузить файл";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.buttonDownloadFile.Location = new System.Drawing.Point(940, 7);
+            this.buttonDownloadFile.Name = "buttonDownloadFile";
+            this.buttonDownloadFile.Size = new System.Drawing.Size(114, 23);
+            this.buttonDownloadFile.TabIndex = 8;
+            this.buttonDownloadFile.Text = "Загрузить файл";
+            this.buttonDownloadFile.UseVisualStyleBackColor = true;
+            this.buttonDownloadFile.Click += new System.EventHandler(this.buttonDownloadFile_Click);
             // 
             // buttonOpenExcel
             // 
             this.buttonOpenExcel.Enabled = false;
-            this.buttonOpenExcel.Location = new System.Drawing.Point(652, 6);
+            this.buttonOpenExcel.Location = new System.Drawing.Point(614, 7);
             this.buttonOpenExcel.Name = "buttonOpenExcel";
             this.buttonOpenExcel.Size = new System.Drawing.Size(75, 23);
             this.buttonOpenExcel.TabIndex = 7;
@@ -615,7 +646,7 @@
             "USD",
             "EUR",
             "РРЦ"});
-            this.comboBoxImportCurrency.Location = new System.Drawing.Point(502, 9);
+            this.comboBoxImportCurrency.Location = new System.Drawing.Point(482, 9);
             this.comboBoxImportCurrency.Name = "comboBoxImportCurrency";
             this.comboBoxImportCurrency.Size = new System.Drawing.Size(121, 21);
             this.comboBoxImportCurrency.TabIndex = 6;
@@ -623,7 +654,7 @@
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(450, 13);
+            this.label14.Location = new System.Drawing.Point(430, 13);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(45, 13);
             this.label14.TabIndex = 5;
@@ -632,15 +663,15 @@
             // comboBoxFormat
             // 
             this.comboBoxFormat.FormattingEnabled = true;
-            this.comboBoxFormat.Location = new System.Drawing.Point(293, 8);
+            this.comboBoxFormat.Location = new System.Drawing.Point(283, 8);
             this.comboBoxFormat.Name = "comboBoxFormat";
-            this.comboBoxFormat.Size = new System.Drawing.Size(151, 21);
+            this.comboBoxFormat.Size = new System.Drawing.Size(137, 21);
             this.comboBoxFormat.TabIndex = 4;
             // 
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(240, 12);
+            this.label13.Location = new System.Drawing.Point(230, 12);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(49, 13);
             this.label13.TabIndex = 3;
@@ -651,7 +682,7 @@
             this.comboBoxSupplier.FormattingEnabled = true;
             this.comboBoxSupplier.Location = new System.Drawing.Point(81, 7);
             this.comboBoxSupplier.Name = "comboBoxSupplier";
-            this.comboBoxSupplier.Size = new System.Drawing.Size(153, 21);
+            this.comboBoxSupplier.Size = new System.Drawing.Size(141, 21);
             this.comboBoxSupplier.TabIndex = 2;
             // 
             // label12
@@ -682,7 +713,6 @@
             // 
             // splitContainer1.Panel1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.button1);
             this.splitContainer1.Panel1.Controls.Add(this.buttonDelete);
             this.splitContainer1.Panel1.Controls.Add(this.buttonDatabaseSettings);
             this.splitContainer1.Panel1.Controls.Add(this.buttonAdd);
@@ -716,16 +746,6 @@
             this.splitContainer1.Size = new System.Drawing.Size(1172, 572);
             this.splitContainer1.SplitterDistance = 885;
             this.splitContainer1.TabIndex = 0;
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(472, 23);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(259, 23);
-            this.button1.TabIndex = 26;
-            this.button1.Text = "Настройки доступа к БД";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // buttonDelete
             // 
@@ -1137,7 +1157,7 @@
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Button buttonDatabaseSettings;
         private System.Windows.Forms.Label label_file_name;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button buttonDownloadFile;
         private System.Windows.Forms.Button buttonOpenExcel;
         private System.Windows.Forms.ComboBox comboBoxImportCurrency;
         private System.Windows.Forms.Label label14;
@@ -1192,7 +1212,6 @@
         private System.Data.DataColumn dataColumn19;
         private System.Data.DataColumn dataColumn20;
         private System.Data.DataColumn dataColumn21;
-        private System.Windows.Forms.Button button1;
         private System.Data.DataColumn dataColumn22;
         private System.Windows.Forms.Label lbl_TotalCount;
         private System.Windows.Forms.Label lbl_Of;
@@ -1203,6 +1222,7 @@
         private System.Data.DataColumn dataColumn23;
         private System.Data.DataColumn dataColumn17;
         private System.Data.DataColumn dataColumn24;
+        private System.Data.DataColumn dataColumn25;
         private System.Windows.Forms.DataGridViewCheckBoxColumn V;
         private System.Windows.Forms.DataGridViewButtonColumn AddCode;
         private System.Windows.Forms.DataGridViewButtonColumn AddCategory;
@@ -1217,6 +1237,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn prodpcidDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn prodidDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewCheckBoxColumn is_new;
+        private System.Data.DataColumn dataColumn26;
+        private System.Windows.Forms.Button buttonSaveData;
 
     }
 }

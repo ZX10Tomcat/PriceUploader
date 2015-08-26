@@ -29,20 +29,44 @@
         private void InitializeComponent()
         {
             this.treeViewCategories = new System.Windows.Forms.TreeView();
+            this.buttonClose = new System.Windows.Forms.Button();
+            this.buttonSave = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // treeViewCategories
             // 
             this.treeViewCategories.Location = new System.Drawing.Point(1, 2);
             this.treeViewCategories.Name = "treeViewCategories";
-            this.treeViewCategories.Size = new System.Drawing.Size(503, 532);
+            this.treeViewCategories.Size = new System.Drawing.Size(503, 494);
             this.treeViewCategories.TabIndex = 0;
+            // 
+            // buttonClose
+            // 
+            this.buttonClose.Location = new System.Drawing.Point(375, 502);
+            this.buttonClose.Name = "buttonClose";
+            this.buttonClose.Size = new System.Drawing.Size(119, 23);
+            this.buttonClose.TabIndex = 5;
+            this.buttonClose.Text = "Отмена";
+            this.buttonClose.UseVisualStyleBackColor = true;
+            this.buttonClose.Click += new System.EventHandler(this.buttonClose_Click);
+            // 
+            // buttonSave
+            // 
+            this.buttonSave.Location = new System.Drawing.Point(3, 502);
+            this.buttonSave.Name = "buttonSave";
+            this.buttonSave.Size = new System.Drawing.Size(119, 23);
+            this.buttonSave.TabIndex = 4;
+            this.buttonSave.Text = "Выбрать";
+            this.buttonSave.UseVisualStyleBackColor = true;
+            this.buttonSave.Click += new System.EventHandler(this.buttonSave_Click);
             // 
             // FormCategories
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(506, 533);
+            this.Controls.Add(this.buttonClose);
+            this.Controls.Add(this.buttonSave);
             this.Controls.Add(this.treeViewCategories);
             this.Name = "FormCategories";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
@@ -54,5 +78,7 @@
         #endregion
 
         private System.Windows.Forms.TreeView treeViewCategories;
+        private System.Windows.Forms.Button buttonClose;
+        private System.Windows.Forms.Button buttonSave;
     }
 }
