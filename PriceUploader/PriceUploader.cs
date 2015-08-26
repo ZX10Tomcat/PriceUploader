@@ -841,20 +841,79 @@ namespace PriceUploader
                 if (row.Cells[11].Value.ToString() != "" && row.Cells[12].Value.ToString() != "")
                 {
                     //dr["typeFoundProduct"] = TypeFoundProduct.Exist;
-                    dataGrid_import_excel.Rows[index].DefaultCellStyle.BackColor = Color.Green;                 
+                    dataGrid_import_excel.Rows[index].DefaultCellStyle.BackColor = Color.Green;
+                    
+                    dataGrid_import_excel.Rows[index].Cells[0].Value = null;
+                    dataGrid_import_excel.Rows[row.Index].Cells[0] = new DataGridViewTextBoxCell();
+                    dataGrid_import_excel.Rows[row.Index].Cells[0].Value = "";
+
+                    dataGrid_import_excel.Rows[index].Cells[1].Value = null;
+                    dataGrid_import_excel.Rows[row.Index].Cells[1] = new DataGridViewTextBoxCell();
+                    dataGrid_import_excel.Rows[row.Index].Cells[1].Value = "";
+
+                    dataGrid_import_excel.Rows[index].Cells[2].Value = null;
+                    dataGrid_import_excel.Rows[row.Index].Cells[2] = new DataGridViewTextBoxCell();
+                    dataGrid_import_excel.Rows[row.Index].Cells[2].Value = "";
                 }
                 else
                 {
                     //dr["typeFoundProduct"] = TypeFoundProduct.New;
-                    dataGrid_import_excel.Rows[index].DefaultCellStyle.BackColor = Color.Red;
+                    dataGrid_import_excel.Rows[index].DefaultCellStyle.BackColor = Color.Red;                  
                 }
 
             }
         }
+        
+        private void dataGrid_import_excel_SelectionChanged(object sender, EventArgs e)
+        {
+
+            int row_Index = 0;
+            if (dataGrid_import_excel.SelectedRows.Count > 0)
+                row_Index = dataGrid_import_excel.SelectedRows[0].Index;
 
 
+            switch (dataGrid_import_excel.Rows[row_Index].DefaultCellStyle.BackColor.Name.ToLower())
+            {
+                case "green":
+                    dataGrid_import_excel.Rows[row_Index].DefaultCellStyle.BackColor = Color.Blue;
+                    break;
 
+                case "blue":
+                    dataGrid_import_excel.Rows[row_Index].DefaultCellStyle.BackColor = Color.Green;
+                    break;
+
+
+            }            
+        }
+
+        private void dataGrid_import_excel_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            var senderGrid = (DataGridView)sender;
+
+            if (senderGrid.Columns[e.ColumnIndex] is DataGridViewButtonColumn &&
+                e.RowIndex >= 0)
+            {
+                switch (e.ColumnIndex)
+                {
+                    case 1:
+                        FormCode formCode = new FormCode();
+                        //formCode.Init(TableProductCategory);
+                        formCode.ShowDialog();
+                        break;
+
+                    case 2:
+                        FormCategories formCategories = new FormCategories();
+                        formCategories.Init(TableProductCategory);
+                        formCategories.ShowDialog();
+                    break;
+                
+                }
+            }
+        }
+
+      
     }
+
 
 
     public enum TypeFoundProduct

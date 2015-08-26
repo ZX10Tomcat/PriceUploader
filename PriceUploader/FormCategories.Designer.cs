@@ -45,7 +45,8 @@
             this.ClientSize = new System.Drawing.Size(506, 533);
             this.Controls.Add(this.treeViewCategories);
             this.Name = "FormCategories";
-            this.Text = "FormCategories";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.Text = "Категории";
             this.ResumeLayout(false);
 
         }
