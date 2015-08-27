@@ -413,25 +413,30 @@ namespace PriceUploader
             formSetDatabase.ShowDialog();
         }
                 
+        public const string TABLE_IMPORT_SETTINGS = "Table_import_settings";
         private void buttonSave_Click(object sender, EventArgs e)
         {
             bindingSource__import_settings.MoveNext();
             bindingSource__import_settings.MovePrevious();
-            
-            var table = dataSet.Tables["Table_import_settings"];
-            Model.Update_import_settings(ref table);
 
-            Model.Load_import_settings().ContinueWith(res =>
+            var table = dataSet.Tables[TABLE_IMPORT_SETTINGS];
+
+            if (table.GetChanges() != null)
             {
-                table.Clear();
-                this.dataGrid_import_settings.Invoke(new Action(()=>
+                Model.Update_import_settings(ref table);
+
+                Model.Load_import_settings().ContinueWith(res =>
                 {
-                    this.dataGrid_import_settings.DataSource = null;
-                    this.dataGrid_import_settings.Rows.Clear();
-                    this.dataGrid_import_settings.DataSource = bindingSource__import_settings;
-                    this.SetDataTableByRows(res, "Table_import_settings");
-                }));
-            });
+                    table.Clear();
+                    this.dataGrid_import_settings.Invoke(new Action(() =>
+                    {
+                        this.dataGrid_import_settings.DataSource = null;
+                        this.dataGrid_import_settings.Rows.Clear();
+                        this.dataGrid_import_settings.DataSource = bindingSource__import_settings;
+                        this.SetDataTableByRows(res, TABLE_IMPORT_SETTINGS);
+                    }));
+                });
+            }
         }
         
         private void buttonDelete_Click(object sender, EventArgs e)

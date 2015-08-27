@@ -126,11 +126,12 @@ namespace PriceUploader
         
         public int SaveDatabaseSettings()
         {
-            cAppConfig.UpdateAppSetting("database", strDatabase);
-            cAppConfig.UpdateAppSetting("server", strServer);
-            cAppConfig.UpdateAppSetting("userId", strUserId);
-            cAppConfig.UpdateAppSetting("password", strPassword);
-            cAppConfig.UpdateAppSetting("port", strPort);
+            var config = ConfigurationManager.OpenExeConfiguration(Assembly.GetExecutingAssembly().Location);
+            cAppConfig.UpdateAppSetting(config, "database", strDatabase);
+            cAppConfig.UpdateAppSetting(config, "server", strServer);
+            cAppConfig.UpdateAppSetting(config, "userId", strUserId);
+            cAppConfig.UpdateAppSetting(config, "password", strPassword);
+            cAppConfig.UpdateAppSetting(config, "port", strPort);
             return 0;
         }
         

@@ -15,9 +15,15 @@ namespace LAny
             return (cas.GetValue(key, typeof(string)).ToString());
         }
 
-        public static void UpdateAppSetting(string key, string value)
+        /// <summary>
+        /// Sample 
+        /// Configuration configuration = ConfigurationManager.OpenExeConfiguration(Assembly.GetExecutingAssembly().Location);
+        /// </summary>
+        /// <param name="configuration"></param>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
+        public static void UpdateAppSetting(Configuration configuration, string key, string value)
         {
-            Configuration configuration = ConfigurationManager.OpenExeConfiguration(Assembly.GetExecutingAssembly().Location);
             configuration.AppSettings.Settings[key].Value = value;
             configuration.Save();
 
