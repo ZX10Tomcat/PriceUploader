@@ -123,7 +123,37 @@ namespace PriceUploader
 
             return strConn;
         }
-        
+
+        public int CheckConnect(string strDatabase, string strServer, string strUserId, string strPassword, string strPort)
+        {
+            MySqlConnection cn = null;
+            int res = 0;
+            try
+            {
+                cn = new MySqlConnection(string.Format("server={0};user id={1};password={2};port={3};",
+                    strServer, strUserId, strPassword, strPort));
+                cn.Open();
+
+                cn.ChangeDatabase(strDatabase);
+            }
+            catch { }
+            finally
+            {
+                if (cn != null && cn.State == ConnectionState.Open)
+                {
+                    cn.Close();
+                    res = 0;
+                }
+                else
+                {
+                    res = -1;
+                }
+                cn = null;
+            }
+
+            return res;
+        }
+
         public int SaveDatabaseSettings()
         {
             var config = ConfigurationManager.OpenExeConfiguration(Assembly.GetExecutingAssembly().Location);
@@ -134,7 +164,7 @@ namespace PriceUploader
             cAppConfig.UpdateAppSetting(config, "port", strPort);
             return 0;
         }
-        
+
         public MySqlConnection GetConn()
         {
 			try 

@@ -37,15 +37,29 @@ namespace PriceUploader
 
         private void buttonSave_Click(object sender, EventArgs e)
         {
-            this.priceModel.StrDatabase = this.textBoxDatabase.Text;
-            this.priceModel.StrPassword = this.textBoxPassword.Text;
-            this.priceModel.StrPort = this.textBoxPort.Text;
-            this.priceModel.StrServer = this.textBoxServer.Text;
-            this.priceModel.StrUserId = this.textBoxUserID.Text;
+            string StrDatabase = this.textBoxDatabase.Text;
+            string StrPassword = this.textBoxPassword.Text;
+            string StrPort = this.textBoxPort.Text;
+            string StrServer = this.textBoxServer.Text;
+            string StrUserId = this.textBoxUserID.Text;
+
+            if (this.priceModel.CheckConnect(StrDatabase, StrServer, StrUserId, StrPassword, StrPort) < 0)
+            {
+                MessageBox.Show("Ошибка в настройках соединения с сервером");
+                return;
+            }
+
+            this.priceModel.StrDatabase = StrDatabase;
+            this.priceModel.StrPassword = StrPassword;
+            this.priceModel.StrPort = StrPort;
+            this.priceModel.StrServer = StrServer;
+            this.priceModel.StrUserId = StrUserId;
+
+            if (this.priceModel.SaveDatabaseSettings() < 0)
+                MessageBox.Show("Ошибка сохранения настроек соединения с сервером");
+            else
+                this.Close();
             
-            this.priceModel.SaveDatabaseSettings();
-            
-            this.Close();
         }
        
     }
