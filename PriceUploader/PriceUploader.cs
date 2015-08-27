@@ -31,6 +31,7 @@ namespace PriceUploader
         private List<Product> products = new List<Product>();
         private List<CategoryCharge> categoryCharge = new List<CategoryCharge>();
         private List<ImportToDB> excelList = new List<ImportToDB>();
+        private FormLoad formLoad = null;
 
         public PriceUploader()
         {
@@ -59,13 +60,10 @@ namespace PriceUploader
             Model = new PriceModel();
             Model.InsertDataError += Model_InsertDataError;
 
-
             DateTime d1 = DateTime.Now;
 
             ReceiveData.instance.OnLoaded += new ReceiveData.OnLoadedEventHandler(instance_OnLoaded);
-
             ReceiveData.instance.BegQuery();
-
 
             Model.Load_product_and_alias().ContinueWith(res =>
             {
@@ -233,6 +231,8 @@ namespace PriceUploader
             buttonOpenExcel.Invoke(new Action(() =>
             {
                 buttonOpenExcel.Enabled = true;
+                if (this.formLoad != null)
+                    this.formLoad.Close();
             }));
         }
 
@@ -983,6 +983,12 @@ namespace PriceUploader
         private void buttonSaveData_Click(object sender, EventArgs e)
         {
             Model.InsertData(dataSet.Tables[tableName], (this.comboBoxSupplier.SelectedItem as ComboboxItem).Value.ToString(), comboBoxImportCurrency.Text);
+        }
+
+        private void PriceUploader_Shown(object sender, EventArgs e)
+        {
+            formLoad = new FormLoad();
+            formLoad.ShowDialog();
         }
     }
 
