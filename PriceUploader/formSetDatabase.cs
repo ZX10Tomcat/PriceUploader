@@ -37,6 +37,8 @@ namespace PriceUploader
 
         private void buttonSave_Click(object sender, EventArgs e)
         {
+            Cursor.Current = Cursors.WaitCursor;
+            
             string StrDatabase = this.textBoxDatabase.Text;
             string StrPassword = this.textBoxPassword.Text;
             string StrPort = this.textBoxPort.Text;
@@ -45,7 +47,8 @@ namespace PriceUploader
 
             if (this.priceModel.CheckConnect(StrDatabase, StrServer, StrUserId, StrPassword, StrPort) < 0)
             {
-                MessageBox.Show("Ошибка в настройках соединения с сервером");
+                Cursor.Current = Cursors.Default;
+                MessageBox.Show("Ошибка в настройках доступа к БД", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
@@ -56,9 +59,17 @@ namespace PriceUploader
             this.priceModel.StrUserId = StrUserId;
 
             if (this.priceModel.SaveDatabaseSettings() < 0)
-                MessageBox.Show("Ошибка сохранения настроек соединения с сервером");
+            {
+                Cursor.Current = Cursors.Default;
+                MessageBox.Show("Ошибка сохранения настроек доступа к БД", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
             else
+            {
+                Cursor.Current = Cursors.Default;
+                MessageBox.Show("Настройки доступа к БД сохранены успешно");
                 this.Close();
+            }
+                
             
         }
        

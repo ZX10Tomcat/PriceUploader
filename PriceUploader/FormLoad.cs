@@ -16,5 +16,19 @@ namespace PriceUploader
         {
             InitializeComponent();
         }
+
+        public string CurrentTask
+        {
+            get 
+            { 
+                return this.labelTask.Text; 
+            }
+
+            set
+            {
+                this.labelTask.Text = value;
+                this.Refresh();
+            }
+        }
     }
 }

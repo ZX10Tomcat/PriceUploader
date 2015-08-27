@@ -89,9 +89,9 @@ namespace PriceUploader
                     });  
                 }
 
+                string str = "Table ProductAndAlias: " + TableProductAndAlias.Rows.Count.ToString();
+                FormLoadMessage(str);
                 ReceiveData.instance.EndQuery();
-
-                Debug.WriteLine("           TableProductAndAlias: " + TableProductAndAlias.Rows.Count.ToString());
             });
 
 
@@ -113,9 +113,9 @@ namespace PriceUploader
                     });
                 }
 
+                string str = "Table CategoryCharge: " + TableCategoryCharge.Rows.Count.ToString();
+                FormLoadMessage(str);
                 ReceiveData.instance.EndQuery();
-
-                Debug.WriteLine("           TableCategoryCharge: " + TableCategoryCharge.Rows.Count.ToString());
             });
 
             ReceiveData.instance.BegQuery();
@@ -131,7 +131,8 @@ namespace PriceUploader
             Model.Load_price_category().ContinueWith(res =>
             {
                 TablePriceCategory = res.Result;
-                Debug.WriteLine("           TablePriceCategory: " + TablePriceCategory.Rows.Count.ToString());
+                string str = "Table PriceCategory: " + TablePriceCategory.Rows.Count.ToString();
+                FormLoadMessage(str);
                 ReceiveData.instance.EndQuery();
             });
 
@@ -139,7 +140,8 @@ namespace PriceUploader
             Model.Load_product().ContinueWith(res =>
             {
                 TableProduct = res.Result;
-                Debug.WriteLine("           TableProduct: " + TableProduct.Rows.Count.ToString());
+                string str = "Table Product: " + TableProduct.Rows.Count.ToString();
+                FormLoadMessage(str);
                 ReceiveData.instance.EndQuery();
             });
 
@@ -147,7 +149,8 @@ namespace PriceUploader
             Model.Load_product_alias().ContinueWith(res =>
             {
                 TableProductAlias = res.Result;
-                Debug.WriteLine("           TableProductAlias: " + TableProductAlias.Rows.Count.ToString());
+                string str = "Table ProductAlias: " + TableProductAlias.Rows.Count.ToString();
+                FormLoadMessage(str);
                 ReceiveData.instance.EndQuery();
             });
 
@@ -155,7 +158,8 @@ namespace PriceUploader
             Model.Load_product_category().ContinueWith(res =>
             {
                 TableProductCategory = res.Result;
-                Debug.WriteLine("           TableProductCategory: " + TableProductCategory.Rows.Count.ToString());
+                string str = "Table ProductCategory: " + TableProductCategory.Rows.Count.ToString();
+                FormLoadMessage(str);
                 ReceiveData.instance.EndQuery();
             });
 
@@ -170,6 +174,8 @@ namespace PriceUploader
             {
                 TableSupplier = res.Result;
                 SetSupplierComboBox(res);
+                string str = "Table Supplier: " + TableSupplier.Rows.Count.ToString();
+                FormLoadMessage(str);
                 ReceiveData.instance.EndQuery();
             });
 
@@ -994,6 +1000,15 @@ namespace PriceUploader
             formLoad = new FormLoad();
             formLoad.ShowDialog();
         }
+
+        private void FormLoadMessage(string message)
+        {
+            formLoad.Invoke(new Action(() =>
+            {
+                formLoad.CurrentTask = message;
+            }));
+        }
+        
     }
 
     public enum TypeFoundProduct
