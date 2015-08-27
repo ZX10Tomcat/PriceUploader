@@ -306,7 +306,6 @@ namespace PriceUploader
                     item.Text = res.Result.Rows[i].ItemArray[1].ToString();
                     item.Value = res.Result.Rows[i].ItemArray[0];
                     comboBoxSupplier.Items.Add(item);
-                    
                 }
                 comboBoxSupplier.SelectedIndex = 0;
             }));
@@ -479,12 +478,11 @@ namespace PriceUploader
             label_file_name.Text = string.Empty;
 
             OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.InitialDirectory = "c:\\";
+            openFileDialog.Filter = "Excel files (*.xls)|*.xls|All files (*.*)|*.*";
+            openFileDialog.FilterIndex = 1;
+            openFileDialog.RestoreDirectory = true;
 
-           
-                openFileDialog.InitialDirectory = "c:\\";
-                openFileDialog.Filter = "Excel files (*.xls)|*.xls|All files (*.*)|*.*";
-                openFileDialog.FilterIndex = 1;
-                openFileDialog.RestoreDirectory = true;
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
                 fileName = openFileDialog.FileName;
@@ -905,13 +903,13 @@ namespace PriceUploader
         
         private void dataGrid_import_excel_SelectionChanged(object sender, EventArgs e)
         {
-
             int row_Index = 0;
             if (dataGrid_import_excel.SelectedRows.Count > 0)
                 row_Index = dataGrid_import_excel.SelectedRows[0].Index;
 
-            dataSet.Tables[tableName].Rows[row_Index].ItemArray[12] = dataGrid_import_excel.Rows[row_Index].DefaultCellStyle.BackColor.Name.ToLower();
-            //dataSet.Tables[tableName].AcceptChanges();                      
+            //dataSet.Tables[tableName].Rows[row_Index].ItemArray[12] = dataGrid_import_excel.Rows[row_Index].DefaultCellStyle.BackColor.Name.ToLower();
+
+            dataSet.Tables[tableName].Rows[row_Index]["color"] = dataGrid_import_excel.Rows[row_Index].DefaultCellStyle.BackColor.Name.ToLower();
 
             switch (dataGrid_import_excel.Rows[row_Index].DefaultCellStyle.BackColor.Name.ToLower())
             {
@@ -963,7 +961,8 @@ namespace PriceUploader
                 newCategory = formCategories.CategoryValue;
                 int row_Index = currenRowIndex;
                 //8=prod_pc_id
-                dataSet.Tables[tableName].Rows[row_Index].ItemArray[8] = newCategory; 
+                //dataSet.Tables[tableName].Rows[row_Index].ItemArray[8] = newCategory; 
+                dataSet.Tables[tableName].Rows[row_Index]["prod_pc_id"] = newCategory;
                 dataSet.Tables[tableName].AcceptChanges();
 
                 dataGrid_import_excel.Rows[row_Index].DefaultCellStyle.BackColor = Color.Green;
@@ -981,7 +980,8 @@ namespace PriceUploader
                 newCode = formCode.CodeValue;
                 int row_Index = currenRowIndex;
                 //13=prod_new_code
-                dataSet.Tables[tableName].Rows[row_Index].ItemArray[13] = newCode;
+                //dataSet.Tables[tableName].Rows[row_Index].ItemArray[13] = newCode;
+                dataSet.Tables[tableName].Rows[row_Index]["prod_new_code"] = newCode;
                 dataSet.Tables[tableName].AcceptChanges();
 
                 dataGrid_import_excel.Rows[row_Index].DefaultCellStyle.BackColor = Color.Green;
