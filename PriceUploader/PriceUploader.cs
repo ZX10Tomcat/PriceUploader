@@ -205,9 +205,9 @@ namespace PriceUploader
             dataGrid_import_excel.Columns[1].Width = 80;
             dataGrid_import_excel.Columns[2].Width = 80;
             dataGrid_import_excel.Columns[3].Width = 60;
-            dataGrid_import_excel.Columns[4].Width = 600;
-            dataGrid_import_excel.Columns[5].Width = 100;
-            dataGrid_import_excel.Columns[6].Width = 150;
+            //dataGrid_import_excel.Columns[4].Width = 600;
+            //dataGrid_import_excel.Columns[5].Width = 100;
+            //dataGrid_import_excel.Columns[6].Width = 150;
             //dataGrid_import_excel.Columns[7].Width = 100;
             //dataGrid_import_excel.Columns[8].Width = 100;
             //dataGrid_import_excel.Columns[9].Width = 100;
