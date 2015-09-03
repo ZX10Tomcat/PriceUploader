@@ -554,7 +554,8 @@ namespace PriceUploader
                         //table.Columns.Add("prod_id", typeof(string));
 
                         lbl_TotalCount.Text = (countRowsExcel).ToString();
-
+                        lbl_TotalCount.Refresh();
+                        
                         //string code = string.Empty;
                         //Product prod = null;
                         //int countFound = 0;
@@ -643,6 +644,7 @@ namespace PriceUploader
             lbl_Counter.Invoke(new Action(() =>
             {
                 lbl_Counter.Text = (index+1).ToString();
+                lbl_Counter.Refresh();
             }));
         }
         
@@ -662,7 +664,7 @@ namespace PriceUploader
         private void AddRows(int indexBeg, int indexEnd, int indexColumnName, int indexColumnCode, int indexColumnPrice, int indexColumnPresense1, int indexColumnPresense2, int indexColumnCurrency)
         {
             //string code = string.Empty;
-            //Product prod = null;
+            Product prod = null;
 
             listImportToDB = new List<ImportToDB>();
 
@@ -681,49 +683,59 @@ namespace PriceUploader
                     });
             }
 
-            var importQuery = (
-                from l in listImportToDB
-                from p in products.Where(p => p.pa_code == l.prod_code && p.prod_name.ToString() == l.prod_name.ToString()).DefaultIfEmpty()
-                select new
-                {
-                    number = l.number,
-                    prod_code = l.prod_code,
-                    prod_name = l.prod_name,
-                    prod_income_price = l.prod_income_price,
-                    prod_presense1 = l.prod_presense1,
-                    prod_presense2 = l.prod_presense2,
-                    prod_currency =  l.prod_currency, 
-                    product_pa_code = p == null ? "" : p.pa_code,
-                    product_prod_pc_id = p == null ? "" : p.prod_pc_id,
-                    prod_pc_id = p == null ? "" : p.prod_pc_id,
-                    prod_id = p == null ? "" : p.prod_id,
-                }).ToList();
+            //var importQuery = (
+            //    from l in listImportToDB
+            //    from p in products.Where(p => p.pa_code == l.prod_code && p.prod_name.ToString() == l.prod_name.ToString()).DefaultIfEmpty()
+            //    select new
+            //    {
+            //        number = l.number,
+            //        prod_code = l.prod_code,
+            //        prod_name = l.prod_name,
+            //        prod_income_price = l.prod_income_price,
+            //        prod_presense1 = l.prod_presense1,
+            //        prod_presense2 = l.prod_presense2,
+            //        prod_currency =  l.prod_currency, 
+            //        product_pa_code = p == null ? "" : p.pa_code,
+            //        product_prod_pc_id = p == null ? "" : p.prod_pc_id,
+            //        prod_pc_id = p == null ? "" : p.prod_pc_id,
+            //        prod_id = p == null ? "" : p.prod_id,
+            //    }).ToList();
 
 
-            var import = (importQuery).ToList();
+            //var import = (importQuery).ToList();
+            //for (int i = indexBeg; i < import.Count() /* indexEnd */; i++)
 
 
-            for (int i = indexBeg; i < import.Count() /* indexEnd */; i++)
+            for (int i = indexBeg; i < indexEnd; i++)
             {
-                //НЕ НУЖНО/////////////////////////////////////////////////////////////////////////////////////////////////////
-                //На всякий случай/////////////////////////////////////////////////////////////////////////////////////////////
+                ImportToDB importToDB = new ImportToDB();
+                importToDB.number = i;
 
-                //importToDB = new ImportToDB();
-                //importToDB.number = i;
+                prod = null;
+                importToDB.prod_code = GetValue(ref tableExcel, i, indexColumnCode);
 
-                //prod = null;
-                //importToDB.prod_code = GetValue(ref tableExcel, i, indexColumnCode);
+                if (!string.IsNullOrEmpty(importToDB.prod_code))
+                    prod = products.FirstOrDefault(a => a.pa_code == importToDB.prod_code);
 
-                //if (!string.IsNullOrEmpty(importToDB.prod_code))
-                //{
-                //    prod = products.FirstOrDefault(a => a.pa_code == importToDB.prod_code);
-                //}
-
-                //importToDB.prod_name = GetValue(ref tableExcel, i, indexColumnName);
-                //importToDB.prod_income_price = GetValue(ref tableExcel, i, indexColumnPrice);
-                //importToDB.prod_presense1 = GetValue(ref tableExcel, i, indexColumnPresense1);
-                //importToDB.prod_presense2 = GetValue(ref tableExcel, i, indexColumnPresense2);
-                //importToDB.prod_currency = GetValue(ref tableExcel, i, indexColumnCurrency);
+                importToDB.prod_name = GetValue(ref tableExcel, i, indexColumnName);
+                importToDB.prod_income_price = GetValue(ref tableExcel, i, indexColumnPrice);
+                importToDB.prod_presense1 = GetValue(ref tableExcel, i, indexColumnPresense1);
+                importToDB.prod_presense2 = GetValue(ref tableExcel, i, indexColumnPresense2);
+                importToDB.prod_currency = GetValue(ref tableExcel, i, indexColumnCurrency);
+                importToDB.product_pa_code = importToDB.prod_code == null ? "" : importToDB.prod_code;
+                
+                if (prod != null)
+                {
+                    importToDB.product_prod_pc_id = prod.prod_pc_id == null ? "" : prod.prod_pc_id.ToString();
+                    importToDB.prod_pc_id = prod.prod_pc_id == null ? "" : prod.prod_pc_id.ToString();
+                    importToDB.prod_id = prod.prod_id == null ? "" : prod.prod_id.ToString();
+                }
+                else
+                {
+                    importToDB.product_prod_pc_id = "";
+                    importToDB.prod_pc_id = "";
+                    importToDB.prod_id = "";
+                }
 
                 //object recived_price = tableExcel.Rows[i].ItemArray.GetValue(indexColumnPrice);
                 //if (prod != null
@@ -735,26 +747,39 @@ namespace PriceUploader
                 //    double price = System.Convert.ToDouble(recived_price);
                 //    importToDB.prod_client_price = CalcClientPrice(prod_pc_id, price).ToString();
                 //}
-
-                //if (prod != null)
-                //    importToDB.prod_pc_id = prod.prod_pc_id.ToString();
                 
                 //На всякий случай/////////////////////////////////////////////////////////////////////////////////////////////
 
+                //dataSet.Tables[tableName].Rows.Add(
+                //    new object[] {                                                                     
+                //                    import[i].prod_name,                                   
+                //                    import[i].prod_code,
+                //                    import[i].prod_income_price,
+                //                    import[i].number +1, 
+                //                    import[i].prod_presense1,
+                //                    import[i].prod_presense2,
+                //                    import[i].prod_currency,
+                //                    CalcClientPrice(ref categoryCharge, tableExcel.Rows[i].ItemArray.GetValue(indexColumnPrice), import[i].prod_pc_id)    /* prod_client_price */,
+                //                    import[i].prod_pc_id,
+                //                    import[i].prod_id,
+                //                    (import[i].prod_pc_id.ToString() == "" && import[i].prod_id.ToString() == "")
+                //                    //(import[i].prod_pc_id == null && import[i].prod_id == null) ? "red" : "green"
+                //                });
+
+
                 dataSet.Tables[tableName].Rows.Add(
                     new object[] {                                                                     
-                                    import[i].prod_name,                                   
-                                    import[i].prod_code,
-                                    import[i].prod_income_price,
-                                    import[i].number +1, 
-                                    import[i].prod_presense1,
-                                    import[i].prod_presense2,
-                                    import[i].prod_currency,
-                                    CalcClientPrice(ref categoryCharge, tableExcel.Rows[i].ItemArray.GetValue(indexColumnPrice), import[i].prod_pc_id)    /* prod_client_price */,
-                                    import[i].prod_pc_id,
-                                    import[i].prod_id,
-                                    (import[i].prod_pc_id.ToString() == "" && import[i].prod_id.ToString() == "")
-                                    //(import[i].prod_pc_id == null && import[i].prod_id == null) ? "red" : "green"
+                                    importToDB.prod_name,                                   
+                                    importToDB.prod_code,
+                                    importToDB.prod_income_price,
+                                    importToDB.number +1, 
+                                    importToDB.prod_presense1,
+                                    importToDB.prod_presense2,
+                                    importToDB.prod_currency,
+                                    CalcClientPrice(ref categoryCharge, tableExcel.Rows[i].ItemArray.GetValue(indexColumnPrice), importToDB.prod_pc_id)    /* prod_client_price */,
+                                    importToDB.prod_pc_id,
+                                    importToDB.prod_id,
+                                    (importToDB.prod_pc_id.ToString() == "" && importToDB.prod_id.ToString() == "")
                                 });
 
 

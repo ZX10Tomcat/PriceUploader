@@ -1,4 +1,3 @@
-D:\Work\PriceUploader\PriceUploader\bin\Debug\PriceUploader.exe.config
 C:\Users\b_sam_000\Documents\GitHub\PriceUploader\PriceUploader\bin\Debug\PriceUploader.exe.config
 C:\Users\b_sam_000\Documents\GitHub\PriceUploader\PriceUploader\obj\Debug\PriceUploader.exe
 C:\Users\b_sam_000\Documents\GitHub\PriceUploader\PriceUploader\obj\Debug\PriceUploader.pdb
