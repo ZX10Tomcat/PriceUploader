@@ -993,11 +993,26 @@ namespace PriceUploader
 
                 foreach (DataGridViewRow row in dataGrid_import_excel.Rows)
                 {
-                    DataGridViewCheckBoxCell chk = (DataGridViewCheckBoxCell)row.Cells[0];
-                    if (chk.Value == chk.TrueValue || chk.Value == null)
+                    if (row.Cells[0].GetType() == typeof(DataGridViewCheckBoxCell))
                     {
-                        dataSet.Tables[tableName].Rows[row.Index]["prod_pc_id"] = newCategory;
-                        dataGrid_import_excel.Rows[row.Index].DefaultCellStyle.BackColor = Color.Green;
+                        DataGridViewCheckBoxCell chk = (DataGridViewCheckBoxCell)row.Cells[0];
+                        if (chk.Value == chk.TrueValue || chk.Value == null)
+                        {
+                            dataSet.Tables[tableName].Rows[row.Index]["prod_pc_id"] = newCategory;
+                            dataGrid_import_excel.Rows[row.Index].DefaultCellStyle.BackColor = Color.Green;
+
+                            dataGrid_import_excel.Rows[row.Index].Cells[0].Value = null;
+                            dataGrid_import_excel.Rows[row.Index].Cells[0] = new DataGridViewTextBoxCell();
+                            dataGrid_import_excel.Rows[row.Index].Cells[0].Value = "";
+
+                            dataGrid_import_excel.Rows[row.Index].Cells[1].Value = null;
+                            dataGrid_import_excel.Rows[row.Index].Cells[1] = new DataGridViewTextBoxCell();
+                            dataGrid_import_excel.Rows[row.Index].Cells[1].Value = "";
+
+                            dataGrid_import_excel.Rows[row.Index].Cells[2].Value = null;
+                            dataGrid_import_excel.Rows[row.Index].Cells[2] = new DataGridViewTextBoxCell();
+                            dataGrid_import_excel.Rows[row.Index].Cells[2].Value = "";
+                        }
                     }
                 }
                 //dataSet.Tables[tableName].AcceptChanges();
@@ -1025,11 +1040,26 @@ namespace PriceUploader
 
                 foreach (DataGridViewRow row in dataGrid_import_excel.Rows)
                 {
-                    DataGridViewCheckBoxCell chk = (DataGridViewCheckBoxCell)row.Cells[0];
-                    if (chk.Value == chk.TrueValue || chk.Value == null)
+                    if (row.Cells[0].GetType() == typeof(DataGridViewCheckBoxCell))
                     {
-                        dataSet.Tables[tableName].Rows[row.Index]["prod_new_code"] = newCode;
-                        dataGrid_import_excel.Rows[row.Index].DefaultCellStyle.BackColor = Color.Green;
+                        DataGridViewCheckBoxCell chk = (DataGridViewCheckBoxCell)row.Cells[0];
+                        if (chk.Value == chk.TrueValue || chk.Value == null)
+                        {
+                            dataSet.Tables[tableName].Rows[row.Index]["prod_new_code"] = newCode;
+                            dataGrid_import_excel.Rows[row.Index].DefaultCellStyle.BackColor = Color.Green;
+
+                            dataGrid_import_excel.Rows[row.Index].Cells[0].Value = null;
+                            dataGrid_import_excel.Rows[row.Index].Cells[0] = new DataGridViewTextBoxCell();
+                            dataGrid_import_excel.Rows[row.Index].Cells[0].Value = "";
+
+                            dataGrid_import_excel.Rows[row.Index].Cells[1].Value = null;
+                            dataGrid_import_excel.Rows[row.Index].Cells[1] = new DataGridViewTextBoxCell();
+                            dataGrid_import_excel.Rows[row.Index].Cells[1].Value = "";
+
+                            dataGrid_import_excel.Rows[row.Index].Cells[2].Value = null;
+                            dataGrid_import_excel.Rows[row.Index].Cells[2] = new DataGridViewTextBoxCell();
+                            dataGrid_import_excel.Rows[row.Index].Cells[2].Value = "";
+                        }
                     }
                 }
             }
