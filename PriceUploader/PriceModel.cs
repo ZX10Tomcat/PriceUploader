@@ -211,7 +211,10 @@ namespace PriceUploader
             int product_id = 0;
             double product_client_price = 0;
             double product_fixed_price = 0;
-            
+
+            string client_price = string.Empty;
+            string fixed_price = string.Empty;
+
             MySqlCommand cmd = null;
             string sql = string.Empty;
 
@@ -368,9 +371,12 @@ namespace PriceUploader
                         {
                             try
                             {
+                                fixed_price = product_fixed_price.ToString();
+                                fixed_price = fixed_price.Replace(',', '.');
+
                                 conn = this.GetConn();    
                                 sql = string.Format("UPDATE product SET prod_price_sup_id={0}, prod_fixed_price={1} WHERE prod_id={2}",
-                                    supplier_id, product_fixed_price, product_id);
+                                    supplier_id, fixed_price, product_id);
                                 cmd = new MySqlCommand(sql, conn);
                                 cmd.ExecuteNonQuery();
                                 conn.Close();
@@ -396,16 +402,22 @@ namespace PriceUploader
                                 if (price_type == "EURO" && currency_rate_cash > 0)
                                     product_client_price = currency_rate_cash * euro_rate / currency_rate_cash;
 
+                                client_price = product_client_price.ToString();
+                                client_price = client_price.Replace(',', '.');
+
                                 conn = this.GetConn();
                                 sql = string.Format("INSERT INTO product_price SET pp_prod_id={0}, pp_sup_id={1}, pp_price={2}, pp_postdate={3}",
-                                    product_id, supplier_id, product_client_price, unixTimestamp);
+                                    product_id, supplier_id, client_price, unixTimestamp);
                                 cmd = new MySqlCommand(sql, conn);
                                 cmd.ExecuteNonQuery();
                                 conn.Close();
 
+                                fixed_price = product_fixed_price.ToString();
+                                fixed_price = fixed_price.Replace(',', '.');
+
                                 conn = this.GetConn();
                                 sql = string.Format("UPDATE product SET prod_price_sup_id={0}, prod_price_update_timestamp={1}, prod_income_price={2}, prod_client_price={3}, prod_actuality={4} WHERE prod_id={5}",
-                                    supplier_id, unixTimestamp, product_fixed_price, product_client_price, true, product_id);
+                                    supplier_id, unixTimestamp, fixed_price, client_price, true, product_id);
                                 cmd = new MySqlCommand(sql, conn);
                                 cmd.ExecuteNonQuery();
                                 conn.Close();
@@ -445,9 +457,13 @@ namespace PriceUploader
                     try
                     {
                         //$sql = sprintf('INSERT INTO %sproduct_price SET pp_prod_id=%d, pp_sup_id=%d, pp_price=%f, pp_postdate=%d', DB_PREFIX, $prod_id, $supplier, $price, ctime());
+
+                        fixed_price = product_fixed_price.ToString();
+                        fixed_price = fixed_price.Replace(',', '.');
+                        
                         conn = this.GetConn();
                         sql = string.Format("INSERT INTO product_price SET pp_prod_id={0}, pp_sup_id={1}, pp_price={2}, pp_postdate={3}",
-                            product_id, supplier_id, product_fixed_price, unixTimestamp);
+                            product_id, supplier_id, fixed_price, unixTimestamp);
                         cmd = new MySqlCommand(sql, conn);
                         cmd.ExecuteNonQuery();
                         conn.Close();
