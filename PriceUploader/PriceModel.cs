@@ -298,7 +298,8 @@ namespace PriceUploader
                 if (string.IsNullOrEmpty(code))
                     code = new_code;
 
-                if (!string.IsNullOrEmpty(prod_pc_id)
+                if (!string.IsNullOrEmpty(prod_pc_id) 
+                    && !string.IsNullOrEmpty(code)
                     && ((is_new && is_selected) || (color.ToLower() == "green")))
                 {
                     product_client_price = 0;
