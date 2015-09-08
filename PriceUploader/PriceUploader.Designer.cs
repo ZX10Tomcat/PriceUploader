@@ -1009,10 +1009,12 @@
             // 
             this.V.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
             this.V.DataPropertyName = "is_selected";
+            this.V.FalseValue = "false";
             this.V.HeaderText = "V";
             this.V.Name = "V";
             this.V.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.V.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.V.TrueValue = "true";
             // 
             // AddCode
             // 

@@ -987,10 +987,22 @@ namespace PriceUploader
                 int row_Index = currenRowIndex;
                 //8=prod_pc_id
                 //dataSet.Tables[tableName].Rows[row_Index].ItemArray[8] = newCategory; 
-                dataSet.Tables[tableName].Rows[row_Index]["prod_pc_id"] = newCategory;
-                dataSet.Tables[tableName].AcceptChanges();
 
+                dataSet.Tables[tableName].Rows[row_Index]["prod_pc_id"] = newCategory;
                 dataGrid_import_excel.Rows[row_Index].DefaultCellStyle.BackColor = Color.Green;
+
+                foreach (DataGridViewRow row in dataGrid_import_excel.Rows)
+                {
+                    DataGridViewCheckBoxCell chk = (DataGridViewCheckBoxCell)row.Cells[0];
+                    if (chk.Value == chk.TrueValue || chk.Value == null)
+                    {
+                        dataSet.Tables[tableName].Rows[row.Index]["prod_pc_id"] = newCategory;
+                        dataGrid_import_excel.Rows[row.Index].DefaultCellStyle.BackColor = Color.Green;
+                    }
+                }
+                //dataSet.Tables[tableName].AcceptChanges();
+
+                //dataGrid_import_excel.Rows[row_Index].DefaultCellStyle.BackColor = Color.Green;
            
             }
                 
@@ -1007,9 +1019,19 @@ namespace PriceUploader
                 //13=prod_new_code
                 //dataSet.Tables[tableName].Rows[row_Index].ItemArray[13] = newCode;
                 dataSet.Tables[tableName].Rows[row_Index]["prod_new_code"] = newCode;
-                dataSet.Tables[tableName].AcceptChanges();
+                //dataSet.Tables[tableName].AcceptChanges();
 
                 dataGrid_import_excel.Rows[row_Index].DefaultCellStyle.BackColor = Color.Green;
+
+                foreach (DataGridViewRow row in dataGrid_import_excel.Rows)
+                {
+                    DataGridViewCheckBoxCell chk = (DataGridViewCheckBoxCell)row.Cells[0];
+                    if (chk.Value == chk.TrueValue || chk.Value == null)
+                    {
+                        dataSet.Tables[tableName].Rows[row.Index]["prod_new_code"] = newCode;
+                        dataGrid_import_excel.Rows[row.Index].DefaultCellStyle.BackColor = Color.Green;
+                    }
+                }
             }
 
             formCode.FormClosed -= formCode_FormClosed;
