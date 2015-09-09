@@ -59,6 +59,7 @@ namespace PriceUploader
         {
             Model = new PriceModel();
             Model.InsertDataError += Model_InsertDataError;
+            Model.OnAddRow += Model_OnAddRow;
 
             DateTime d1 = DateTime.Now;
 
@@ -190,6 +191,27 @@ namespace PriceUploader
             //dataGrid_import_excel.Columns["isChecked"].ReadOnly = false;
             Debug.WriteLine("time data loaded: " + timeout.ToString());
             return;
+        }
+
+        void Model_OnAddRow(object sender, EventArgs e)
+        {
+            var v = sender as AddRowInfo;
+
+            if (v != null)
+            {
+                lbl_Counter.Invoke(new Action(() =>
+                {
+                    lbl_Counter.Text = (v.index + 1).ToString();
+                    lbl_Counter.Refresh();
+                }));
+
+                label_TimeSpan.Invoke(new Action(() =>
+                {
+                    double calc = v.timeRuning.TotalMilliseconds / 1000;
+                    label_TimeSpan.Text = calc.ToString();
+                    label_TimeSpan.Refresh();
+                }));
+            }
         }
 
 
@@ -1069,7 +1091,10 @@ namespace PriceUploader
 
         private void buttonSaveData_Click(object sender, EventArgs e)
         {
-            Model.InsertData(dataSet.Tables[tableName], (this.comboBoxSupplier.SelectedItem as ComboboxItem).Value.ToString(), comboBoxImportCurrency.Text);
+            buttonSaveData.Invoke(new Action(() =>
+            {
+                Model.InsertData(dataSet.Tables[tableName], (this.comboBoxSupplier.SelectedItem as ComboboxItem).Value.ToString(), comboBoxImportCurrency.Text);
+            }));
         }
 
         private void PriceUploader_Shown(object sender, EventArgs e)

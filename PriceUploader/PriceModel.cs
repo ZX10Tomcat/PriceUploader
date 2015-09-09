@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -25,7 +26,7 @@ namespace PriceUploader
 
 
         public event EventHandler InsertDataError = delegate { };
-
+        public event EventHandler OnAddRow = delegate { };
 
         private string strConn = string.Empty;
 
@@ -208,6 +209,9 @@ namespace PriceUploader
             if (table.Rows.Count == 0)
                 return;
 
+            AddRowInfo addRowInfo = new AddRowInfo();
+            DateTime dateTimeBeg = DateTime.Now;
+
             int product_id = 0;
             double product_client_price = 0;
             double product_fixed_price = 0;
@@ -223,7 +227,8 @@ namespace PriceUploader
             //$price = $price * EURO_RATE / CURRENCY_RATE_CASH;
             double euro_rate = 0;
             double currency_rate_cash = 0;
-                
+
+            int resultExecut = -888;
             MySqlDataReader rdr = null;
 
             try
@@ -332,7 +337,8 @@ namespace PriceUploader
                             sql = string.Format("INSERT INTO product SET prod_pc_id={0}, prod_name='{1}', prod_text='', prod_disabled='Y', prod_vat='Y', prod_actuality={2}, prod_postdate={3}, prod_last_update={4}, prod_last_user_id={5}",
                                 prod_pc_id, prod_name, 1, unixTimestamp, unixTimestamp, 0);
                             cmd = new MySqlCommand(sql, conn);
-                            cmd.ExecuteNonQuery();
+                            resultExecut = cmd.ExecuteNonQuery();
+                            Debug.WriteLine("1. INSERT INTO product => resultExecut: " + resultExecut);
                             conn.Close();
 
                             conn = this.GetConn();
@@ -349,7 +355,8 @@ namespace PriceUploader
                             sql = string.Format("INSERT INTO product_alias SET pa_prod_id={0}, pa_code='{1}'",
                                 product_id, code);
                             cmd = new MySqlCommand(sql, conn);
-                            cmd.ExecuteNonQuery();
+                            resultExecut = cmd.ExecuteNonQuery();
+                            Debug.WriteLine("2. INSERT INTO product_alias => resultExecut: " + resultExecut);
                             conn.Close();
                         }
                         catch (Exception ex)
@@ -379,7 +386,8 @@ namespace PriceUploader
                                 sql = string.Format("UPDATE product SET prod_price_sup_id={0}, prod_fixed_price={1} WHERE prod_id={2}",
                                     supplier_id, fixed_price, product_id);
                                 cmd = new MySqlCommand(sql, conn);
-                                cmd.ExecuteNonQuery();
+                                resultExecut = cmd.ExecuteNonQuery();
+                                Debug.WriteLine("3. UPDATE product => resultExecut: " + resultExecut);
                                 conn.Close();
                             }
                             catch (Exception ex)
@@ -410,7 +418,8 @@ namespace PriceUploader
                                 sql = string.Format("INSERT INTO product_price SET pp_prod_id={0}, pp_sup_id={1}, pp_price={2}, pp_postdate={3}",
                                     product_id, supplier_id, client_price, unixTimestamp);
                                 cmd = new MySqlCommand(sql, conn);
-                                cmd.ExecuteNonQuery();
+                                resultExecut = cmd.ExecuteNonQuery();
+                                Debug.WriteLine("4. INSERT INTO product_price => resultExecut: " + resultExecut);
                                 conn.Close();
 
                                 fixed_price = product_fixed_price.ToString();
@@ -420,7 +429,8 @@ namespace PriceUploader
                                 sql = string.Format("UPDATE product SET prod_price_sup_id={0}, prod_price_update_timestamp={1}, prod_income_price={2}, prod_client_price={3}, prod_actuality={4} WHERE prod_id={5}",
                                     supplier_id, unixTimestamp, fixed_price, client_price, true, product_id);
                                 cmd = new MySqlCommand(sql, conn);
-                                cmd.ExecuteNonQuery();
+                                resultExecut = cmd.ExecuteNonQuery();
+                                Debug.WriteLine("5. UPDATE product => resultExecut: " + resultExecut);
                                 conn.Close();
                             }
                             catch (Exception ex)
@@ -441,7 +451,8 @@ namespace PriceUploader
                                 sql = string.Format("INSERT INTO product_alias SET pa_prod_id={0}, pa_code='{1}'",
                                     product_id, code);
                                 cmd = new MySqlCommand(sql, conn);
-                                cmd.ExecuteNonQuery();
+                                resultExecut = cmd.ExecuteNonQuery();
+                                Debug.WriteLine("6. INSERT INTO product_alias => resultExecut: " + resultExecut);
                                 conn.Close();
                             }
                             catch (Exception ex)
@@ -451,7 +462,6 @@ namespace PriceUploader
                                 throw;
                             }
                         }
-
                     }
 
 
@@ -466,7 +476,8 @@ namespace PriceUploader
                         sql = string.Format("INSERT INTO product_price SET pp_prod_id={0}, pp_sup_id={1}, pp_price={2}, pp_postdate={3}",
                             product_id, supplier_id, fixed_price, unixTimestamp);
                         cmd = new MySqlCommand(sql, conn);
-                        cmd.ExecuteNonQuery();
+                        resultExecut = cmd.ExecuteNonQuery();
+                        Debug.WriteLine("7. INSERT INTO product_price => resultExecut: " + resultExecut);
                         conn.Close();
                     }
                     catch (Exception ex)
@@ -477,7 +488,13 @@ namespace PriceUploader
                     }
                 }
 
+                addRowInfo.index = rowNumber;
+                addRowInfo.timeRuning = DateTime.Now - dateTimeBeg;
+                Debug.WriteLine("rowNumber: " + rowNumber);
+
+                OnAddRow(addRowInfo, null);
                 rowNumber++;
+                
             }        
         }
         
@@ -792,5 +809,11 @@ prod_fixed_price, pa_code, prod_pc_id FROM product_alias INNER JOIN product pr O
 
     }
 
+
+    public class AddRowInfo
+    {
+        public int index = -1;
+        public TimeSpan timeRuning;
+    }
 
 }
