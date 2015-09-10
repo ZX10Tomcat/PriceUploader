@@ -207,8 +207,9 @@ namespace PriceUploader
 
                 label_TimeSpan.Invoke(new Action(() =>
                 {
-                    double calc = v.timeRuning.TotalMilliseconds / 1000;
-                    label_TimeSpan.Text = calc.ToString();
+                    //double calc = v.timeRuning.TotalMilliseconds / 1000;
+                    //label_TimeSpan.Text = calc.ToString();
+                    label_TimeSpan.Text = string.Format("{0}:{1}:{2}.{3}", v.timeRuning.Hours, v.timeRuning.Minutes, v.timeRuning.Seconds, v.timeRuning.Milliseconds);
                     label_TimeSpan.Refresh();
                 }));
             }
@@ -656,8 +657,9 @@ namespace PriceUploader
             label_TimeSpan.Invoke(new Action(() =>
             {
                 TimeSpan ts = DateTime.Now - timeBeg;
-                double calc = ts.TotalMilliseconds / 1000;
-                label_TimeSpan.Text = calc.ToString();
+                //double calc = ts.TotalMilliseconds / 1000;
+                //label_TimeSpan.Text = calc.ToString();
+                label_TimeSpan.Text = string.Format("{0}:{1}:{2}.{3}", ts.Hours, ts.Minutes, ts.Seconds, ts.Milliseconds);
             }));
         }
         
