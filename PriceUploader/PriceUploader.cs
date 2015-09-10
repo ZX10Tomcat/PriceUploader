@@ -243,8 +243,8 @@ namespace PriceUploader
             dataGrid_import_excel.Columns[1].ReadOnly = true;
             dataGrid_import_excel.Columns[2].ReadOnly = true;
             dataGrid_import_excel.Columns[3].ReadOnly = true;
-            dataGrid_import_excel.Columns[4].ReadOnly = true;
-            dataGrid_import_excel.Columns[5].ReadOnly = true;
+            dataGrid_import_excel.Columns[4].ReadOnly = false;
+            dataGrid_import_excel.Columns[5].ReadOnly = false;
             dataGrid_import_excel.Columns[6].ReadOnly = true;
             dataGrid_import_excel.Columns[7].ReadOnly = true;
             dataGrid_import_excel.Columns[8].ReadOnly = true;
