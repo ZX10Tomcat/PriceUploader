@@ -340,8 +340,8 @@ namespace PriceUploader
                             sql = string.Format("INSERT INTO product SET prod_pc_id={0}, prod_name='{1}', prod_text='', prod_disabled='Y', prod_vat='Y', prod_actuality={2}, prod_postdate={3}, prod_last_update={4}, prod_last_user_id={5}",
                                 prod_pc_id, prod_name, 1, unixTimestamp, unixTimestamp, 0);
                             cmd = new MySqlCommand(sql, conn);
-                            product_id = (int)cmd.LastInsertedId;
                             resultExecut = cmd.ExecuteNonQuery();
+                            product_id = (int)cmd.LastInsertedId;
                             Debug.WriteLine("1. INSERT INTO product => resultExecut: " + resultExecut);
                             //conn.Close();
 
