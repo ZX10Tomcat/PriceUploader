@@ -271,7 +271,7 @@ namespace PriceUploader
             }
 
             conn = this.GetConn();
-            //MySqlTransaction trans = conn.BeginTransaction();
+            MySqlTransaction trans = conn.BeginTransaction();
             
             rowNumber = 0;
             try
@@ -356,9 +356,16 @@ namespace PriceUploader
 
                 # endregion foreach (DataRow row in table.Rows)
 
+                # region foreach (DataRow row in table.Rows) 2
+
                 string sqlQuery_product = string.Empty;
+                string sqlQuery_product_prev1 = string.Empty;
+                string sqlQuery_product_prev2 = string.Empty;
+
                 string sqlQuery_product_alias = "INSERT INTO product_alias (pa_prod_id, pa_code) VALUES";
+                string sqlQuery_product_alias_END = string.Empty;
                 string sqlQuery_product_price = "INSERT INTO product_price (pp_prod_id, pp_sup_id, pp_price, pp_postdate) VALUES";
+                string sqlQuery_product_price_END = string.Empty; 
 
                 foreach (DataRow row in table.Rows)
                 {
@@ -394,9 +401,18 @@ namespace PriceUploader
                         code = new_code;
 
                     if (!string.IsNullOrEmpty(prod_pc_id) && !string.IsNullOrEmpty(code) && ((is_new && is_selected) || (color.ToLower() == "green")))
-                    {
                         product_id = System.Convert.ToInt32(prod_id);
-                    }
+                    else
+                        continue;
+
+                    product_client_price = 0;
+                    if (!string.IsNullOrEmpty(prod_client_price))
+                        product_client_price = System.Convert.ToDouble(prod_client_price);
+
+                    product_fixed_price = 0;
+                    if (!string.IsNullOrEmpty(prod_income_price))
+                        product_fixed_price = System.Convert.ToDouble(prod_income_price);
+
 
                     if (!prod_id_is_new  /* product_id > 0 */ /* && product_price > 0 */ )
                     {
@@ -407,11 +423,14 @@ namespace PriceUploader
                             fixed_price = product_fixed_price.ToString();
                             fixed_price = fixed_price.Replace(',', '.');
 
-                            sql = string.Format("UPDATE product SET prod_price_sup_id={0}, prod_fixed_price={1} WHERE prod_id={2};",
+                            sql = string.Format("UPDATE product SET prod_price_sup_id={0}, prod_fixed_price={1} WHERE prod_id={2};\n",
                                 supplier_id, fixed_price, product_id);
-                                
-                            sqlQuery_product = string.Concat(sqlQuery_product, sql);
-                                
+
+                            if (sql != sqlQuery_product_prev1)
+                                sqlQuery_product = string.Concat(sqlQuery_product, sql);
+
+                            sqlQuery_product_prev1 = sql;
+
                             Debug.WriteLine("3. UPDATE product => resultExecut: " + resultExecut);
                         }
                         else
@@ -426,26 +445,30 @@ namespace PriceUploader
                             if (price_type == "EURO" && currency_rate_cash > 0)
                                 product_client_price = currency_rate_cash * euro_rate / currency_rate_cash;
 
-                            client_price = product_client_price.ToString();
-                            client_price = client_price.Replace(',', '.');
+                            if (product_client_price > 0)
+                            { 
+                                client_price = product_client_price.ToString();
+                                client_price = client_price.Replace(',', '.');
 
-                            //sql = string.Format("INSERT INTO product_price SET pp_prod_id={0}, pp_sup_id={1}, pp_price={2}, pp_postdate={3}",
-                            //    product_id, supplier_id, client_price, unixTimestamp);
-                            //sqlQuery.Add(sql);
+                                //sql = string.Format("INSERT INTO product_price SET pp_prod_id={0}, pp_sup_id={1}, pp_price={2}, pp_postdate={3}",
+                                //    product_id, supplier_id, client_price, unixTimestamp);
+                                //sqlQuery.Add(sql);
 
-                            //Debug.WriteLine("4. INSERT INTO product_price => resultExecut: " + resultExecut);
+                                //Debug.WriteLine("4. INSERT INTO product_price => resultExecut: " + resultExecut);
 
-                            fixed_price = product_fixed_price.ToString();
-                            fixed_price = fixed_price.Replace(',', '.');
+                                fixed_price = product_fixed_price.ToString();
+                                fixed_price = fixed_price.Replace(',', '.');
 
-                            sql = string.Format("UPDATE product SET prod_price_sup_id={0}, prod_price_update_timestamp={1}, prod_income_price={2}, prod_client_price={3}, prod_actuality={4} WHERE prod_id={5}",
-                                supplier_id, unixTimestamp, fixed_price, client_price, true, product_id);
-                                
-                            sqlQuery_product = string.Concat(sqlQuery_product, sql);
+                                sql = string.Format("UPDATE product SET prod_price_sup_id={0}, prod_price_update_timestamp={1}, prod_income_price={2}, prod_client_price={3}, prod_actuality={4} WHERE prod_id={5};\n",
+                                    supplier_id, unixTimestamp, fixed_price, client_price, true, product_id);
 
-                            Debug.WriteLine("5. UPDATE product => resultExecut: " + resultExecut);
+                                if (sql != sqlQuery_product_prev2)
+                                    sqlQuery_product = string.Concat(sqlQuery_product, sql);
+
+                                sqlQuery_product_prev2 = sql;
+                                Debug.WriteLine("5. UPDATE product => resultExecut: " + resultExecut);
+                            }
                         }
-
 
                         if (is_new)
                         {
@@ -453,24 +476,25 @@ namespace PriceUploader
 
                             //sql = string.Format("INSERT INTO product_alias SET pa_prod_id={0}, pa_code='{1}'",  product_id, code);
                             sql = string.Format("( {0}, '{1}' ),",  product_id, code);
-                            sqlQuery_product_alias = string.Concat(sqlQuery_product_alias, sql);
+                            sqlQuery_product_alias_END = string.Concat(sqlQuery_product_alias_END, sql);
 
                             Debug.WriteLine("6. INSERT INTO product_alias => resultExecut: " + resultExecut);
                         }
                     }
 
-
                     //$sql = sprintf('INSERT INTO %sproduct_price SET pp_prod_id=%d, pp_sup_id=%d, pp_price=%f, pp_postdate=%d', DB_PREFIX, $prod_id, $supplier, $price, ctime());
 
-                    fixed_price = product_fixed_price.ToString();
-                    fixed_price = fixed_price.Replace(',', '.');
+                    if (product_fixed_price > 0)
+                    {
+                        fixed_price = product_fixed_price.ToString();
+                        fixed_price = fixed_price.Replace(',', '.');
 
-                    //sql = string.Format("INSERT INTO product_price SET pp_prod_id={0}, pp_sup_id={1}, pp_price={2}, pp_postdate={3}", product_id, supplier_id, fixed_price, unixTimestamp);
-                    sql = string.Format("( {0}, {1}, {2}, {3} ),", product_id, supplier_id, fixed_price, unixTimestamp);
-                    sqlQuery_product_price = string.Concat(sqlQuery_product_price, sql);
+                        //sql = string.Format("INSERT INTO product_price SET pp_prod_id={0}, pp_sup_id={1}, pp_price={2}, pp_postdate={3}", product_id, supplier_id, fixed_price, unixTimestamp);
+                        sql = string.Format("( {0}, {1}, {2}, {3} ),", product_id, supplier_id, fixed_price, unixTimestamp);
+                        sqlQuery_product_price_END = string.Concat(sqlQuery_product_price_END, sql);
 
-                    Debug.WriteLine("7. INSERT INTO product_price => resultExecut: " + resultExecut);
-                    
+                        Debug.WriteLine("7. INSERT INTO product_price => resultExecut: " + resultExecut);
+                    }
 
                     if (rowNumber % 16 == 0)
                     {
@@ -482,18 +506,42 @@ namespace PriceUploader
 
                     rowNumber++;
                 }
+                
+                # endregion foreach (DataRow row in table.Rows) 2
 
-                //trans.Commit();
+                if (!string.IsNullOrEmpty(sqlQuery_product))
+                {
+                    sqlQuery_product = sqlQuery_product.Remove(sqlQuery_product.Length - 1);
+                    cmd = new MySqlCommand(sqlQuery_product, conn);
+                    resultExecut = cmd.ExecuteNonQuery();
+                }
+
+                if (!string.IsNullOrEmpty(sqlQuery_product_alias_END))
+                {
+                    sqlQuery_product_alias = string.Concat(sqlQuery_product_alias, sqlQuery_product_alias_END);
+                    sqlQuery_product_alias = sqlQuery_product_alias.Remove(sqlQuery_product_alias.Length - 1);
+                    cmd = new MySqlCommand(sqlQuery_product_alias, conn);
+                    resultExecut = cmd.ExecuteNonQuery();
+                }
+
+                if (!string.IsNullOrEmpty(sqlQuery_product_price_END))
+                {
+                    sqlQuery_product_price = string.Concat(sqlQuery_product_price, sqlQuery_product_price_END);
+                    sqlQuery_product_price = sqlQuery_product_price.Remove(sqlQuery_product_price.Length - 1);
+                    cmd = new MySqlCommand(sqlQuery_product_price, conn);
+                    resultExecut = cmd.ExecuteNonQuery();
+                }
+
+                trans.Commit();
 
                 addRowInfo.index = (rowNumber - 1);
                 addRowInfo.timeRuning = DateTime.Now - dateTimeBeg;
                 Debug.WriteLine("rowNumber: " + rowNumber);
                 OnAddRow(addRowInfo, null);
-
             }
             catch (Exception ex)
             {
-                //trans.Rollback();
+                trans.Rollback();
                 string error = ex.Source;
                 //throw;
             }
@@ -761,8 +809,7 @@ namespace PriceUploader
             }
             
         }
-        
-        
+                
         public void InsertData2(DataTable table, string supplier_id, string price_type)
         {
             if (table == null)
