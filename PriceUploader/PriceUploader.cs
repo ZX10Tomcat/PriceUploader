@@ -29,7 +29,6 @@ namespace PriceUploader
         private DataTable TableProductAndAlias = null;
         private string[] Columns = new string[27];
         private List<Product> products = new List<Product>();
-        private List<CategoryCharge> categoryCharge = new List<CategoryCharge>();
         private List<ImportToDB> excelList = new List<ImportToDB>();
         private FormLoad formLoad = null;
 
@@ -101,11 +100,11 @@ namespace PriceUploader
             {
                 TableCategoryCharge = res.Result;
 
-                categoryCharge = new List<CategoryCharge>();
+                Model.categoryCharge = new List<CategoryCharge>();
                 int count = TableCategoryCharge.Rows.Count;
                 for (int i = 0; i < count; i++)
                 {
-                    categoryCharge.Add(new CategoryCharge()
+                    Model.categoryCharge.Add(new CategoryCharge()
                     {
                         cc_pc_id = System.Convert.ToInt32(TableCategoryCharge.Rows[i].ItemArray[0]),
                         cc_price_from = System.Convert.ToInt32(TableCategoryCharge.Rows[i].ItemArray[1]),
@@ -161,6 +160,19 @@ namespace PriceUploader
                 TableProductCategory = res.Result;
                 string str = "Table ProductCategory: " + TableProductCategory.Rows.Count.ToString();
                 FormLoadMessage(str);
+
+                Model.category = new List<Category>();
+                foreach (var item in TableProductCategory.AsEnumerable())
+                {
+                    Model.category.Add(new Category
+                    {
+                        pc_id = Convert.ToInt32(item.ItemArray[0]),
+                        pc_parent_id = Convert.ToInt32(item.ItemArray[1]),
+                        pc_name = Convert.ToString(item.ItemArray[2]),
+                        pc_description = Convert.ToString(item.ItemArray[8])
+                    });
+                }
+
                 ReceiveData.instance.EndQuery();
             });
 
@@ -257,6 +269,7 @@ namespace PriceUploader
 
         private void instance_OnLoaded()
         {
+
             buttonOpenExcel.Invoke(new Action(() =>
             {
                 buttonOpenExcel.Enabled = true;
@@ -498,6 +511,10 @@ namespace PriceUploader
         
         private void buttonOpenExcel_Click(object sender, EventArgs e)
         {
+            CategoriesTreeView categoriesTreeView = new CategoriesTreeView();
+            categoriesTreeView.Init(TableProductCategory, formCategories);
+
+
             label_file_name.Text = string.Empty;
 
             OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -800,7 +817,7 @@ namespace PriceUploader
                                     importToDB.prod_presense1,
                                     importToDB.prod_presense2,
                                     importToDB.prod_currency,
-                                    CalcClientPrice(ref categoryCharge, tableExcel.Rows[i].ItemArray.GetValue(indexColumnPrice), importToDB.prod_pc_id)    /* prod_client_price */,
+                                    this.Model.CalcClientPrice(ref Model.categoryCharge, tableExcel.Rows[i].ItemArray.GetValue(indexColumnPrice), importToDB.prod_pc_id)    /* prod_client_price */,
                                     importToDB.prod_pc_id,
                                     importToDB.prod_id,
                                     (importToDB.prod_pc_id.ToString() == "" && importToDB.prod_id.ToString() == "")
@@ -837,37 +854,6 @@ namespace PriceUploader
 
         }
         
-        private string CalcClientPrice(ref List<CategoryCharge> _categoryCharge, object _recived_price, object prod_pc_id)
-        {
-            double? res = null;
-            if (_recived_price != null
-                && categoryCharge != null
-                && prod_pc_id != null
-                && !string.IsNullOrEmpty(prod_pc_id.ToString()) )
-            {
-                int _prod_pc_id = System.Convert.ToInt32(prod_pc_id);
-                double price = System.Convert.ToDouble(_recived_price);
-                res = CalcClientPriceSub(ref _categoryCharge, _prod_pc_id, price);
-            }
-
-            if (res != null)
-                return res.ToString();
-
-            return null;
-        }
-
-        private double? CalcClientPriceSub(ref List<CategoryCharge> _categoryCharge, int prod_pc_id, double price)
-        {
-            double? res = null;
-            CategoryCharge findCharge = _categoryCharge.FirstOrDefault(
-                f => (System.Convert.ToInt32(f.cc_pc_id) == prod_pc_id && (double)price >= System.Convert.ToDouble(f.cc_price_from) && (double)price < System.Convert.ToDouble(f.cc_price_to))
-                    || (System.Convert.ToInt32(f.cc_pc_id) == prod_pc_id && (double)price > System.Convert.ToDouble(f.cc_price_from) && (double)price >= System.Convert.ToDouble(f.cc_price_to)) );
-            
-            if (findCharge != null)
-                res = price + ((price * System.Convert.ToInt32(findCharge.cc_charge)) / 100);
-            
-            return res;
-        }
 
         private void buttonAdd_Click(object sender, EventArgs e)
         {
@@ -904,8 +890,9 @@ namespace PriceUploader
 
         private void button1_Click(object sender, EventArgs e)
         {
-            FormCategories formCategories = new FormCategories();
-            formCategories.Init(TableProductCategory);
+            //FormCategories formCategories = new FormCategories();
+            //formCategories.Init(TableProductCategory);
+            
             formCategories.ShowDialog();
         }
 
@@ -993,8 +980,9 @@ namespace PriceUploader
                         break;
 
                     case 2:
+                        formCategories.FormClosed -= formCategories_FormClosed;
                         formCategories.FormClosed += formCategories_FormClosed;
-                        formCategories.Init(TableProductCategory);
+                        //formCategories.Init(TableProductCategory);
                         formCategories.ShowDialog();
                     break;
                 

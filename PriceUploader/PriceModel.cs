@@ -24,6 +24,8 @@ namespace PriceUploader
          //           WHERE pa_code='%s'",
          //           DB_PREFIX, DB_PREFIX, DB_PREFIX, tosql($alias));
 
+        public List<CategoryCharge> categoryCharge = new List<CategoryCharge>();
+        public List<Category> category = new List<Category>();
 
         public event EventHandler InsertDataError = delegate { };
         public event EventHandler OnAddRow = delegate { };
@@ -362,9 +364,9 @@ namespace PriceUploader
                 string sqlQuery_product_prev1 = string.Empty;
                 string sqlQuery_product_prev2 = string.Empty;
 
-                string sqlQuery_product_alias = "INSERT INTO product_alias (pa_prod_id, pa_code) VALUES";
+                string sqlQuery_product_alias = string.Empty    /* "INSERT INTO product_alias (pa_prod_id, pa_code) VALUES" */;
                 string sqlQuery_product_alias_END = string.Empty;
-                string sqlQuery_product_price = "INSERT INTO product_price (pp_prod_id, pp_sup_id, pp_price, pp_postdate) VALUES";
+                string sqlQuery_product_price = string.Empty    /* "INSERT INTO product_price (pp_prod_id, pp_sup_id, pp_price, pp_postdate) VALUES" */;
                 string sqlQuery_product_price_END = string.Empty; 
 
                 foreach (DataRow row in table.Rows)
@@ -405,6 +407,7 @@ namespace PriceUploader
                     else
                         continue;
 
+                    
                     product_client_price = 0;
                     if (!string.IsNullOrEmpty(prod_client_price))
                         product_client_price = System.Convert.ToDouble(prod_client_price);
@@ -413,6 +416,10 @@ namespace PriceUploader
                     if (!string.IsNullOrEmpty(prod_income_price))
                         product_fixed_price = System.Convert.ToDouble(prod_income_price);
 
+
+                    string s = CalcClientPrice(ref this.categoryCharge, prod_income_price, prod_pc_id);
+                    if (!string.IsNullOrEmpty(s))
+                        product_client_price = System.Convert.ToDouble(s);
 
                     if (!prod_id_is_new  /* product_id > 0 */ /* && product_price > 0 */ )
                     {
@@ -475,7 +482,7 @@ namespace PriceUploader
                             //$sql = sprintf("INSERT INTO %sproduct_alias SET pa_prod_id=%d, pa_code='%s'", DB_PREFIX, $prod_id, tosql($code));
 
                             //sql = string.Format("INSERT INTO product_alias SET pa_prod_id={0}, pa_code='{1}'",  product_id, code);
-                            sql = string.Format("( {0}, '{1}' ),",  product_id, code);
+                            sql = string.Format("INSERT INTO product_alias (pa_prod_id, pa_code) VALUES( {0}, '{1}' );\n", product_id, code);
                             sqlQuery_product_alias_END = string.Concat(sqlQuery_product_alias_END, sql);
 
                             Debug.WriteLine("6. INSERT INTO product_alias => resultExecut: " + resultExecut);
@@ -490,7 +497,7 @@ namespace PriceUploader
                         fixed_price = fixed_price.Replace(',', '.');
 
                         //sql = string.Format("INSERT INTO product_price SET pp_prod_id={0}, pp_sup_id={1}, pp_price={2}, pp_postdate={3}", product_id, supplier_id, fixed_price, unixTimestamp);
-                        sql = string.Format("( {0}, {1}, {2}, {3} ),", product_id, supplier_id, fixed_price, unixTimestamp);
+                        sql = string.Format("INSERT INTO product_price (pp_prod_id, pp_sup_id, pp_price, pp_postdate) VALUES( {0}, {1}, {2}, {3} );\n", product_id, supplier_id, fixed_price, unixTimestamp);
                         sqlQuery_product_price_END = string.Concat(sqlQuery_product_price_END, sql);
 
                         Debug.WriteLine("7. INSERT INTO product_price => resultExecut: " + resultExecut);
@@ -519,7 +526,7 @@ namespace PriceUploader
                 if (!string.IsNullOrEmpty(sqlQuery_product_alias_END))
                 {
                     sqlQuery_product_alias = string.Concat(sqlQuery_product_alias, sqlQuery_product_alias_END);
-                    sqlQuery_product_alias = sqlQuery_product_alias.Remove(sqlQuery_product_alias.Length - 1);
+                    //sqlQuery_product_alias = sqlQuery_product_alias.Remove(sqlQuery_product_alias.Length - 1);
                     cmd = new MySqlCommand(sqlQuery_product_alias, conn);
                     resultExecut = cmd.ExecuteNonQuery();
                 }
@@ -527,7 +534,7 @@ namespace PriceUploader
                 if (!string.IsNullOrEmpty(sqlQuery_product_price_END))
                 {
                     sqlQuery_product_price = string.Concat(sqlQuery_product_price, sqlQuery_product_price_END);
-                    sqlQuery_product_price = sqlQuery_product_price.Remove(sqlQuery_product_price.Length - 1);
+                    //sqlQuery_product_price = sqlQuery_product_price.Remove(sqlQuery_product_price.Length - 1);
                     cmd = new MySqlCommand(sqlQuery_product_price, conn);
                     resultExecut = cmd.ExecuteNonQuery();
                 }
@@ -1684,6 +1691,43 @@ prod_fixed_price, pa_code, prod_pc_id FROM product_alias INNER JOIN product pr O
           
             return res;
         }
+
+        public string CalcClientPrice(ref List<CategoryCharge> _categoryCharge, object _recived_price, object prod_pc_id)
+        {
+            double? res = null;
+            if (_recived_price != null
+                && _categoryCharge != null
+                && prod_pc_id != null
+                && !string.IsNullOrEmpty(prod_pc_id.ToString()))
+            {
+                int _prod_pc_id = System.Convert.ToInt32(prod_pc_id);
+                double price = System.Convert.ToDouble(_recived_price);
+                res = CalcClientPriceSub(ref _categoryCharge, _prod_pc_id, price);
+            }
+
+            if (res != null)
+                return res.ToString();
+
+            return null;
+        }
+
+        private double? CalcClientPriceSub(ref List<CategoryCharge> _categoryCharge, int prod_pc_id, double price)
+        {
+            double? res = null;
+            
+            CategoryCharge findCharge = _categoryCharge.FirstOrDefault(
+                f => (System.Convert.ToInt32(f.cc_pc_id) == prod_pc_id && (double)price >= System.Convert.ToDouble(f.cc_price_from) && (double)price < System.Convert.ToDouble(f.cc_price_to))
+                    || (System.Convert.ToInt32(f.cc_pc_id) == prod_pc_id && (double)price > System.Convert.ToDouble(f.cc_price_from) && (double)price >= System.Convert.ToDouble(f.cc_price_to)));
+
+            if (findCharge != null)
+                res = price + ((price * System.Convert.ToInt32(findCharge.cc_charge)) / 100);
+
+            return res;
+        }
+
+
+
+
 
     }
 

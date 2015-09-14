@@ -20,7 +20,13 @@ namespace PriceUploader
         {
             InitializeComponent();
         }
-                
+
+        public System.Windows.Forms.TreeView TreeViewCategories
+        {
+            get { return treeViewCategories; }
+        }
+
+
         internal void Init(DataTable TableProductCategory)
         {
             List<Category>categories = new List<Category>();                  
@@ -53,7 +59,6 @@ namespace PriceUploader
         {
             var subCategories = categories.Where(x => x.pc_parent_id == category.pc_id).ToList();
             
-
             if (subCategories.Count == 0)
             {
                 drawLeaf(category, node);
@@ -104,6 +109,7 @@ namespace PriceUploader
         public int pc_id = 0;
         public int pc_parent_id;       
         public string pc_name;
-        public string pc_description;        
+        public string pc_description;
+        public int pc_id_from_category_charge;
     }
 }

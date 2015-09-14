@@ -65,6 +65,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CategoriesTreeView.cs" />
     <Compile Include="FormCategories.cs">
       <SubType>Form</SubType>
     </Compile>
