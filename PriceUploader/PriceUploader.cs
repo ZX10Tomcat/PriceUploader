@@ -17,20 +17,23 @@ namespace PriceUploader
     public partial class PriceUploader : Form
     {
         private PriceModel Model = null;
-        private DataTable TableCategoryCharge = null; 
-        //private DataTable TableImportSettings = null;
-        private DataTable TablePriceCategory = null;
-        private DataTable TableProduct = null;
-        private DataTable TableProductAlias = null;
-        private DataTable TableProductCategory = null;
-        //private DataTable TableProductPrice = null;
-        private DataTable TableSupplier = null;
-        //private DataTable TableExcelData = null;
-        private DataTable TableProductAndAlias = null;
-        private string[] Columns = new string[27];
-        private List<Product> products = new List<Product>();
-        private List<ImportToDB> excelList = new List<ImportToDB>();
+        public string[] Columns = new string[27];
         private FormLoad formLoad = null;
+        private DataTable table = new DataTable();
+        private DataTable tableExcel = new DataTable();
+        private int countRowsExcel = 0;
+        private int indexColumnName = 0;
+        private int indexColumnCode = 0;
+        private int indexColumnPrice = 0;
+        private int indexColumnPresense1 = 0;
+        private int indexColumnPresense2 = 0;
+        private int indexColumnCurrency = 0;
+        private DateTime timeBeg = DateTime.Now;
+        private int beginRows = 0;
+        private string tableName = "Table_import_excel";
+        FormCode formCode = new FormCode();
+        FormCategories formCategories = new FormCategories();
+        private string fileName;
 
         public PriceUploader()
         {
@@ -67,29 +70,29 @@ namespace PriceUploader
 
             Model.Load_product_and_alias().ContinueWith(res =>
             {
-                TableProductAndAlias = res.Result;
-                
-                products = new List<Product>();
-                int count = TableProductAndAlias.Rows.Count;
+                Model.TableProductAndAlias = res.Result;
+
+                Model.products = new List<Product>();
+                int count = Model.TableProductAndAlias.Rows.Count;
                 for (int i = 0; i < count; i++)
                 {
-                    products.Add(new Product() 
+                    Model.products.Add(new Product() 
                     {
-                        prod_id = TableProductAndAlias.Rows[i].ItemArray[0],
-                        prod_name = TableProductAndAlias.Rows[i].ItemArray[1],
-                        prod_income_price = TableProductAndAlias.Rows[i].ItemArray[2],
-                        prod_text = TableProductAndAlias.Rows[i].ItemArray[3],
-                        prod_client_price = TableProductAndAlias.Rows[i].ItemArray[4],
-                        prod_price_col1 = TableProductAndAlias.Rows[i].ItemArray[5],
-                        prod_price_col2 = TableProductAndAlias.Rows[i].ItemArray[6],
-                        prod_price_col3 = TableProductAndAlias.Rows[i].ItemArray[7],
-                        prod_fixed_price = TableProductAndAlias.Rows[i].ItemArray[8],
-                        pa_code = TableProductAndAlias.Rows[i].ItemArray[9] == null ? "" : TableProductAndAlias.Rows[i].ItemArray[9].ToString(),
-                        prod_pc_id = TableProductAndAlias.Rows[i].ItemArray[10],
+                        prod_id = Model.TableProductAndAlias.Rows[i].ItemArray[0],
+                        prod_name = Model.TableProductAndAlias.Rows[i].ItemArray[1],
+                        prod_income_price = Model.TableProductAndAlias.Rows[i].ItemArray[2],
+                        prod_text = Model.TableProductAndAlias.Rows[i].ItemArray[3],
+                        prod_client_price = Model.TableProductAndAlias.Rows[i].ItemArray[4],
+                        prod_price_col1 = Model.TableProductAndAlias.Rows[i].ItemArray[5],
+                        prod_price_col2 = Model.TableProductAndAlias.Rows[i].ItemArray[6],
+                        prod_price_col3 = Model.TableProductAndAlias.Rows[i].ItemArray[7],
+                        prod_fixed_price = Model.TableProductAndAlias.Rows[i].ItemArray[8],
+                        pa_code = Model.TableProductAndAlias.Rows[i].ItemArray[9] == null ? "" : Model.TableProductAndAlias.Rows[i].ItemArray[9].ToString(),
+                        prod_pc_id = Model.TableProductAndAlias.Rows[i].ItemArray[10],
                     });  
                 }
 
-                string str = "Table ProductAndAlias: " + TableProductAndAlias.Rows.Count.ToString();
+                string str = "Table ProductAndAlias: " + Model.TableProductAndAlias.Rows.Count.ToString();
                 FormLoadMessage(str);
                 ReceiveData.instance.EndQuery();
             });
@@ -98,22 +101,22 @@ namespace PriceUploader
             ReceiveData.instance.BegQuery();
             Model.Load_category_charge().ContinueWith(res => 
             {
-                TableCategoryCharge = res.Result;
+                Model.TableCategoryCharge = res.Result;
 
                 Model.categoryCharge = new List<CategoryCharge>();
-                int count = TableCategoryCharge.Rows.Count;
+                int count = Model.TableCategoryCharge.Rows.Count;
                 for (int i = 0; i < count; i++)
                 {
                     Model.categoryCharge.Add(new CategoryCharge()
                     {
-                        cc_pc_id = System.Convert.ToInt32(TableCategoryCharge.Rows[i].ItemArray[0]),
-                        cc_price_from = System.Convert.ToInt32(TableCategoryCharge.Rows[i].ItemArray[1]),
-                        cc_price_to = System.Convert.ToInt32(TableCategoryCharge.Rows[i].ItemArray[2]),
-                        cc_charge = System.Convert.ToInt32(TableCategoryCharge.Rows[i].ItemArray[3]),
+                        cc_pc_id = System.Convert.ToInt32(Model.TableCategoryCharge.Rows[i].ItemArray[0]),
+                        cc_price_from = System.Convert.ToInt32(Model.TableCategoryCharge.Rows[i].ItemArray[1]),
+                        cc_price_to = System.Convert.ToInt32(Model.TableCategoryCharge.Rows[i].ItemArray[2]),
+                        cc_charge = System.Convert.ToInt32(Model.TableCategoryCharge.Rows[i].ItemArray[3]),
                     });
                 }
 
-                string str = "Table CategoryCharge: " + TableCategoryCharge.Rows.Count.ToString();
+                string str = "Table CategoryCharge: " + Model.TableCategoryCharge.Rows.Count.ToString();
                 FormLoadMessage(str);
                 ReceiveData.instance.EndQuery();
             });
@@ -130,8 +133,8 @@ namespace PriceUploader
             ReceiveData.instance.BegQuery();
             Model.Load_price_category().ContinueWith(res =>
             {
-                TablePriceCategory = res.Result;
-                string str = "Table PriceCategory: " + TablePriceCategory.Rows.Count.ToString();
+                Model.TablePriceCategory = res.Result;
+                string str = "Table PriceCategory: " + Model.TablePriceCategory.Rows.Count.ToString();
                 FormLoadMessage(str);
                 ReceiveData.instance.EndQuery();
             });
@@ -139,8 +142,8 @@ namespace PriceUploader
             ReceiveData.instance.BegQuery();
             Model.Load_product().ContinueWith(res =>
             {
-                TableProduct = res.Result;
-                string str = "Table Product: " + TableProduct.Rows.Count.ToString();
+                Model.TableProduct = res.Result;
+                string str = "Table Product: " + Model.TableProduct.Rows.Count.ToString();
                 FormLoadMessage(str);
                 ReceiveData.instance.EndQuery();
             });
@@ -148,8 +151,8 @@ namespace PriceUploader
             ReceiveData.instance.BegQuery();
             Model.Load_product_alias().ContinueWith(res =>
             {
-                TableProductAlias = res.Result;
-                string str = "Table ProductAlias: " + TableProductAlias.Rows.Count.ToString();
+                Model.TableProductAlias = res.Result;
+                string str = "Table ProductAlias: " + Model.TableProductAlias.Rows.Count.ToString();
                 FormLoadMessage(str);
                 ReceiveData.instance.EndQuery();
             });
@@ -157,14 +160,14 @@ namespace PriceUploader
             ReceiveData.instance.BegQuery();
             Model.Load_product_category().ContinueWith(res =>
             {
-                TableProductCategory = res.Result;
-                string str = "Table ProductCategory: " + TableProductCategory.Rows.Count.ToString();
+                Model.TableProductCategory = res.Result;
+                string str = "Table ProductCategory: " + Model.TableProductCategory.Rows.Count.ToString();
                 FormLoadMessage(str);
 
-                Model.category = new List<Category>();
-                foreach (var item in TableProductCategory.AsEnumerable())
+                Model.categories = new List<Category>();
+                foreach (var item in Model.TableProductCategory.AsEnumerable())
                 {
-                    Model.category.Add(new Category
+                    Model.categories.Add(new Category
                     {
                         pc_id = Convert.ToInt32(item.ItemArray[0]),
                         pc_parent_id = Convert.ToInt32(item.ItemArray[1]),
@@ -185,9 +188,9 @@ namespace PriceUploader
             ReceiveData.instance.BegQuery();
             Model.Load_supplier().ContinueWith(res =>
             {
-                TableSupplier = res.Result;
+                Model.TableSupplier = res.Result;
                 SetSupplierComboBox(res);
-                string str = "Table Supplier: " + TableSupplier.Rows.Count.ToString();
+                string str = "Table Supplier: " + Model.TableSupplier.Rows.Count.ToString();
                 FormLoadMessage(str);
                 ReceiveData.instance.EndQuery();
             });
@@ -277,6 +280,8 @@ namespace PriceUploader
                     this.formLoad.Close();
             }));
         }
+
+        
 
         private void FillComboBoxes()
         {
@@ -492,28 +497,10 @@ namespace PriceUploader
             }
         }
         
-        private DataTable table = new DataTable();
-        private DataTable tableExcel = new DataTable();
-        private int countRowsExcel = 0;
-        private int indexColumnName = 0;
-        private int indexColumnCode = 0;
-        private int indexColumnPrice = 0;
-        private int indexColumnPresense1 = 0;
-        private int indexColumnPresense2 = 0;
-        private int indexColumnCurrency = 0;
-        private DateTime timeBeg = DateTime.Now;
-        private List<ImportToDB> listImportToDB = new List<ImportToDB>();
-        private int beginRows = 0;
-        private string tableName = "Table_import_excel";
-        FormCode formCode = new FormCode();
-        FormCategories formCategories = new FormCategories();
-        private string fileName;
-        
         private void buttonOpenExcel_Click(object sender, EventArgs e)
         {
             CategoriesTreeView categoriesTreeView = new CategoriesTreeView();
-            categoriesTreeView.Init(TableProductCategory, formCategories);
-
+            categoriesTreeView.Init(Model.TableProductCategory, formCategories, Model);
 
             label_file_name.Text = string.Empty;
 
@@ -532,7 +519,6 @@ namespace PriceUploader
 
         private void buttonDownloadFile_Click(object sender, EventArgs e)
         {
-            
             if (fileName !="")
             {
                 try
@@ -542,7 +528,7 @@ namespace PriceUploader
                     tableExcel = new DataTable();
 
                     countRowsExcel = this.Model.ImportExcel(fileName, ref tableExcel);
-                    listImportToDB = new List<ImportToDB>();
+                    Model.listImportToDB = new List<ImportToDB>();
 
                     if (countRowsExcel > 0)
                     {
@@ -707,11 +693,11 @@ namespace PriceUploader
             //string code = string.Empty;
             Product prod = null;
 
-            listImportToDB = new List<ImportToDB>();
+            Model.listImportToDB = new List<ImportToDB>();
 
             for (int i = indexBeg; i < indexEnd; i++)
             {
-                listImportToDB.Add(
+                Model.listImportToDB.Add(
                     new ImportToDB()
                     {
                         number = i,
@@ -756,7 +742,7 @@ namespace PriceUploader
                 importToDB.prod_code = GetValue(ref tableExcel, i, indexColumnCode);
 
                 if (!string.IsNullOrEmpty(importToDB.prod_code))
-                    prod = products.FirstOrDefault(a => a.pa_code == importToDB.prod_code);
+                    prod = Model.products.FirstOrDefault(a => a.pa_code == importToDB.prod_code);
 
                 importToDB.prod_name = GetValue(ref tableExcel, i, indexColumnName);
                 importToDB.prod_income_price = GetValue(ref tableExcel, i, indexColumnPrice);

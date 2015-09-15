@@ -16,6 +16,20 @@ namespace PriceUploader
 {
     public class PriceModel
     {
+        public DataTable TableCategoryCharge = null;
+        //public DataTable TableImportSettings = null;
+        public DataTable TablePriceCategory = null;
+        public DataTable TableProduct = null;
+        public DataTable TableProductAlias = null;
+        public DataTable TableProductCategory = null;
+        //public DataTable TableProductPrice = null;
+        public DataTable TableSupplier = null;
+        //public DataTable TableExcelData = null;
+        public DataTable TableProductAndAlias = null;
+        public List<Product> products = new List<Product>();
+        public List<ImportToDB> excelList = new List<ImportToDB>();
+        public List<ImportToDB> listImportToDB = new List<ImportToDB>();
+
          //$sql = sprintf("
          //           SELECT *
          //           FROM %sproduct_alias
@@ -25,7 +39,7 @@ namespace PriceUploader
          //           DB_PREFIX, DB_PREFIX, DB_PREFIX, tosql($alias));
 
         public List<CategoryCharge> categoryCharge = new List<CategoryCharge>();
-        public List<Category> category = new List<Category>();
+        public List<Category> categories = new List<Category>();
 
         public event EventHandler InsertDataError = delegate { };
         public event EventHandler OnAddRow = delegate { };
@@ -416,8 +430,7 @@ namespace PriceUploader
                     if (!string.IsNullOrEmpty(prod_income_price))
                         product_fixed_price = System.Convert.ToDouble(prod_income_price);
 
-
-                    string s = CalcClientPrice(ref this.categoryCharge, prod_income_price, prod_pc_id);
+                    string s = CalcClientPrice(ref this.categoryCharge, prod_income_price, GetCategoryChargeIDFromCategories(prod_pc_id));
                     if (!string.IsNullOrEmpty(s))
                         product_client_price = System.Convert.ToDouble(s);
 
@@ -558,7 +571,20 @@ namespace PriceUploader
             }
 
         }
-        
+
+
+        private int GetCategoryChargeIDFromCategories(string str_pc_id)
+        {
+            int pc_id = -1;
+            if (!string.IsNullOrEmpty(str_pc_id))
+                pc_id = Convert.ToInt32(str_pc_id);
+            int res = -1;
+            var c = categories.FirstOrDefault(i => i.pc_id == pc_id);
+            if (c != null)
+                res = c.pc_id_from_category_charge;
+            return res;
+        }
+
         
         public void InsertData3(DataTable table, string supplier_id, string price_type)
         {
