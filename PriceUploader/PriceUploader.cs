@@ -891,30 +891,31 @@ namespace PriceUploader
                 // Set Row Color
 
                 //string prod_id = row.Field<string>("prod_id");
-
-                if (row.Cells[11].Value.ToString() != "" && row.Cells[12].Value.ToString() != "")
+                if (row.Index > 0)
                 {
-                    //dr["typeFoundProduct"] = TypeFoundProduct.Exist;
-                    dataGrid_import_excel.Rows[index].DefaultCellStyle.BackColor = Color.Green;
-                    
-                    dataGrid_import_excel.Rows[index].Cells[0].Value = null;
-                    dataGrid_import_excel.Rows[row.Index].Cells[0] = new DataGridViewTextBoxCell();
-                    dataGrid_import_excel.Rows[row.Index].Cells[0].Value = "";
+                    if (row.Cells[11].Value.ToString() != "" && row.Cells[12].Value.ToString() != "")
+                    {
+                        //dr["typeFoundProduct"] = TypeFoundProduct.Exist;
+                        dataGrid_import_excel.Rows[row.Index].DefaultCellStyle.BackColor = Color.Green;
 
-                    dataGrid_import_excel.Rows[index].Cells[1].Value = null;
-                    dataGrid_import_excel.Rows[row.Index].Cells[1] = new DataGridViewTextBoxCell();
-                    dataGrid_import_excel.Rows[row.Index].Cells[1].Value = "";
+                        dataGrid_import_excel.Rows[row.Index].Cells[0].Value = null;
+                        dataGrid_import_excel.Rows[row.Index].Cells[0] = new DataGridViewTextBoxCell();
+                        dataGrid_import_excel.Rows[row.Index].Cells[0].Value = "";
 
-                    dataGrid_import_excel.Rows[index].Cells[2].Value = null;
-                    dataGrid_import_excel.Rows[row.Index].Cells[2] = new DataGridViewTextBoxCell();
-                    dataGrid_import_excel.Rows[row.Index].Cells[2].Value = "";
+                        dataGrid_import_excel.Rows[index].Cells[1].Value = null;
+                        dataGrid_import_excel.Rows[row.Index].Cells[1] = new DataGridViewTextBoxCell();
+                        dataGrid_import_excel.Rows[row.Index].Cells[1].Value = "";
+
+                        dataGrid_import_excel.Rows[row.Index].Cells[2].Value = null;
+                        dataGrid_import_excel.Rows[row.Index].Cells[2] = new DataGridViewTextBoxCell();
+                        dataGrid_import_excel.Rows[row.Index].Cells[2].Value = "";
+                    }
+                    else
+                    {
+                        //dr["typeFoundProduct"] = TypeFoundProduct.New;
+                        dataGrid_import_excel.Rows[index].DefaultCellStyle.BackColor = Color.Red;
+                    }
                 }
-                else
-                {
-                    //dr["typeFoundProduct"] = TypeFoundProduct.New;
-                    dataGrid_import_excel.Rows[index].DefaultCellStyle.BackColor = Color.Red;                  
-                }
-
                 //dataSet.Tables[tableName].Rows[index].Field<string>("color").  = dataGrid_import_excel.Rows[index].DefaultCellStyle.BackColor.Name.ToLower();
                 //dataSet.Tables[tableName].AcceptChanges(); 
 
@@ -954,6 +955,8 @@ namespace PriceUploader
                 e.RowIndex >= 0)
             {
                 currenRowIndex = e.RowIndex;
+
+                dataGrid_import_excel.Rows[currenRowIndex].Cells[0].Value = true;
 
                 switch (e.ColumnIndex)
                 {
