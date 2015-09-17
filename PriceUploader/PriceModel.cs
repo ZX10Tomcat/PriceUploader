@@ -368,6 +368,8 @@ namespace PriceUploader
                             Debug.WriteLine("2. INSERT INTO product_alias => resultExecut: " + resultExecut);
                         }
                     }
+
+                    rowNumber++;
                 }
 
                 # endregion foreach (DataRow row in table.Rows)
@@ -381,8 +383,9 @@ namespace PriceUploader
                 string sqlQuery_product_alias = string.Empty    /* "INSERT INTO product_alias (pa_prod_id, pa_code) VALUES" */;
                 string sqlQuery_product_alias_END = string.Empty;
                 string sqlQuery_product_price = string.Empty    /* "INSERT INTO product_price (pp_prod_id, pp_sup_id, pp_price, pp_postdate) VALUES" */;
-                string sqlQuery_product_price_END = string.Empty; 
+                string sqlQuery_product_price_END = string.Empty;
 
+                rowNumber = 0;
                 foreach (DataRow row in table.Rows)
                 {
                     Int32 unixTimestamp = (Int32)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
@@ -416,11 +419,26 @@ namespace PriceUploader
                     if (string.IsNullOrEmpty(code))
                         code = new_code;
 
-                    if (!string.IsNullOrEmpty(prod_pc_id) && !string.IsNullOrEmpty(code) && ((is_new && is_selected) || (color.ToLower() == "green")))
-                        product_id = System.Convert.ToInt32(prod_id);
-                    else
-                        continue;
+                    //if (rowNumber == 10)
+                    //    rowNumber = rowNumber;
 
+                    if (!string.IsNullOrEmpty(prod_pc_id) && !string.IsNullOrEmpty(code) && ((is_new && is_selected) || (color.ToLower() == "green")))
+                    {
+                        product_id = System.Convert.ToInt32(prod_id);
+                    }
+                    else
+                    {
+                        if (rowNumber % 16 == 0)
+                        {
+                            addRowInfo.index = rowNumber;
+                            addRowInfo.timeRuning = DateTime.Now - dateTimeBeg;
+                            Debug.WriteLine("rowNumber: " + rowNumber);
+                            OnAddRow(addRowInfo, null);
+                        }
+
+                        rowNumber++;
+                        continue;
+                    }
                     
                     product_client_price = 0;
                     if (!string.IsNullOrEmpty(prod_client_price))

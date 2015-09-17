@@ -83,6 +83,7 @@
             this.dataColumn24 = new System.Data.DataColumn();
             this.dataColumn25 = new System.Data.DataColumn();
             this.dataColumn26 = new System.Data.DataColumn();
+            this.dataColumn27 = new System.Data.DataColumn();
             this.label_TimeSpan = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
             this.lbl_TotalCount = new System.Windows.Forms.Label();
@@ -139,7 +140,6 @@
             this.label2 = new System.Windows.Forms.Label();
             this.textBoxName = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.dataColumn27 = new System.Data.DataColumn();
             this.menuStrip1.SuspendLayout();
             this.tabControlMain.SuspendLayout();
             this.tabPageImport.SuspendLayout();
@@ -284,9 +284,7 @@
             this.dataGrid_import_excel.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGrid_import_excel.Size = new System.Drawing.Size(1164, 502);
             this.dataGrid_import_excel.TabIndex = 17;
-            this.dataGrid_import_excel.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGrid_import_excel_CellContentClick);
             this.dataGrid_import_excel.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.dataGrid_import_excel_RowsAdded);
-            this.dataGrid_import_excel.SelectionChanged += new System.EventHandler(this.dataGrid_import_excel_SelectionChanged);
             // 
             // V
             // 
@@ -579,6 +577,13 @@
             // 
             this.dataColumn26.Caption = "prod_new_code";
             this.dataColumn26.ColumnName = "prod_new_code";
+            // 
+            // dataColumn27
+            // 
+            this.dataColumn27.Caption = "prod_id_is_new";
+            this.dataColumn27.ColumnName = "prod_id_is_new";
+            this.dataColumn27.DataType = typeof(bool);
+            this.dataColumn27.DefaultValue = false;
             // 
             // label_TimeSpan
             // 
@@ -1116,13 +1121,6 @@
             this.label1.Size = new System.Drawing.Size(57, 13);
             this.label1.TabIndex = 0;
             this.label1.Text = "Название";
-            // 
-            // dataColumn27
-            // 
-            this.dataColumn27.Caption = "prod_id_is_new";
-            this.dataColumn27.ColumnName = "prod_id_is_new";
-            this.dataColumn27.DataType = typeof(bool);
-            this.dataColumn27.DefaultValue = false;
             // 
             // PriceUploader
             // 
