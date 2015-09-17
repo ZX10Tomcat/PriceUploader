@@ -43,6 +43,7 @@ namespace PriceUploader
 
         public event EventHandler InsertDataError = delegate { };
         public event EventHandler OnAddRow = delegate { };
+        public event EventHandler OnSaveAll = delegate { };
 
         private string strConn = string.Empty;
 
@@ -574,8 +575,9 @@ namespace PriceUploader
 
                 addRowInfo.index = (rowNumber - 1);
                 addRowInfo.timeRuning = DateTime.Now - dateTimeBeg;
-                Debug.WriteLine("rowNumber: " + rowNumber);
+                //Debug.WriteLine("rowNumber: " + rowNumber);
                 OnAddRow(addRowInfo, null);
+                OnSaveAll(this, null);
             }
             catch (Exception ex)
             {
@@ -1557,8 +1559,7 @@ namespace PriceUploader
                         con.Open();
                         System.Configuration.AppSettingsReader cas = new System.Configuration.AppSettingsReader();
                         con.ChangeDatabase(cas.GetValue("dataBase", typeof(string)).ToString());
-                        string sql = @"SELECT prod_id, prod_name, prod_income_price, prod_text, prod_client_price, prod_price_col1, prod_price_col2, prod_price_col3, 
-prod_fixed_price, pa_code, prod_pc_id FROM product_alias INNER JOIN product pr ON pr.prod_id=pa_prod_id";
+                        string sql = @"SELECT prod_id, prod_name, prod_income_price, prod_text, prod_client_price, prod_price_col1, prod_price_col2, prod_price_col3, prod_fixed_price, pa_code, prod_pc_id FROM product_alias INNER JOIN product pr ON pr.prod_id=pa_prod_id";
                         MySqlDataAdapter da = new MySqlDataAdapter(sql, con);
                         commandBuilder = new MySqlCommandBuilder(da);
                         da.Fill(dt);

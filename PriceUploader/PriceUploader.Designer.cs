@@ -588,10 +588,9 @@
             // label_TimeSpan
             // 
             this.label_TimeSpan.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label_TimeSpan.AutoSize = true;
             this.label_TimeSpan.Location = new System.Drawing.Point(256, 550);
             this.label_TimeSpan.Name = "label_TimeSpan";
-            this.label_TimeSpan.Size = new System.Drawing.Size(13, 13);
+            this.label_TimeSpan.Size = new System.Drawing.Size(119, 13);
             this.label_TimeSpan.TabIndex = 16;
             this.label_TimeSpan.Text = "0";
             // 

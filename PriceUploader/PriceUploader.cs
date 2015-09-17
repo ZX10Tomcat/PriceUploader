@@ -62,12 +62,48 @@ namespace PriceUploader
             Model = new PriceModel();
             Model.InsertDataError += Model_InsertDataError;
             Model.OnAddRow += Model_OnAddRow;
+            Model.OnSaveAll += Model_OnSaveAll;
 
             DateTime d1 = DateTime.Now;
 
             ReceiveData.instance.OnLoaded += new ReceiveData.OnLoadedEventHandler(instance_OnLoaded);
-            ReceiveData.instance.BegQuery();
 
+            ReceiveData.instance.BegQuery();
+            Model.Load_import_settings().ContinueWith(res =>
+            {
+                SetDataTableByRows(res, "Table_import_settings");
+                SetDataBindings();
+                SetFormatComboBox(res);
+                ReceiveData.instance.EndQuery();
+            });
+
+            LoadData(true);
+
+            DateTime d2 = DateTime.Now;
+            TimeSpan timeout = d2 - d1;
+
+            FillComboBoxes();
+            comboBoxImportCurrency.SelectedIndex = 0;
+
+            SetGridLayout();
+
+            //dataGrid_import_excel.Columns["isChecked"].ReadOnly = false;
+            Debug.WriteLine("time data loaded: " + timeout.ToString());
+            return;
+        }
+
+        void Model_OnSaveAll(object sender, EventArgs e)
+        {
+            LoadData(false);
+        }
+
+        private void LoadData(bool showMessage)
+        {
+            buttonOpenExcel.Enabled = false;
+            buttonDownloadFile.Enabled = false;
+            buttonSaveData.Enabled = false;
+
+            ReceiveData.instance.BegQuery();
             Model.Load_product_and_alias().ContinueWith(res =>
             {
                 Model.TableProductAndAlias = res.Result;
@@ -76,7 +112,7 @@ namespace PriceUploader
                 int count = Model.TableProductAndAlias.Rows.Count;
                 for (int i = 0; i < count; i++)
                 {
-                    Model.products.Add(new Product() 
+                    Model.products.Add(new Product()
                     {
                         prod_id = Model.TableProductAndAlias.Rows[i].ItemArray[0],
                         prod_name = Model.TableProductAndAlias.Rows[i].ItemArray[1],
@@ -89,17 +125,17 @@ namespace PriceUploader
                         prod_fixed_price = Model.TableProductAndAlias.Rows[i].ItemArray[8],
                         pa_code = Model.TableProductAndAlias.Rows[i].ItemArray[9] == null ? "" : Model.TableProductAndAlias.Rows[i].ItemArray[9].ToString(),
                         prod_pc_id = Model.TableProductAndAlias.Rows[i].ItemArray[10],
-                    });  
+                    });
                 }
 
                 string str = "Table ProductAndAlias: " + Model.TableProductAndAlias.Rows.Count.ToString();
-                FormLoadMessage(str);
+                FormLoadMessage(str, showMessage);
                 ReceiveData.instance.EndQuery();
             });
 
 
             ReceiveData.instance.BegQuery();
-            Model.Load_category_charge().ContinueWith(res => 
+            Model.Load_category_charge().ContinueWith(res =>
             {
                 Model.TableCategoryCharge = res.Result;
 
@@ -117,16 +153,7 @@ namespace PriceUploader
                 }
 
                 string str = "Table CategoryCharge: " + Model.TableCategoryCharge.Rows.Count.ToString();
-                FormLoadMessage(str);
-                ReceiveData.instance.EndQuery();
-            });
-
-            ReceiveData.instance.BegQuery();
-            Model.Load_import_settings().ContinueWith(res =>
-            {
-                SetDataTableByRows(res, "Table_import_settings");
-                SetDataBindings();
-                SetFormatComboBox(res);
+                FormLoadMessage(str, showMessage);
                 ReceiveData.instance.EndQuery();
             });
 
@@ -135,7 +162,7 @@ namespace PriceUploader
             {
                 Model.TablePriceCategory = res.Result;
                 string str = "Table PriceCategory: " + Model.TablePriceCategory.Rows.Count.ToString();
-                FormLoadMessage(str);
+                FormLoadMessage(str, showMessage);
                 ReceiveData.instance.EndQuery();
             });
 
@@ -144,7 +171,7 @@ namespace PriceUploader
             {
                 Model.TableProduct = res.Result;
                 string str = "Table Product: " + Model.TableProduct.Rows.Count.ToString();
-                FormLoadMessage(str);
+                FormLoadMessage(str, showMessage);
                 ReceiveData.instance.EndQuery();
             });
 
@@ -153,7 +180,7 @@ namespace PriceUploader
             {
                 Model.TableProductAlias = res.Result;
                 string str = "Table ProductAlias: " + Model.TableProductAlias.Rows.Count.ToString();
-                FormLoadMessage(str);
+                FormLoadMessage(str, showMessage);
                 ReceiveData.instance.EndQuery();
             });
 
@@ -162,7 +189,7 @@ namespace PriceUploader
             {
                 Model.TableProductCategory = res.Result;
                 string str = "Table ProductCategory: " + Model.TableProductCategory.Rows.Count.ToString();
-                FormLoadMessage(str);
+                FormLoadMessage(str, showMessage);
 
                 Model.categories = new List<Category>();
                 foreach (var item in Model.TableProductCategory.AsEnumerable())
@@ -191,22 +218,12 @@ namespace PriceUploader
                 Model.TableSupplier = res.Result;
                 SetSupplierComboBox(res);
                 string str = "Table Supplier: " + Model.TableSupplier.Rows.Count.ToString();
-                FormLoadMessage(str);
+                FormLoadMessage(str, showMessage);
                 ReceiveData.instance.EndQuery();
             });
-
-            DateTime d2 = DateTime.Now;
-            TimeSpan timeout = d2 - d1;
-
-            FillComboBoxes();
-            comboBoxImportCurrency.SelectedIndex = 0;
-
-            SetGridLayout();
-
-            //dataGrid_import_excel.Columns["isChecked"].ReadOnly = false;
-            Debug.WriteLine("time data loaded: " + timeout.ToString());
-            return;
         }
+
+
 
         void Model_OnAddRow(object sender, EventArgs e)
         {
@@ -272,10 +289,12 @@ namespace PriceUploader
 
         private void instance_OnLoaded()
         {
-
             buttonOpenExcel.Invoke(new Action(() =>
             {
                 buttonOpenExcel.Enabled = true;
+                buttonDownloadFile.Enabled = true;
+                buttonSaveData.Enabled = true;
+
                 if (this.formLoad != null)
                     this.formLoad.Close();
             }));
@@ -1093,6 +1112,10 @@ namespace PriceUploader
 
         private void buttonSaveData_Click(object sender, EventArgs e)
         {
+            buttonOpenExcel.Enabled = false;
+            buttonDownloadFile.Enabled = false;
+            buttonSaveData.Enabled = false;
+
             buttonSaveData.Invoke(new Action(() =>
             {
                 Model.InsertData(dataSet.Tables[tableName], (this.comboBoxSupplier.SelectedItem as ComboboxItem).Value.ToString(), comboBoxImportCurrency.Text);
@@ -1105,8 +1128,11 @@ namespace PriceUploader
             formLoad.ShowDialog();
         }
 
-        private void FormLoadMessage(string message)
+        private void FormLoadMessage(string message, bool showMessage)
         {
+            if (!showMessage)
+                return;
+
             formLoad.Invoke(new Action(() =>
             {
                 formLoad.CurrentTask = message;
