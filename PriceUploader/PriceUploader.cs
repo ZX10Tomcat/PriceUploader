@@ -1151,7 +1151,10 @@ namespace PriceUploader
                 this.dataGrid_import_excel.DataSource = null;
                 this.dataGrid_import_excel.Rows.Clear();
                 dataSet.Tables[tableName].Clear();
-                
+                lbl_Counter.Text = "0";
+                lbl_TotalCount.Text = "0";
+                label_TimeSpan.Text = "";
+
                 this.formLoad = new FormLoad();
                 this.formLoad.ShowDialog();
             }));
