@@ -16,6 +16,14 @@ namespace PriceUploader
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+
+            FormSetDatabase formSetDatabase = new FormSetDatabase();
+            PriceModel pm = new PriceModel();
+            formSetDatabase.Init(ref pm);
+            formSetDatabase.StartPosition = FormStartPosition.CenterScreen;
+            formSetDatabase.ShowDialog();
+            pm = null;
+
             Application.Run(new PriceUploader());
         }
     }

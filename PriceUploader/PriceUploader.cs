@@ -94,7 +94,8 @@ namespace PriceUploader
 
         void Model_OnSaveAll(object sender, EventArgs e)
         {
-            LoadData(false);
+            ReceiveData.instance.OnLoaded += saveData_OnLoaded;
+            LoadData(true);
         }
 
         private void LoadData(bool showMessage)
@@ -222,9 +223,7 @@ namespace PriceUploader
                 ReceiveData.instance.EndQuery();
             });
         }
-
-
-
+        
         void Model_OnAddRow(object sender, EventArgs e)
         {
             var v = sender as AddRowInfo;
@@ -246,8 +245,7 @@ namespace PriceUploader
                 }));
             }
         }
-
-
+        
         void Model_InsertDataError(object sender, EventArgs e)
         {
             MessageBox.Show(string.Format("Вы не указали категорию в строке №{0}", sender.ToString() ));
@@ -297,10 +295,11 @@ namespace PriceUploader
 
                 if (this.formLoad != null)
                     this.formLoad.Close();
+
+                ReceiveData.instance.OnLoaded -= new ReceiveData.OnLoadedEventHandler(instance_OnLoaded);
             }));
         }
-
-        
+               
 
         private void FillComboBoxes()
         {
@@ -1119,9 +1118,39 @@ namespace PriceUploader
             buttonSaveData.Invoke(new Action(() =>
             {
                 Model.InsertData(dataSet.Tables[tableName], (this.comboBoxSupplier.SelectedItem as ComboboxItem).Value.ToString(), comboBoxImportCurrency.Text);
+                this.formLoad = new FormLoad();
+                this.formLoad.ShowDialog();
             }));
         }
 
+        private void saveData_OnLoaded()
+        {
+            buttonOpenExcel.Invoke(new Action(() =>
+            {
+                buttonOpenExcel.Enabled = true;
+            }));
+
+            buttonDownloadFile.Invoke(new Action(() =>
+            {
+                buttonDownloadFile.Enabled = true;
+            }));
+
+            buttonSaveData.Invoke(new Action(() =>
+            {
+                buttonSaveData.Enabled = true;
+            }));
+
+            if (this.formLoad != null)
+            {
+                formLoad.Invoke(new Action(() =>
+                {
+                    this.formLoad.Close();
+                }));
+            }
+
+            ReceiveData.instance.OnLoaded -= saveData_OnLoaded;
+        }
+        
         private void PriceUploader_Shown(object sender, EventArgs e)
         {
             formLoad = new FormLoad();

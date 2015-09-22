@@ -13,6 +13,7 @@ namespace PriceUploader
     public partial class FormSetDatabase : Form
     {
         private PriceModel priceModel = null;
+        //public bool result { get { return true}; }
 
         public FormSetDatabase()
         {
