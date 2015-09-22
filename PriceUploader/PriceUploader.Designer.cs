@@ -140,6 +140,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.textBoxName = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.dataColumn28 = new System.Data.DataColumn();
             this.menuStrip1.SuspendLayout();
             this.tabControlMain.SuspendLayout();
             this.tabPageImport.SuspendLayout();
@@ -505,7 +506,8 @@
             this.dataColumn24,
             this.dataColumn25,
             this.dataColumn26,
-            this.dataColumn27});
+            this.dataColumn27,
+            this.dataColumn28});
             this.dataTable_import_excel.TableName = "Table_import_excel";
             // 
             // dataColumn13
@@ -1121,6 +1123,11 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Название";
             // 
+            // dataColumn28
+            // 
+            this.dataColumn28.Caption = "prod_qty";
+            this.dataColumn28.ColumnName = "prod_qty";
+            // 
             // PriceUploader
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1272,6 +1279,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn prodidDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewCheckBoxColumn is_new;
         private System.Data.DataColumn dataColumn27;
+        private System.Data.DataColumn dataColumn28;
 
     }
 }

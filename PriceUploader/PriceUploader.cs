@@ -126,6 +126,7 @@ namespace PriceUploader
                         prod_fixed_price = Model.TableProductAndAlias.Rows[i].ItemArray[8],
                         pa_code = Model.TableProductAndAlias.Rows[i].ItemArray[9] == null ? "" : Model.TableProductAndAlias.Rows[i].ItemArray[9].ToString(),
                         prod_pc_id = Model.TableProductAndAlias.Rows[i].ItemArray[10],
+                        prod_qty = Model.TableProductAndAlias.Rows[i].ItemArray[11],
                     });
                 }
 
@@ -772,7 +773,6 @@ namespace PriceUploader
                     prod = Model.products.FirstOrDefault(a => a.pa_code == importToDB.prod_code);
 
                 importToDB.prod_name = GetValue(ref tableExcel, i, indexColumnName);
-                importToDB.prod_income_price = GetValue(ref tableExcel, i, indexColumnPrice);
                 importToDB.prod_presense1 = GetValue(ref tableExcel, i, indexColumnPresense1);
                 importToDB.prod_presense2 = GetValue(ref tableExcel, i, indexColumnPresense2);
                 importToDB.prod_currency = GetValue(ref tableExcel, i, indexColumnCurrency);
@@ -783,12 +783,36 @@ namespace PriceUploader
                     importToDB.product_prod_pc_id = prod.prod_pc_id == null ? "" : prod.prod_pc_id.ToString();
                     importToDB.prod_pc_id = prod.prod_pc_id == null ? "" : prod.prod_pc_id.ToString();
                     importToDB.prod_id = prod.prod_id == null ? "" : prod.prod_id.ToString();
+                    importToDB.prod_qty = prod.prod_qty == null ? "" : prod.prod_qty.ToString();
+
+                    //проверка что цена в прайсе больше чем в БД    
+                    double priceExcel = 0;
+                    double priceDB = 0;
+
+                    importToDB.prod_income_price = GetValue(ref tableExcel, i, indexColumnPrice);
+                    
+                    if (!string.IsNullOrEmpty(importToDB.prod_income_price))
+                    {
+                        priceExcel = System.Convert.ToDouble(importToDB.prod_income_price);
+                    }
+
+                    if (prod.prod_income_price != null)
+                    {
+                        priceDB = System.Convert.ToDouble(prod.prod_income_price);
+                    }
+
+                    if (priceDB > priceExcel)
+                        importToDB.prod_income_price = priceDB.ToString();
+                    
+                    //проверка что цена в прайсе больше чем в БД    
                 }
                 else
                 {
                     importToDB.product_prod_pc_id = "";
                     importToDB.prod_pc_id = "";
                     importToDB.prod_id = "";
+                    importToDB.prod_qty = "";
+                    importToDB.prod_income_price = string.Empty;
                 }
 
                 //object recived_price = tableExcel.Rows[i].ItemArray.GetValue(indexColumnPrice);
@@ -830,10 +854,15 @@ namespace PriceUploader
                                     importToDB.prod_presense1,
                                     importToDB.prod_presense2,
                                     importToDB.prod_currency,
-                                    this.Model.CalcClientPrice(ref Model.categoryCharge, tableExcel.Rows[i].ItemArray.GetValue(indexColumnPrice), importToDB.prod_pc_id)    /* prod_client_price */,
+                                    this.Model.CalcClientPrice(ref Model.categoryCharge, tableExcel.Rows[i].ItemArray.GetValue(indexColumnPrice), importToDB.prod_pc_id, importToDB.prod_qty)    /* prod_client_price */,
                                     importToDB.prod_pc_id,
                                     importToDB.prod_id,
-                                    (importToDB.prod_pc_id.ToString() == "" && importToDB.prod_id.ToString() == "")
+                                    (importToDB.prod_pc_id.ToString() == "" && importToDB.prod_id.ToString() == ""),
+                                    false,
+                                    "",
+                                    "",
+                                    false,
+                                    importToDB.prod_qty
                                 });
 
 
@@ -1118,6 +1147,11 @@ namespace PriceUploader
             buttonSaveData.Invoke(new Action(() =>
             {
                 Model.InsertData(dataSet.Tables[tableName], (this.comboBoxSupplier.SelectedItem as ComboboxItem).Value.ToString(), comboBoxImportCurrency.Text);
+
+                this.dataGrid_import_excel.DataSource = null;
+                this.dataGrid_import_excel.Rows.Clear();
+                dataSet.Tables[tableName].Clear();
+                
                 this.formLoad = new FormLoad();
                 this.formLoad.ShowDialog();
             }));

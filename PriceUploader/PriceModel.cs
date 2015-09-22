@@ -402,7 +402,6 @@ namespace PriceUploader
                     }
 
                     string prod_id = row.Field<string>("prod_id");
-                    
                     string prod_name = row.Field<string>("prod_name");
                     string code = row.Field<string>("prod_code");
                     string new_code = row.Field<string>("prod_new_code");
@@ -410,6 +409,7 @@ namespace PriceUploader
                     string prod_client_price = row.Field<string>("prod_client_price");
                     string prod_pc_id = row.Field<string>("prod_pc_id");
                     string color = row.Field<string>("color");
+                    string prod_qty = row.Field<string>("prod_qty");
 
                     if (string.IsNullOrEmpty(color))
                         color = string.Empty;
@@ -449,7 +449,7 @@ namespace PriceUploader
                     if (!string.IsNullOrEmpty(prod_income_price))
                         product_fixed_price = System.Convert.ToDouble(prod_income_price);
 
-                    string s = CalcClientPrice(ref this.categoryCharge, prod_income_price, GetCategoryChargeIDFromCategories(prod_pc_id));
+                    string s = CalcClientPrice(ref this.categoryCharge, prod_income_price, GetCategoryChargeIDFromCategories(prod_pc_id), prod_qty);
                     if (!string.IsNullOrEmpty(s))
                         product_client_price = System.Convert.ToDouble(s);
 
@@ -1559,7 +1559,7 @@ namespace PriceUploader
                         con.Open();
                         System.Configuration.AppSettingsReader cas = new System.Configuration.AppSettingsReader();
                         con.ChangeDatabase(cas.GetValue("dataBase", typeof(string)).ToString());
-                        string sql = @"SELECT prod_id, prod_name, prod_income_price, prod_text, prod_client_price, prod_price_col1, prod_price_col2, prod_price_col3, prod_fixed_price, pa_code, prod_pc_id FROM product_alias INNER JOIN product pr ON pr.prod_id=pa_prod_id";
+                        string sql = @"SELECT prod_id, prod_name, prod_income_price, prod_text, prod_client_price, prod_price_col1, prod_price_col2, prod_price_col3, prod_fixed_price, pa_code, prod_pc_id, prod_qty FROM product_alias INNER JOIN product pr ON pr.prod_id=pa_prod_id";
                         MySqlDataAdapter da = new MySqlDataAdapter(sql, con);
                         commandBuilder = new MySqlCommandBuilder(da);
                         da.Fill(dt);
@@ -1737,13 +1737,15 @@ namespace PriceUploader
             return res;
         }
 
-        public string CalcClientPrice(ref List<CategoryCharge> _categoryCharge, object _recived_price, object prod_pc_id)
+        public string CalcClientPrice(ref List<CategoryCharge> _categoryCharge, object _recived_price, object prod_pc_id, string prod_qty)
         {
+            int qty = string.IsNullOrEmpty(prod_qty) == false ? System.Convert.ToInt32(prod_qty) : 0;
             double? res = null;
             if (_recived_price != null
                 && _categoryCharge != null
                 && prod_pc_id != null
-                && !string.IsNullOrEmpty(prod_pc_id.ToString()))
+                && !string.IsNullOrEmpty(prod_pc_id.ToString())
+                && qty > 0)
             {
                 int _prod_pc_id = System.Convert.ToInt32(prod_pc_id);
                 double price = System.Convert.ToDouble(_recived_price);
@@ -1795,6 +1797,7 @@ namespace PriceUploader
         public object prod_fixed_price;
         public string pa_code;
         public object prod_pc_id;
+        public object prod_qty;
     }
         
     public class ImportToDB
@@ -1812,6 +1815,7 @@ namespace PriceUploader
         public string product_prod_pc_id = string.Empty;
         public string prod_id = string.Empty;
         public string prod_fixed_price = string.Empty;
+        public string prod_qty = string.Empty;
     }
 
 
