@@ -10,12 +10,15 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
+using log4net;
+using log4net.Config;
 
 namespace PriceUploader
 {
     public partial class PriceUploader : Form
     {
+        private static readonly ILog log = LogManager.GetLogger(typeof(PriceUploader));
+
         private PriceModel Model = null;
         public string[] Columns = new string[27];
         private FormLoad formLoad = null;
@@ -37,8 +40,11 @@ namespace PriceUploader
 
         public PriceUploader()
         {
+            BasicConfigurator.Configure();
+
             InitializeComponent();
             Init();
+            log.Info("Start app");
         }
 
         private void toolStripMenuItemExit_Click(object sender, EventArgs e)
@@ -1140,12 +1146,18 @@ namespace PriceUploader
 
         private void buttonSaveData_Click(object sender, EventArgs e)
         {
-            buttonOpenExcel.Enabled = false;
-            buttonDownloadFile.Enabled = false;
-            buttonSaveData.Enabled = false;
+            log.Info("buttonSaveData_Click");
 
             buttonSaveData.Invoke(new Action(() =>
             {
+                log.Info("buttonSaveData.Invoke");
+
+                buttonOpenExcel.Enabled = false;
+                buttonDownloadFile.Enabled = false;
+                buttonSaveData.Enabled = false;
+
+                log.Info("button disabled");
+
                 Model.InsertData(dataSet.Tables[tableName], (this.comboBoxSupplier.SelectedItem as ComboboxItem).Value.ToString(), comboBoxImportCurrency.Text);
 
                 this.dataGrid_import_excel.DataSource = null;

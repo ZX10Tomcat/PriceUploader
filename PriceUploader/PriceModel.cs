@@ -1,5 +1,6 @@
 ﻿using LAny;
 using LOffice;
+using log4net;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,7 @@ namespace PriceUploader
 {
     public class PriceModel
     {
+        private static readonly ILog log = LogManager.GetLogger(typeof(PriceModel));
         public DataTable TableCategoryCharge = null;
         //public DataTable TableImportSettings = null;
         public DataTable TablePriceCategory = null;
@@ -220,14 +222,20 @@ namespace PriceUploader
 
         public void InsertData(DataTable table, string supplier_id, string price_type)
         {
+            log.Info("InsertData(DataTable table, string supplier_id, string price_type)");
+
             if (table == null)
                 return;
 
             if (table.Rows.Count == 0)
                 return;
 
+            log.Info("table.Rows.Count = " + table.Rows.Count.ToString());
+
             AddRowInfo addRowInfo = new AddRowInfo();
             DateTime dateTimeBeg = DateTime.Now;
+
+            log.Info("DateTime dateTimeBeg = DateTime.Now;");
 
             int product_id = 0;
             double product_client_price = 0;
@@ -237,16 +245,21 @@ namespace PriceUploader
             string fixed_price = string.Empty;
 
             MySqlCommand cmd = null;
+            log.Info("MySqlCommand cmd = null;");
             string sql = string.Empty;
 
             //select set_value from engine_settings where set_name = 'euro_rate'
             //select set_value from engine_settings where set_name = 'currency_rate_cash'
             //$price = $price * EURO_RATE / CURRENCY_RATE_CASH;
+            
             double euro_rate = 0;
             double currency_rate_cash = 0;
 
             int resultExecut = -888;
             MySqlDataReader rdr = null;
+
+            log.Info("MySqlDataReader rdr = null;");
+            
 
             try
             {
@@ -257,6 +270,7 @@ namespace PriceUploader
                 rdr.Read();
                 euro_rate = rdr.GetDouble(0);
                 conn.Close();
+                log.Info(sql);
 
                 conn = this.GetConn();
                 sql = string.Format("select set_value from engine_settings where set_name = 'currency_rate_cash'");
@@ -266,6 +280,7 @@ namespace PriceUploader
                 rdr.Read();
                 currency_rate_cash = rdr.GetDouble(0);
                 conn.Close();
+                log.Info(sql);
             }
             catch (Exception ex)
             {
@@ -289,7 +304,8 @@ namespace PriceUploader
 
             conn = this.GetConn();
             MySqlTransaction trans = conn.BeginTransaction();
-            
+            log.Info("MySqlTransaction trans = conn.BeginTransaction();");
+
             rowNumber = 0;
             try
             {
@@ -359,6 +375,7 @@ namespace PriceUploader
                             resultExecut = cmd.ExecuteNonQuery();
                             product_id = (int)cmd.LastInsertedId;
                             Debug.WriteLine("1. INSERT INTO product => resultExecut: " + resultExecut);
+                            log.Info(sql);
 
                             table.Rows[rowNumber]["prod_id"] = product_id;
                             table.Rows[rowNumber]["prod_id_is_new"] = true;
@@ -367,6 +384,7 @@ namespace PriceUploader
                             cmd = new MySqlCommand(sql, conn);
                             resultExecut = cmd.ExecuteNonQuery();
                             Debug.WriteLine("2. INSERT INTO product_alias => resultExecut: " + resultExecut);
+                            log.Info(sql);
                         }
                     }
 
@@ -471,6 +489,7 @@ namespace PriceUploader
                             sqlQuery_product_prev1 = sql;
 
                             Debug.WriteLine("3. UPDATE product => resultExecut: " + resultExecut);
+                            log.Info(sql);
                         }
                         else
                         {
@@ -506,6 +525,7 @@ namespace PriceUploader
 
                                 sqlQuery_product_prev2 = sql;
                                 Debug.WriteLine("5. UPDATE product => resultExecut: " + resultExecut);
+                                log.Info(sql);
                             }
                         }
 
@@ -518,6 +538,7 @@ namespace PriceUploader
                             sqlQuery_product_alias_END = string.Concat(sqlQuery_product_alias_END, sql);
 
                             Debug.WriteLine("6. INSERT INTO product_alias => resultExecut: " + resultExecut);
+                            log.Info(sql);
                         }
                     }
 
@@ -533,6 +554,7 @@ namespace PriceUploader
                         sqlQuery_product_price_END = string.Concat(sqlQuery_product_price_END, sql);
 
                         Debug.WriteLine("7. INSERT INTO product_price => resultExecut: " + resultExecut);
+                        log.Info(sql);
                     }
 
                     if (rowNumber % 16 == 0)
@@ -553,6 +575,7 @@ namespace PriceUploader
                     sqlQuery_product = sqlQuery_product.Remove(sqlQuery_product.Length - 1);
                     cmd = new MySqlCommand(sqlQuery_product, conn);
                     resultExecut = cmd.ExecuteNonQuery();
+                    log.Info(sqlQuery_product);
                 }
 
                 if (!string.IsNullOrEmpty(sqlQuery_product_alias_END))
@@ -561,6 +584,7 @@ namespace PriceUploader
                     //sqlQuery_product_alias = sqlQuery_product_alias.Remove(sqlQuery_product_alias.Length - 1);
                     cmd = new MySqlCommand(sqlQuery_product_alias, conn);
                     resultExecut = cmd.ExecuteNonQuery();
+                    log.Info(sqlQuery_product_alias);
                 }
 
                 if (!string.IsNullOrEmpty(sqlQuery_product_price_END))
@@ -569,9 +593,12 @@ namespace PriceUploader
                     //sqlQuery_product_price = sqlQuery_product_price.Remove(sqlQuery_product_price.Length - 1);
                     cmd = new MySqlCommand(sqlQuery_product_price, conn);
                     resultExecut = cmd.ExecuteNonQuery();
+                    log.Info(sqlQuery_product_price);
                 }
 
                 trans.Commit();
+
+                log.Info("trans.Commit();");
 
                 addRowInfo.index = (rowNumber - 1);
                 addRowInfo.timeRuning = DateTime.Now - dateTimeBeg;
@@ -584,6 +611,8 @@ namespace PriceUploader
                 trans.Rollback();
                 string error = ex.Source;
                 //throw;
+
+                log.Error(ex.Message, ex);
             }
             finally
             {
