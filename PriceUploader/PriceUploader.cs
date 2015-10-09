@@ -100,16 +100,20 @@ namespace PriceUploader
 
         void Model_OnSaveAll(object sender, EventArgs e)
         {
+            log.Info("Model_OnSaveAll(object sender, EventArgs e)");
             ReceiveData.instance.OnLoaded += saveData_OnLoaded;
             LoadData(true);
         }
 
         private void LoadData(bool showMessage)
         {
+            log.Info("LoadData(bool showMessage)");
+
             buttonOpenExcel.Enabled = false;
             buttonDownloadFile.Enabled = false;
             buttonSaveData.Enabled = false;
 
+            log.Info("Start Model.Load_product_and_alias()");
             ReceiveData.instance.BegQuery();
             Model.Load_product_and_alias().ContinueWith(res =>
             {
@@ -139,9 +143,12 @@ namespace PriceUploader
                 string str = "Table ProductAndAlias: " + Model.TableProductAndAlias.Rows.Count.ToString();
                 FormLoadMessage(str, showMessage);
                 ReceiveData.instance.EndQuery();
+                
+                log.Info("Finished Model.Load_product_and_alias()");
             });
 
 
+            log.Info("Start Model.Load_category_charge()");
             ReceiveData.instance.BegQuery();
             Model.Load_category_charge().ContinueWith(res =>
             {
@@ -163,8 +170,11 @@ namespace PriceUploader
                 string str = "Table CategoryCharge: " + Model.TableCategoryCharge.Rows.Count.ToString();
                 FormLoadMessage(str, showMessage);
                 ReceiveData.instance.EndQuery();
+
+                log.Info("Finished Model.Load_category_charge()");
             });
 
+            log.Info("Start Model.Load_price_category()");
             ReceiveData.instance.BegQuery();
             Model.Load_price_category().ContinueWith(res =>
             {
@@ -172,8 +182,11 @@ namespace PriceUploader
                 string str = "Table PriceCategory: " + Model.TablePriceCategory.Rows.Count.ToString();
                 FormLoadMessage(str, showMessage);
                 ReceiveData.instance.EndQuery();
+
+                log.Info("Finished Model.Load_price_category()");
             });
 
+            log.Info("Start Model.Load_product()");
             ReceiveData.instance.BegQuery();
             Model.Load_product().ContinueWith(res =>
             {
@@ -181,8 +194,11 @@ namespace PriceUploader
                 string str = "Table Product: " + Model.TableProduct.Rows.Count.ToString();
                 FormLoadMessage(str, showMessage);
                 ReceiveData.instance.EndQuery();
+
+                log.Info("Finished Model.Load_product()");
             });
 
+            log.Info("Start Model.Load_product_alias()");
             ReceiveData.instance.BegQuery();
             Model.Load_product_alias().ContinueWith(res =>
             {
@@ -190,8 +206,11 @@ namespace PriceUploader
                 string str = "Table ProductAlias: " + Model.TableProductAlias.Rows.Count.ToString();
                 FormLoadMessage(str, showMessage);
                 ReceiveData.instance.EndQuery();
+
+                log.Info("Finished Model.Load_product_alias()");
             });
 
+            log.Info("Start Model.Load_product_category()");
             ReceiveData.instance.BegQuery();
             Model.Load_product_category().ContinueWith(res =>
             {
@@ -212,6 +231,8 @@ namespace PriceUploader
                 }
 
                 ReceiveData.instance.EndQuery();
+
+                log.Info("Finished Model.Load_product_category()");
             });
 
             //Model.Load_product_price().ContinueWith(res =>
@@ -220,6 +241,7 @@ namespace PriceUploader
             //    Debug.WriteLine("           TableProductPrice: " + TableProductPrice.Rows.Count.ToString());
             //});
 
+            log.Info("Start Model.Load_supplier()");
             ReceiveData.instance.BegQuery();
             Model.Load_supplier().ContinueWith(res =>
             {
@@ -228,14 +250,19 @@ namespace PriceUploader
                 string str = "Table Supplier: " + Model.TableSupplier.Rows.Count.ToString();
                 FormLoadMessage(str, showMessage);
                 ReceiveData.instance.EndQuery();
+
+                log.Info("Finished Model.Load_supplier()");
             });
         }
         
         void Model_OnAddRow(object sender, EventArgs e)
         {
+            log.Info("Start Model_OnAddRow()");
+
             var v = sender as AddRowInfo;
 
             if (v != null)
+            
             {
                 lbl_Counter.Invoke(new Action(() =>
                 {
@@ -251,6 +278,8 @@ namespace PriceUploader
                     label_TimeSpan.Refresh();
                 }));
             }
+
+            log.Info("Finished Model_OnAddRow()");
         }
         
         void Model_InsertDataError(object sender, EventArgs e)
@@ -1160,12 +1189,15 @@ namespace PriceUploader
 
                 Model.InsertData(dataSet.Tables[tableName], (this.comboBoxSupplier.SelectedItem as ComboboxItem).Value.ToString(), comboBoxImportCurrency.Text);
 
+                log.Info("Model.InsertData was finished");
+
                 this.dataGrid_import_excel.DataSource = null;
                 this.dataGrid_import_excel.Rows.Clear();
                 dataSet.Tables[tableName].Clear();
                 lbl_Counter.Text = "0";
                 lbl_TotalCount.Text = "0";
                 label_TimeSpan.Text = "";
+                log.Info("Clear grid");
 
                 this.formLoad = new FormLoad();
                 this.formLoad.ShowDialog();
