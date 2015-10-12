@@ -1187,6 +1187,8 @@ namespace PriceUploader
 
                 log.Info("button disabled");
 
+                this.formLoad = new FormLoad();
+
                 Model.InsertData(dataSet.Tables[tableName], (this.comboBoxSupplier.SelectedItem as ComboboxItem).Value.ToString(), comboBoxImportCurrency.Text);
 
                 log.Info("Model.InsertData was finished");
@@ -1198,8 +1200,7 @@ namespace PriceUploader
                 lbl_TotalCount.Text = "0";
                 label_TimeSpan.Text = "";
                 log.Info("Clear grid");
-
-                this.formLoad = new FormLoad();
+                
                 this.formLoad.ShowDialog();
             }));
         }
@@ -1242,7 +1243,7 @@ namespace PriceUploader
         {
             if (!showMessage)
                 return;
-
+            
             formLoad.Invoke(new Action(() =>
             {
                 formLoad.CurrentTask = message;

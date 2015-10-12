@@ -213,7 +213,9 @@ namespace PriceUploader
             if (conn != null && conn.State == ConnectionState.Open)
             {
                 dataAdapter = new MySqlDataAdapter(sqlQuery, this.conn);
+                dataAdapter.SelectCommand.CommandTimeout = 600;
                 commandBuilder = new MySqlCommandBuilder(dataAdapter);
+                
                 dataAdapter.Fill(dataTable);
                 rows = dataTable.Rows != null ? dataTable.Rows.Count : -1;
             }
@@ -268,6 +270,7 @@ namespace PriceUploader
                 this.conn = GetConn();
                 sql = string.Format("select set_value from engine_settings where set_name = 'euro_rate'");
                 cmd = new MySqlCommand(sql, conn);
+                cmd.CommandTimeout = 0;
                 rdr = cmd.ExecuteReader();
                 rdr.Read();
                 string str_euro_rate = rdr.GetString(0);
@@ -281,6 +284,7 @@ namespace PriceUploader
                 sql = string.Format("select set_value from engine_settings where set_name = 'currency_rate_cash'");
                 rdr = null;
                 cmd = new MySqlCommand(sql, conn);
+                cmd.CommandTimeout = 0;
                 rdr = cmd.ExecuteReader();
                 rdr.Read();
                 string str_currency_rate_cash = rdr.GetString(0);
@@ -380,6 +384,7 @@ namespace PriceUploader
                             sql = string.Format("INSERT INTO product SET prod_pc_id={0}, prod_name='{1}', prod_text='', prod_disabled='Y', prod_vat='Y', prod_actuality={2}, prod_postdate={3}, prod_last_update={4}, prod_last_user_id={5}",
                                 prod_pc_id, prod_name, 1, unixTimestamp, unixTimestamp, 2);
                             cmd = new MySqlCommand(sql, conn);
+                            cmd.CommandTimeout = 0;
                             resultExecut = cmd.ExecuteNonQuery();
                             product_id = (int)cmd.LastInsertedId;
                             Debug.WriteLine("1. INSERT INTO product => resultExecut: " + resultExecut);
@@ -390,6 +395,7 @@ namespace PriceUploader
                             
                             sql = string.Format("INSERT INTO product_alias SET pa_prod_id={0}, pa_code='{1}'", product_id, code);
                             cmd = new MySqlCommand(sql, conn);
+                            cmd.CommandTimeout = 0;
                             resultExecut = cmd.ExecuteNonQuery();
                             Debug.WriteLine("2. INSERT INTO product_alias => resultExecut: " + resultExecut);
                             log.Info(sql);
@@ -582,6 +588,7 @@ namespace PriceUploader
                 {
                     sqlQuery_product = sqlQuery_product.Remove(sqlQuery_product.Length - 1);
                     cmd = new MySqlCommand(sqlQuery_product, conn);
+                    cmd.CommandTimeout = 0;
                     resultExecut = cmd.ExecuteNonQuery();
                     log.Info(sqlQuery_product);
                 }
@@ -591,6 +598,7 @@ namespace PriceUploader
                     sqlQuery_product_alias = string.Concat(sqlQuery_product_alias, sqlQuery_product_alias_END);
                     //sqlQuery_product_alias = sqlQuery_product_alias.Remove(sqlQuery_product_alias.Length - 1);
                     cmd = new MySqlCommand(sqlQuery_product_alias, conn);
+                    cmd.CommandTimeout = 0;
                     resultExecut = cmd.ExecuteNonQuery();
                     log.Info(sqlQuery_product_alias);
                 }
@@ -600,6 +608,7 @@ namespace PriceUploader
                     sqlQuery_product_price = string.Concat(sqlQuery_product_price, sqlQuery_product_price_END);
                     //sqlQuery_product_price = sqlQuery_product_price.Remove(sqlQuery_product_price.Length - 1);
                     cmd = new MySqlCommand(sqlQuery_product_price, conn);
+                    cmd.CommandTimeout = 0;
                     resultExecut = cmd.ExecuteNonQuery();
                     log.Info(sqlQuery_product_price);
                 }
@@ -1574,9 +1583,12 @@ namespace PriceUploader
                         con.Open();
                         System.Configuration.AppSettingsReader cas = new System.Configuration.AppSettingsReader();
                         con.ChangeDatabase(cas.GetValue("dataBase", typeof(string)).ToString());
-                        MySqlDataAdapter da = new MySqlDataAdapter("SELECT * FROM category_charge", con);
-                        commandBuilder = new MySqlCommandBuilder(da);
-                        da.Fill(dt);
+                        using (MySqlDataAdapter da = new MySqlDataAdapter("SELECT * FROM category_charge", con))
+                        {
+                            da.SelectCommand.CommandTimeout = 600;
+                            commandBuilder = new MySqlCommandBuilder(da);
+                            da.Fill(dt);
+                        }
                     }
                 }
                 return dt;
@@ -1597,9 +1609,12 @@ namespace PriceUploader
                         System.Configuration.AppSettingsReader cas = new System.Configuration.AppSettingsReader();
                         con.ChangeDatabase(cas.GetValue("dataBase", typeof(string)).ToString());
                         string sql = @"SELECT prod_id, prod_name, prod_income_price, prod_text, prod_client_price, prod_price_col1, prod_price_col2, prod_price_col3, prod_fixed_price, pa_code, prod_pc_id, prod_qty FROM product_alias INNER JOIN product pr ON pr.prod_id=pa_prod_id";
-                        MySqlDataAdapter da = new MySqlDataAdapter(sql, con);
-                        commandBuilder = new MySqlCommandBuilder(da);
-                        da.Fill(dt);
+                        using (MySqlDataAdapter da = new MySqlDataAdapter(sql, con))
+                        {
+                            da.SelectCommand.CommandTimeout = 600;
+                            commandBuilder = new MySqlCommandBuilder(da);
+                            da.Fill(dt);
+                        }
                     }
                 }
                 return (dt);
@@ -1619,9 +1634,12 @@ namespace PriceUploader
                         con.Open();
                         System.Configuration.AppSettingsReader cas = new System.Configuration.AppSettingsReader();
                         con.ChangeDatabase(cas.GetValue("dataBase", typeof(string)).ToString());
-                        da_import_settings = new MySqlDataAdapter("SELECT * FROM import_settings order by is_name", con);
-                        commandBuilder = new MySqlCommandBuilder(da_import_settings);
-                        da_import_settings.Fill(dt);
+                        using (da_import_settings = new MySqlDataAdapter("SELECT * FROM import_settings order by is_name", con))
+                        {
+                            da_import_settings.SelectCommand.CommandTimeout = 600;
+                            commandBuilder = new MySqlCommandBuilder(da_import_settings);
+                            da_import_settings.Fill(dt);
+                        }
                     }
                 }
                 return (dt);
@@ -1650,9 +1668,12 @@ namespace PriceUploader
                         con.Open();
                         System.Configuration.AppSettingsReader cas = new System.Configuration.AppSettingsReader();
                         con.ChangeDatabase(cas.GetValue("dataBase", typeof(string)).ToString());
-                        MySqlDataAdapter da = new MySqlDataAdapter("SELECT * FROM price_category", con);
-                        commandBuilder = new MySqlCommandBuilder(da);
-                        da.Fill(dt);
+                        using (MySqlDataAdapter da = new MySqlDataAdapter("SELECT * FROM price_category", con))
+                        {
+                            da.SelectCommand.CommandTimeout = 600;
+                            commandBuilder = new MySqlCommandBuilder(da);
+                            da.Fill(dt);
+                        }
                     }
                 }
                 return dt;
@@ -1671,9 +1692,12 @@ namespace PriceUploader
                         con.Open();
                         System.Configuration.AppSettingsReader cas = new System.Configuration.AppSettingsReader();
                         con.ChangeDatabase(cas.GetValue("dataBase", typeof(string)).ToString());
-                        MySqlDataAdapter da = new MySqlDataAdapter("SELECT * FROM product", con);
-                        commandBuilder = new MySqlCommandBuilder(da);
-                        da.Fill(dt);
+                        using (MySqlDataAdapter da = new MySqlDataAdapter("SELECT * FROM product", con))
+                        {
+                            da.SelectCommand.CommandTimeout = 600;
+                            commandBuilder = new MySqlCommandBuilder(da);
+                            da.Fill(dt);
+                        }
                     }
                 }
                 return dt;
@@ -1692,9 +1716,12 @@ namespace PriceUploader
                         con.Open();
                         System.Configuration.AppSettingsReader cas = new System.Configuration.AppSettingsReader();
                         con.ChangeDatabase(cas.GetValue("dataBase", typeof(string)).ToString());
-                        MySqlDataAdapter da = new MySqlDataAdapter("SELECT * FROM product_alias", con);
-                        commandBuilder = new MySqlCommandBuilder(da);
-                        da.Fill(dt);
+                        using (MySqlDataAdapter da = new MySqlDataAdapter("SELECT * FROM product_alias", con))
+                        {
+                            da.SelectCommand.CommandTimeout = 600;
+                            commandBuilder = new MySqlCommandBuilder(da);
+                            da.Fill(dt);
+                        }
                     }
                 }
                 return dt;
@@ -1713,9 +1740,12 @@ namespace PriceUploader
                         con.Open();
                         System.Configuration.AppSettingsReader cas = new System.Configuration.AppSettingsReader();
                         con.ChangeDatabase(cas.GetValue("dataBase", typeof(string)).ToString());
-                        MySqlDataAdapter da = new MySqlDataAdapter("SELECT * FROM product_category", con);
-                        commandBuilder = new MySqlCommandBuilder(da);
-                        da.Fill(dt);
+                        using (MySqlDataAdapter da = new MySqlDataAdapter("SELECT * FROM product_category", con))
+                        {
+                            da.SelectCommand.CommandTimeout = 600;
+                            commandBuilder = new MySqlCommandBuilder(da);
+                            da.Fill(dt);
+                        }
                     }
                 }
                 return dt;
@@ -1734,9 +1764,12 @@ namespace PriceUploader
                         con.Open();
                         System.Configuration.AppSettingsReader cas = new System.Configuration.AppSettingsReader();
                         con.ChangeDatabase(cas.GetValue("dataBase", typeof(string)).ToString());
-                        MySqlDataAdapter da = new MySqlDataAdapter("SELECT * FROM product_price", con);
-                        commandBuilder = new MySqlCommandBuilder(da);
-                        da.Fill(dt);
+                        using (MySqlDataAdapter da = new MySqlDataAdapter("SELECT * FROM product_price", con))
+                        {
+                            da.SelectCommand.CommandTimeout = 600;
+                            commandBuilder = new MySqlCommandBuilder(da);
+                            da.Fill(dt);
+                        }
                     }
                 }
                 return dt;
@@ -1755,9 +1788,12 @@ namespace PriceUploader
                         con.Open();
                         System.Configuration.AppSettingsReader cas = new System.Configuration.AppSettingsReader();
                         con.ChangeDatabase(cas.GetValue("dataBase", typeof(string)).ToString());
-                        MySqlDataAdapter da = new MySqlDataAdapter("SELECT * FROM supplier ORDER BY sup_name", con);
-                        commandBuilder = new MySqlCommandBuilder(da);
-                        da.Fill(dt);
+                        using (MySqlDataAdapter da = new MySqlDataAdapter("SELECT * FROM supplier ORDER BY sup_name", con))
+                        {
+                            da.SelectCommand.CommandTimeout = 600;
+                            commandBuilder = new MySqlCommandBuilder(da);
+                            da.Fill(dt);
+                        }
                     }
                 }
                 return dt;
@@ -1808,11 +1844,6 @@ namespace PriceUploader
 
             return res;
         }
-
-
-
-
-
     }
 
     public class DataObject
