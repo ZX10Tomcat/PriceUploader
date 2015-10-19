@@ -263,7 +263,7 @@ namespace PriceUploader
 
             log.Info("MySqlDataReader rdr = null;");
 
-            string separator = CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
+            
 
             try
             {
@@ -274,9 +274,9 @@ namespace PriceUploader
                 rdr = cmd.ExecuteReader();
                 rdr.Read();
                 string str_euro_rate = rdr.GetString(0);
-                str_euro_rate = str_euro_rate.Replace(",", ".");
-                str_euro_rate = str_euro_rate.Replace(".", separator);
-                euro_rate = Convert.ToDouble(str_euro_rate)   /* rdr.GetDouble(0) */;
+                //str_euro_rate = str_euro_rate.Replace(",", ".");
+                //str_euro_rate = str_euro_rate.Replace(".", separator);
+                euro_rate = Convert.ToDouble(PriceModel.ConvertSeparator(str_euro_rate))   /* rdr.GetDouble(0) */;
                 conn.Close();
                 log.Info(sql);
 
@@ -288,9 +288,9 @@ namespace PriceUploader
                 rdr = cmd.ExecuteReader();
                 rdr.Read();
                 string str_currency_rate_cash = rdr.GetString(0);
-                str_currency_rate_cash = str_currency_rate_cash.Replace(",", ".");
-                str_currency_rate_cash = str_currency_rate_cash.Replace(".", separator);
-                currency_rate_cash = Convert.ToDouble(str_currency_rate_cash)   /* rdr.GetDouble(0) */;
+                //str_currency_rate_cash = str_currency_rate_cash.Replace(",", ".");
+                //str_currency_rate_cash = str_currency_rate_cash.Replace(".", separator);
+                currency_rate_cash = Convert.ToDouble(PriceModel.ConvertSeparator(str_currency_rate_cash))   /* rdr.GetDouble(0) */;
                 conn.Close();
                 log.Info(sql);
             }
@@ -475,15 +475,15 @@ namespace PriceUploader
                     
                     product_client_price = 0;
                     if (!string.IsNullOrEmpty(prod_client_price))
-                        product_client_price = System.Convert.ToDouble(prod_client_price);
+                        product_client_price = System.Convert.ToDouble(PriceModel.ConvertSeparator(prod_client_price));
 
                     product_fixed_price = 0;
                     if (!string.IsNullOrEmpty(prod_income_price))
-                        product_fixed_price = System.Convert.ToDouble(prod_income_price);
+                        product_fixed_price = System.Convert.ToDouble(PriceModel.ConvertSeparator(prod_income_price));
 
                     string s = CalcClientPrice(ref this.categoryCharge, prod_income_price, GetCategoryChargeIDFromCategories(prod_pc_id), prod_qty);
                     if (!string.IsNullOrEmpty(s))
-                        product_client_price = System.Convert.ToDouble(s);
+                        product_client_price = System.Convert.ToDouble(PriceModel.ConvertSeparator(s));
 
                     if (!prod_id_is_new  /* product_id > 0 */ /* && product_price > 0 */ )
                     {
@@ -1821,7 +1821,7 @@ namespace PriceUploader
                 && qty > 0)
             {
                 int _prod_pc_id = System.Convert.ToInt32(prod_pc_id);
-                double price = System.Convert.ToDouble(_recived_price);
+                double price = System.Convert.ToDouble(PriceModel.ConvertSeparator(_recived_price.ToString()));
                 res = CalcClientPriceSub(ref _categoryCharge, _prod_pc_id, price);
             }
 
@@ -1844,6 +1844,19 @@ namespace PriceUploader
 
             return res;
         }
+
+
+        public static string ConvertSeparator(string val)
+        {
+            string result = string.Empty;
+
+            string separator = CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
+            result = val.Replace(",", ".");
+            result = result.Replace(".", separator);
+
+            return result;
+        }
+
     }
 
     public class DataObject

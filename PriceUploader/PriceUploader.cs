@@ -828,12 +828,12 @@ namespace PriceUploader
                     
                     if (!string.IsNullOrEmpty(importToDB.prod_income_price))
                     {
-                        priceExcel = System.Convert.ToDouble(importToDB.prod_income_price);
+                        priceExcel = System.Convert.ToDouble(PriceModel.ConvertSeparator(importToDB.prod_income_price));
                     }
 
                     if (prod.prod_income_price != null)
                     {
-                        priceDB = System.Convert.ToDouble(prod.prod_income_price);
+                        priceDB = System.Convert.ToDouble(PriceModel.ConvertSeparator(prod.prod_income_price.ToString()));
                     }
 
                     if (priceDB > priceExcel)
