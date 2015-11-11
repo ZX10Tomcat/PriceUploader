@@ -213,7 +213,7 @@ namespace PriceUploader
             if (conn != null && conn.State == ConnectionState.Open)
             {
                 dataAdapter = new MySqlDataAdapter(sqlQuery, this.conn);
-                dataAdapter.SelectCommand.CommandTimeout = 600;
+                dataAdapter.SelectCommand.CommandTimeout = 1600;
                 commandBuilder = new MySqlCommandBuilder(dataAdapter);
                 
                 dataAdapter.Fill(dataTable);

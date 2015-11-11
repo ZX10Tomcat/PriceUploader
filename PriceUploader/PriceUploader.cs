@@ -847,7 +847,7 @@ namespace PriceUploader
                     importToDB.prod_pc_id = "";
                     importToDB.prod_id = "";
                     importToDB.prod_qty = "";
-                    importToDB.prod_income_price = string.Empty;
+                    importToDB.prod_income_price = GetValue(ref tableExcel, i, indexColumnPrice);  //string.Empty;
                 }
 
                 //object recived_price = tableExcel.Rows[i].ItemArray.GetValue(indexColumnPrice);
