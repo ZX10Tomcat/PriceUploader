@@ -1818,7 +1818,7 @@ namespace PriceUploader
                 && _categoryCharge != null
                 && prod_pc_id != null
                 && !string.IsNullOrEmpty(prod_pc_id.ToString())
-                && qty > 0)
+                /* && qty > 0 */ )
             {
                 int _prod_pc_id = System.Convert.ToInt32(prod_pc_id);
                 double price = System.Convert.ToDouble(PriceModel.ConvertSeparator(_recived_price.ToString()));
