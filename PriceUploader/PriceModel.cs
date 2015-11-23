@@ -263,8 +263,6 @@ namespace PriceUploader
 
             log.Info("MySqlDataReader rdr = null;");
 
-            
-
             try
             {
                 this.conn = GetConn();
@@ -1805,7 +1803,9 @@ namespace PriceUploader
             cExcelObj exl = new cExcelObj();
 
             data = new DataTable();
-            int res = exl.readExcelFileSQL(fileName, ref data);
+            //int res = exl.readExcelFileSQL(fileName, ref data);
+
+            int res = exl.readExcelFileSQLWithSaveAs(fileName, ref data);
           
             return res;
         }

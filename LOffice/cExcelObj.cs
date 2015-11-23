@@ -22,6 +22,8 @@ namespace LOffice
         protected object oRange = null;
         */
 
+        public const int EXCEL_XLFILEFORMAT_XLEXCEL8 = 56; //Excel.XlFileFormat.xlExcel8;
+
         protected int typeAdd = -1;
 
         public enum typeDataVal { str, num, dbl, date };
@@ -72,6 +74,39 @@ namespace LOffice
             return data != null ? data.Rows.Count : -1;
         }
 
+        public int readExcelFileSQLWithSaveAs(string pathFileDoc, ref DataTable data)
+        {
+            object oExcelApp = null;
+            object oWorkbooks = null;
+            object oWorkbook = null;
+            object oWorksheets = null;
+            object oWorksheet = null;
+            object oRange = null;
+
+            int r = initObj(ref oRange, ref oWorksheet, ref oWorksheets, ref oWorkbook, ref oWorkbooks, ref oExcelApp, pathFileDoc);
+            if (r < 0)
+                return r;
+
+            string connectionString = string.Empty;
+
+            string ext = Path.GetExtension(pathFileDoc);
+
+            string file = string.Format("{0}\\{1}.xls", Path.GetDirectoryName(pathFileDoc), DateTime.Now.Ticks.ToString());
+
+            cExcelObj.saveAs(ref oWorkbook, file, EXCEL_XLFILEFORMAT_XLEXCEL8);
+
+            connectionString = string.Format("Provider=Microsoft.Jet.OLEDB.4.0; data source={0}; Extended Properties=Excel 8.0;", file);
+
+            string workSheetName = cExcelObj.getWorksheetName(ref oWorksheets, 1);
+            killExcel(ref oRange, ref oWorksheet, ref oWorksheets, ref oWorkbook, ref oWorkbooks, ref oExcelApp);
+
+            var adapter = new OleDbDataAdapter(string.Format("SELECT * FROM [{0}$]", workSheetName), connectionString);
+            adapter.Fill(data);
+
+            File.Delete(file);
+
+            return data != null ? data.Rows.Count : -1;
+        }
 
         #region public Static Function
 
@@ -297,6 +332,36 @@ namespace LOffice
                 return;
             }
         }
+
+        public static void saveAs(
+            ref object in_oWorkbook,
+            string fileName,
+            int fileFormat = EXCEL_XLFILEFORMAT_XLEXCEL8,        
+            string password = "", 
+            string writeResPassword ="", 
+            bool readOnlyRecommended = false,
+            bool createBackup = false )
+        {
+            try
+            {
+                object[] args = new object[6];
+                args[0] = fileName;
+                args[1] = fileFormat;
+                args[2] = password; 
+                args[3] = writeResPassword; 
+                args[4] = readOnlyRecommended;
+                args[5] = createBackup;
+
+                in_oWorkbook.GetType().InvokeMember("SaveAs", BindingFlags.InvokeMethod, null, in_oWorkbook, args, cultInfo());
+            }
+            catch
+            {
+                return;
+            }
+        }
+
+
+
 
 
         public static void save(ref object in_oWorkbook)
