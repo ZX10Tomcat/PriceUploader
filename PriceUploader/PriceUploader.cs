@@ -623,7 +623,16 @@ namespace PriceUploader
                         indexColumnPresense1 = LetterNumber(importSettings["is_presense1_col"].ToString()) - 1;
                         indexColumnPresense2 = LetterNumber(importSettings["is_presense2_col"].ToString()) - 1;
                         indexColumnCurrency = LetterNumber(importSettings["is_currency_col"].ToString()) - 1;
-                        
+
+                        if (importSettings["is_actuality"] != null && !string.IsNullOrEmpty(importSettings["is_actuality"].ToString()))
+                            Model.ProdActuality = Convert.ToInt32(importSettings["is_actuality"].ToString());
+                        else
+                            Model.ProdActuality = 1;  //just in case
+
+                        Model.PresenseValue = string.Empty;
+                        if (importSettings["is_actuality"] != null && !string.IsNullOrEmpty(importSettings["is_actuality"].ToString()))
+                            Model.PresenseValue = importSettings["is_presense_symbol"].ToString();
+
                         // Set columns
                         //table.Columns.Add("№", typeof(int));
                         //table.Columns.Add("V", typeof(bool));
@@ -675,7 +684,8 @@ namespace PriceUploader
                         //}
 
                         timeBeg = DateTime.Now;
-                        AddRows(0, beginRows, indexColumnName, indexColumnCode, indexColumnPrice, indexColumnPresense1, indexColumnPresense2, indexColumnCurrency);
+                        AddRows(0, beginRows, indexColumnName, indexColumnCode, indexColumnPrice, 
+                            indexColumnPresense1, indexColumnPresense2, indexColumnCurrency);
 
                         //dataGrid1.SelectionMode = SourceGrid.GridSelectionMode.Row;
                         //dataGrid1.DataSource = new DevAge.ComponentModel.BoundDataView(table.DefaultView);
@@ -751,7 +761,9 @@ namespace PriceUploader
             }));
         }
 
-        private void AddRows(int indexBeg, int indexEnd, int indexColumnName, int indexColumnCode, int indexColumnPrice, int indexColumnPresense1, int indexColumnPresense2, int indexColumnCurrency)
+        private void AddRows(int indexBeg, int indexEnd, int indexColumnName, 
+            int indexColumnCode, int indexColumnPrice, int indexColumnPresense1,
+            int indexColumnPresense2, int indexColumnCurrency)
         {
             //string code = string.Empty;
             Product prod = null;
@@ -769,7 +781,7 @@ namespace PriceUploader
                         prod_income_price = GetValue(ref tableExcel, i, indexColumnPrice),
                         prod_presense1 = GetValue(ref tableExcel, i, indexColumnPresense1),
                         prod_presense2 = GetValue(ref tableExcel, i, indexColumnPresense2),
-                        prod_currency = GetValue(ref tableExcel, i, indexColumnCurrency),
+                        prod_currency = GetValue(ref tableExcel, i, indexColumnCurrency)
                     });
             }
 
@@ -880,25 +892,45 @@ namespace PriceUploader
                 //                });
 
 
+                //Check product presense
+                //if (!is_null($presense1_col) && mb_strpos($row[$presense1_col], $preset['is_presense_symbol'], 0, 'UTF-8') !== false) $presense_found = true;
+                //  if (!is_null($presense2_col) && mb_strpos($row[$presense2_col], $preset['is_presense_symbol'], 0, 'UTF-8') !== false) $presense_found = true;
+                //  if ($presense_found == false) continue;
+                //Check product presense
+
+                bool presense_found = false;
+
+                if (string.IsNullOrEmpty(importToDB.prod_presense1)
+                    && importToDB.prod_presense1.Contains(Model.PresenseValue))
+                    presense_found = true;
+                
+                if (string.IsNullOrEmpty(importToDB.prod_presense2)
+                    && importToDB.prod_presense2.Contains(Model.PresenseValue))
+                    presense_found = true;
+
+                if (presense_found == false) 
+                    continue;
+                
                 dataSet.Tables[tableName].Rows.Add(
                     new object[] {                                                                     
-                                    importToDB.prod_name,                                   
-                                    importToDB.prod_code,
-                                    importToDB.prod_income_price,
-                                    importToDB.number +1, 
-                                    importToDB.prod_presense1,
-                                    importToDB.prod_presense2,
-                                    importToDB.prod_currency,
-                                    this.Model.CalcClientPrice(ref Model.categoryCharge, tableExcel.Rows[i].ItemArray.GetValue(indexColumnPrice), importToDB.prod_pc_id, importToDB.prod_qty)    /* prod_client_price */,
-                                    importToDB.prod_pc_id,
-                                    importToDB.prod_id,
-                                    (importToDB.prod_pc_id.ToString() == "" && importToDB.prod_id.ToString() == ""),
-                                    false,
-                                    "",
-                                    "",
-                                    false,
-                                    importToDB.prod_qty
-                                });
+                                importToDB.prod_name,                                   
+                                importToDB.prod_code,
+                                importToDB.prod_income_price,
+                                importToDB.number +1, 
+                                importToDB.prod_presense1,
+                                importToDB.prod_presense2,
+                                importToDB.prod_currency,
+                                this.Model.CalcClientPrice(ref Model.categoryCharge, tableExcel.Rows[i].ItemArray.GetValue(indexColumnPrice), importToDB.prod_pc_id, importToDB.prod_qty)    /* prod_client_price */,
+                                importToDB.prod_pc_id,
+                                importToDB.prod_id,
+                                (importToDB.prod_pc_id.ToString() == "" && importToDB.prod_id.ToString() == ""),
+                                false,
+                                "",
+                                "",
+                                false,
+                                importToDB.prod_qty
+                            });
+                
 
 
                 ////if ( (countRowsExcel < 50 && i == countRowsExcel) || (i == 50) )

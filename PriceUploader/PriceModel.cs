@@ -32,6 +32,8 @@ namespace PriceUploader
         public List<Product> products = new List<Product>();
         public List<ImportToDB> excelList = new List<ImportToDB>();
         public List<ImportToDB> listImportToDB = new List<ImportToDB>();
+        public int ProdActuality = 0;
+        public string PresenseValue = string.Empty;
 
          //$sql = sprintf("
          //           SELECT *
@@ -379,8 +381,8 @@ namespace PriceUploader
                             //}
 
                             //conn = this.GetConn();
-                            sql = string.Format("INSERT INTO product SET prod_pc_id={0}, prod_name='{1}', prod_text='', prod_disabled='Y', prod_vat='Y', prod_actuality={2}, prod_postdate={3}, prod_last_update={4}, prod_last_user_id={5}",
-                                prod_pc_id, prod_name, 1, unixTimestamp, unixTimestamp, 2);
+                            sql = string.Format("INSERT INTO product SET prod_pc_id={0}, prod_name='{1}', prod_text='', prod_disabled='N', prod_vat='Y', prod_actuality={2}, prod_postdate={3}, prod_last_update={4}, prod_last_user_id={5}",
+                                prod_pc_id, prod_name, this.ProdActuality, unixTimestamp, unixTimestamp, 2);
                             cmd = new MySqlCommand(sql, conn);
                             cmd.CommandTimeout = 0;
                             resultExecut = cmd.ExecuteNonQuery();
@@ -530,7 +532,7 @@ namespace PriceUploader
                                 fixed_price = fixed_price.Replace(',', '.');
 
                                 sql = string.Format("UPDATE product SET prod_price_sup_id={0}, prod_price_update_timestamp={1}, prod_income_price={2}, prod_client_price={3}, prod_actuality={4} WHERE prod_id={5};\n",
-                                    supplier_id, unixTimestamp, fixed_price, client_price, true, product_id);
+                                    supplier_id, unixTimestamp, fixed_price, client_price, this.ProdActuality, product_id);
 
                                 if (sql != sqlQuery_product_prev2)
                                     sqlQuery_product = string.Concat(sqlQuery_product, sql);
@@ -1801,12 +1803,9 @@ namespace PriceUploader
         public int ImportExcel(string fileName, ref DataTable data)
         {
             cExcelObj exl = new cExcelObj();
-
             data = new DataTable();
             //int res = exl.readExcelFileSQL(fileName, ref data);
-
             int res = exl.readExcelFileSQLWithSaveAs(fileName, ref data);
-          
             return res;
         }
 
