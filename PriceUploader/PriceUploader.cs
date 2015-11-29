@@ -900,15 +900,15 @@ namespace PriceUploader
 
                 bool presense_found = false;
 
-                if (string.IsNullOrEmpty(importToDB.prod_presense1)
+                if (!string.IsNullOrEmpty(importToDB.prod_presense1)
                     && importToDB.prod_presense1.Contains(Model.PresenseValue))
                     presense_found = true;
                 
-                if (string.IsNullOrEmpty(importToDB.prod_presense2)
+                if (!string.IsNullOrEmpty(importToDB.prod_presense2)
                     && importToDB.prod_presense2.Contains(Model.PresenseValue))
                     presense_found = true;
 
-                if (presense_found == false) 
+                if (!presense_found) 
                     continue;
                 
                 dataSet.Tables[tableName].Rows.Add(
