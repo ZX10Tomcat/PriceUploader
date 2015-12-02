@@ -485,7 +485,7 @@ namespace PriceUploader
                     if (!string.IsNullOrEmpty(s))
                         product_client_price = System.Convert.ToDouble(PriceModel.ConvertSeparator(s));
 
-                    if (!prod_id_is_new  /* product_id > 0 */ /* && product_price > 0 */ )
+                    //if (!prod_id_is_new  /* product_id > 0 */ /* && product_price > 0 */ )
                     {
                         //$sql = sprintf('UPDATE %sproduct SET prod_price_sup_id=%d, prod_fixed_price=%f WHERE prod_id=%d', DB_PREFIX, $supplier, $price, $product_info['prod_id']);
 
@@ -1651,10 +1651,67 @@ namespace PriceUploader
             DataTable changes = dt.GetChanges();
             if (changes != null)
             {
-                da_import_settings.Update(changes);
-                dt.AcceptChanges();
+                foreach(DataRow row in changes.Rows)
+                {
+                    if (row.RowState == DataRowState.Deleted)
+                    {
+                        //da_import_settings.Update(changes);
+                        //dt.AcceptChanges();
+                        continue;
+                    }
+
+                    var is_id = row.Field<int>("is_id");
+                    var is_name =  row.Field<string>("is_name");
+                    var is_start_row = row.Field<int>("is_start_row");
+                    var is_code_col = row.Field<string>("is_code_col");
+                    var is_price_col = row.Field<string>("is_price_col");
+                    var is_name_col = row.Field<string>("is_name_col");
+                    var is_actuality = row.Field<int>("is_actuality");
+                    var is_presense1_col = row.Field<string>("is_presense1_col");
+                    var is_presense2_col = row.Field<string>("is_presense2_col");
+                    var is_presense_symbol = row.Field<string>("is_presense_symbol");
+                    var is_currency_col = row.Field<string>("is_currency_col");
+                    var is_uah_flag = row.Field<string>("is_uah_flag");
+
+                    conn = this.GetConn();
+
+                    string sql = string.Empty;
+
+                    if (is_id > 0)
+                    {
+                        sql = string.Format("UPDATE import_settings SET is_name = '{0}', is_start_row = {1}, is_code_col = '{2}', is_price_col = '{3}', is_name_col = '{4}', is_actuality = {5}, is_presense1_col = '{6}', is_presense2_col = '{7}', is_presense_symbol = '{8}', is_currency_col = '{9}', is_uah_flag  = '{10}' WHERE is_id={11}",
+                            is_name, is_start_row, is_code_col, is_price_col, is_name_col, is_actuality, is_presense1_col, is_presense2_col, is_presense_symbol, is_currency_col, is_uah_flag, is_id);
+                    }
+                    else
+                    {
+                        sql = string.Format("INSERT INTO import_settings SET is_name = '{0}', is_start_row = {1}, is_code_col = '{2}', is_price_col = '{3}', is_name_col = '{4}', is_actuality = {5}, is_presense1_col = '{6}', is_presense2_col = '{7}', is_presense_symbol = '{8}', is_currency_col = '{9}', is_uah_flag  = '{10}'",
+                            is_name, is_start_row, is_code_col, is_price_col, is_name_col, is_actuality, is_presense1_col, is_presense2_col, is_presense_symbol, is_currency_col, is_uah_flag);
+                    }
+                
+                    var cmd = new MySqlCommand(sql, conn);
+                    cmd.CommandTimeout = 0;
+                
+                    cmd.ExecuteNonQuery();
+                }
+
+
             }
         }
+
+        public void Delete_row_import_settings(int is_id)
+        {
+            conn = this.GetConn();
+            string sql = string.Empty;
+            if (is_id > 0)
+            {
+                sql = string.Format("DELETE FROM import_settings WHERE is_id={0}", is_id);
+                var cmd = new MySqlCommand(sql, conn);
+                cmd.CommandTimeout = 0;
+
+                cmd.ExecuteNonQuery();
+            }
+        }
+
 
         public Task<DataTable> Load_price_category()
         {

@@ -516,15 +516,13 @@ namespace PriceUploader
         public const string TABLE_IMPORT_SETTINGS = "Table_import_settings";
         private void buttonSave_Click(object sender, EventArgs e)
         {
-            bindingSource__import_settings.MoveNext();
-            bindingSource__import_settings.MovePrevious();
+            //bindingSource__import_settings.MoveNext();
+            //bindingSource__import_settings.MovePrevious();
 
             var table = dataSet.Tables[TABLE_IMPORT_SETTINGS];
-
             if (table.GetChanges() != null)
             {
                 Model.Update_import_settings(ref table);
-
                 Model.Load_import_settings().ContinueWith(res =>
                 {
                     table.Clear();
@@ -545,8 +543,16 @@ namespace PriceUploader
             {
                 if (this.dataGrid_import_settings.CurrentRow != null)
                 {
-                    int currentRow = this.dataGrid_import_settings.CurrentRow.Index;
-                    bindingSource__import_settings.RemoveAt(currentRow);
+                    var dataRowView = this.dataGrid_import_settings.CurrentRow.DataBoundItem as DataRowView;
+                    if (dataRowView != null)
+                    {
+                        int is_id = dataRowView.Row.Field<int>("is_id");
+                        Model.Delete_row_import_settings(is_id);
+                        int currentRow = this.dataGrid_import_settings.CurrentRow.Index;
+                        bindingSource__import_settings.RemoveAt(currentRow);
+                        //dataSet.Tables[TABLE_IMPORT_SETTINGS].AcceptChanges();
+                    }
+
                 }
             }
         }
