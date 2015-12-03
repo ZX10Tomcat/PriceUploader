@@ -1,4 +1,5 @@
-﻿using LAny;
+﻿using Excel;
+using LAny;
 using LOffice;
 using log4net;
 using MySql.Data.MySqlClient;
@@ -8,6 +9,7 @@ using System.Configuration;
 using System.Data;
 using System.Diagnostics;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -381,7 +383,7 @@ namespace PriceUploader
                             //}
 
                             //conn = this.GetConn();
-                            sql = string.Format("INSERT INTO product SET prod_pc_id={0}, prod_name='{1}', prod_text='', prod_disabled='N', prod_vat='Y', prod_actuality={2}, prod_postdate={3}, prod_last_update={4}, prod_last_user_id={5}",
+                            sql = string.Format("INSERT INTO product SET prod_pc_id={0}, prod_name='{1}', prod_text='', prod_disabled='Y', prod_vat='Y', prod_actuality={2}, prod_postdate={3}, prod_last_update={4}, prod_last_user_id={5}",
                                 prod_pc_id, prod_name, this.ProdActuality, unixTimestamp, unixTimestamp, 2);
                             cmd = new MySqlCommand(sql, conn);
                             cmd.CommandTimeout = 0;
@@ -543,17 +545,17 @@ namespace PriceUploader
                             }
                         }
 
-                        if (is_new)
-                        {
-                            //$sql = sprintf("INSERT INTO %sproduct_alias SET pa_prod_id=%d, pa_code='%s'", DB_PREFIX, $prod_id, tosql($code));
+                        //if (is_new)
+                        //{
+                        //    //$sql = sprintf("INSERT INTO %sproduct_alias SET pa_prod_id=%d, pa_code='%s'", DB_PREFIX, $prod_id, tosql($code));
 
-                            //sql = string.Format("INSERT INTO product_alias SET pa_prod_id={0}, pa_code='{1}'",  product_id, code);
-                            sql = string.Format("INSERT INTO product_alias (pa_prod_id, pa_code) VALUES( {0}, '{1}' );\n", product_id, code);
-                            sqlQuery_product_alias_END = string.Concat(sqlQuery_product_alias_END, sql);
+                        //    //sql = string.Format("INSERT INTO product_alias SET pa_prod_id={0}, pa_code='{1}'",  product_id, code);
+                        //    sql = string.Format("INSERT INTO product_alias (pa_prod_id, pa_code) VALUES( {0}, '{1}' );\n", product_id, code);
+                        //    sqlQuery_product_alias_END = string.Concat(sqlQuery_product_alias_END, sql);
 
-                            Debug.WriteLine("6. INSERT INTO product_alias => resultExecut: " + resultExecut);
-                            log.Info(sql);
-                        }
+                        //    Debug.WriteLine("6. INSERT INTO product_alias => resultExecut: " + resultExecut);
+                        //    log.Info(sql);
+                        //}
                     }
 
                     //$sql = sprintf('INSERT INTO %sproduct_price SET pp_prod_id=%d, pp_sup_id=%d, pp_price=%f, pp_postdate=%d', DB_PREFIX, $prod_id, $supplier, $price, ctime());
@@ -1859,12 +1861,44 @@ namespace PriceUploader
 
         public int ImportExcel(string fileName, ref DataTable data)
         {
-            cExcelObj exl = new cExcelObj();
+            //cExcelObj exl = new cExcelObj();
             data = new DataTable();
             //int res = exl.readExcelFileSQL(fileName, ref data);
-            int res = exl.readExcelFileSQLWithSaveAs(fileName, ref data);
+            //int res = exl.readExcelFileSQLWithSaveAs(fileName, ref data);
+            int res = readExcelFile(fileName, ref data);
             return res;
         }
+
+        public int readExcelFile(string pathFileDoc, ref DataTable data)
+        {
+            var file = new FileInfo(pathFileDoc);
+            using (var stream = new FileStream(pathFileDoc, FileMode.Open))
+            {
+                IExcelDataReader reader = null;
+                if (file.Extension == ".xls")
+                    reader = ExcelReaderFactory.CreateBinaryReader(stream);
+                else if (file.Extension == ".xlsx")
+                    reader = ExcelReaderFactory.CreateOpenXmlReader(stream);
+
+                if (reader == null)
+                    return -1;
+
+                DataSet result = reader.AsDataSet();
+
+                if (result.Tables == null)
+                    return -1;
+
+                int? countTables = result.Tables.Count;
+                if (countTables != null && countTables > 0)
+                {
+                    data = result.Tables[0];
+                }
+            } 
+            
+            return data != null ? data.Rows.Count : -1;
+        }
+
+
 
         public string CalcClientPrice(ref List<CategoryCharge> _categoryCharge, object _recived_price, object prod_pc_id, string prod_qty)
         {
