@@ -1924,13 +1924,22 @@ namespace PriceUploader
         private double? CalcClientPriceSub(ref List<CategoryCharge> _categoryCharge, int prod_pc_id, double price)
         {
             double? res = null;
-            
+
+            var findProductPrice = this.products.FirstOrDefault(i => i.prod_pc_id == (object)prod_pc_id);
+
             CategoryCharge findCharge = _categoryCharge.FirstOrDefault(
                 f => (System.Convert.ToInt32(f.cc_pc_id) == prod_pc_id && (double)price >= System.Convert.ToDouble(f.cc_price_from) && (double)price < System.Convert.ToDouble(f.cc_price_to))
                     || (System.Convert.ToInt32(f.cc_pc_id) == prod_pc_id && (double)price > System.Convert.ToDouble(f.cc_price_from) && (double)price >= System.Convert.ToDouble(f.cc_price_to)));
 
             if (findCharge != null)
                 res = price + ((price * System.Convert.ToInt32(findCharge.cc_charge)) / 100);
+
+            if (res != null && findProductPrice != null
+                && findProductPrice.prod_income_price != null
+                && Convert.ToDouble(findProductPrice.prod_income_price) > price)
+            {
+                res = Convert.ToDouble(findProductPrice.prod_income_price);
+            }
 
             return res;
         }
