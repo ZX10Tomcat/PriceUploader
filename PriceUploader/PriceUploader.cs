@@ -596,8 +596,7 @@ namespace PriceUploader
 
                     if (countRowsExcel > 0)
                     {
-                        beginRows = countRowsExcel /* / 3 */;
-                                              
+                        
 
                         this.dataGrid_import_excel.DataSource = null;
                         this.dataGrid_import_excel.Rows.Clear();
@@ -622,6 +621,7 @@ namespace PriceUploader
 
                         DataRow importSettings = null;
                         importSettings = importSettingsQuery.FirstOrDefault(s => s.Field<string>("is_name") == format);
+
                         
                         indexColumnName = LetterNumber(importSettings["is_name_col"].ToString()) - 1;
                         indexColumnCode = LetterNumber(importSettings["is_code_col"].ToString()) - 1;
@@ -634,6 +634,14 @@ namespace PriceUploader
                             Model.ProdActuality = Convert.ToInt32(importSettings["is_actuality"].ToString());
                         else
                             Model.ProdActuality = 1;  //just in case
+
+
+                        if (importSettings["is_start_row"] != null 
+                            && !string.IsNullOrEmpty(importSettings["is_start_row"].ToString()) 
+                            && Convert.ToInt32(importSettings["is_start_row"].ToString()) > 0 )
+                            beginRows = Convert.ToInt32(importSettings["is_start_row"].ToString()) - 1;
+                        else
+                            beginRows = 0;
 
                         Model.PresenseValue = string.Empty;
                         if (importSettings["is_actuality"] != null && !string.IsNullOrEmpty(importSettings["is_actuality"].ToString()))
@@ -652,7 +660,8 @@ namespace PriceUploader
                         //table.Columns.Add("prod_pc_id", typeof(string));
                         //table.Columns.Add("prod_id", typeof(string));
 
-                        lbl_TotalCount.Text = (countRowsExcel).ToString();
+                        int calcRowsCount = countRowsExcel - beginRows;
+                        lbl_TotalCount.Text = (calcRowsCount).ToString();
                         lbl_TotalCount.Refresh();
                         
                         //string code = string.Empty;
@@ -690,7 +699,7 @@ namespace PriceUploader
                         //}
 
                         timeBeg = DateTime.Now;
-                        AddRows(0, beginRows, indexColumnName, indexColumnCode, indexColumnPrice, 
+                        AddRows(beginRows, countRowsExcel, indexColumnName, indexColumnCode, indexColumnPrice, 
                             indexColumnPresense1, indexColumnPresense2, indexColumnCurrency);
 
                         //dataGrid1.SelectionMode = SourceGrid.GridSelectionMode.Row;
@@ -914,8 +923,8 @@ namespace PriceUploader
                     && importToDB.prod_presense2.Contains(Model.PresenseValue))
                     presense_found = true;
 
-                if (!presense_found) 
-                    continue;
+                //if (!presense_found) 
+                //    continue;
                 
                 dataSet.Tables[tableName].Rows.Add(
                     new object[] {                                                                     
@@ -945,7 +954,7 @@ namespace PriceUploader
 
                 if (i % 100 == 0)
                 {
-                    UpdateCounter(i);
+                    UpdateCounter(i - indexBeg);
                     UpdateTime();
                 }
 
@@ -958,7 +967,7 @@ namespace PriceUploader
 
             }
 
-            UpdateCounter(indexEnd-1);
+            UpdateCounter(indexEnd - indexBeg - 1);
             UpdateTime();
 
             dataGrid_import_excel.Invoke(new Action(() =>
