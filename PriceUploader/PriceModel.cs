@@ -52,6 +52,8 @@ namespace PriceUploader
         public event EventHandler OnAddRow = delegate { };
         public event EventHandler OnSaveAll = delegate { };
 
+        public const string RRC = "РРЦ";
+
         private string strConn = string.Empty;
 
         public string StrDatabase
@@ -483,7 +485,7 @@ namespace PriceUploader
                     if (!string.IsNullOrEmpty(prod_income_price))
                         product_fixed_price = System.Convert.ToDouble(PriceModel.ConvertSeparator(prod_income_price));
 
-                    string s = CalcClientPrice(ref this.categoryCharge, prod_income_price, GetCategoryChargeIDFromCategories(prod_pc_id), prod_qty);
+                    string s = CalcClientPrice(ref this.categoryCharge, prod_income_price, GetCategoryChargeIDFromCategories(prod_pc_id), prod_qty, price_type);
                     if (!string.IsNullOrEmpty(s))
                         product_client_price = System.Convert.ToDouble(PriceModel.ConvertSeparator(s));
 
@@ -491,7 +493,7 @@ namespace PriceUploader
                     {
                         //$sql = sprintf('UPDATE %sproduct SET prod_price_sup_id=%d, prod_fixed_price=%f WHERE prod_id=%d', DB_PREFIX, $supplier, $price, $product_info['prod_id']);
 
-                        if (price_type == "RRC" && product_fixed_price > 0)
+                        if (price_type == RRC && product_fixed_price > 0)
                         {
                             fixed_price = product_fixed_price.ToString();
                             fixed_price = fixed_price.Replace(',', '.');
@@ -1900,8 +1902,17 @@ namespace PriceUploader
 
 
 
-        public string CalcClientPrice(ref List<CategoryCharge> _categoryCharge, object _recived_price, object prod_pc_id, string prod_qty)
+        public string CalcClientPrice(ref List<CategoryCharge> _categoryCharge, object _recived_price, object prod_pc_id, string prod_qty, string importCurrency)
         {
+            if (importCurrency == RRC)
+            {
+                if(string.IsNullOrEmpty(_recived_price.ToString()))
+                    return "0";
+                else
+                    return PriceModel.ConvertSeparator(_recived_price.ToString());
+            }
+                
+
             int qty = string.IsNullOrEmpty(prod_qty) == false ? System.Convert.ToInt32(prod_qty) : 0;
             double? res = null;
             if (_recived_price != null

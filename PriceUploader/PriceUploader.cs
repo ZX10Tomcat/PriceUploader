@@ -822,9 +822,15 @@ namespace PriceUploader
             //var import = (importQuery).ToList();
             //for (int i = indexBeg; i < import.Count() /* indexEnd */; i++)
 
+            string importCurrency = comboBoxImportCurrency.Text;
 
             for (int i = indexBeg; i < indexEnd; i++)
             {
+                //if(i==87)
+                //    Debug.Print("i = 87");
+                
+                //Debug.Print("i = " + i.ToString());
+                
                 ImportToDB importToDB = new ImportToDB();
                 importToDB.number = i;
 
@@ -913,6 +919,9 @@ namespace PriceUploader
                 //  if ($presense_found == false) continue;
                 //Check product presense
 
+
+                //Debug.Print("importToDB.prod_code = " + importToDB.prod_code.ToString());
+
                 bool presense_found = false;
 
                 if (!string.IsNullOrEmpty(importToDB.prod_presense1)
@@ -935,7 +944,7 @@ namespace PriceUploader
                                 importToDB.prod_presense1,
                                 importToDB.prod_presense2,
                                 importToDB.prod_currency,
-                                this.Model.CalcClientPrice(ref Model.categoryCharge, tableExcel.Rows[i].ItemArray.GetValue(indexColumnPrice), importToDB.prod_pc_id, importToDB.prod_qty)    /* prod_client_price */,
+                                this.Model.CalcClientPrice(ref Model.categoryCharge, tableExcel.Rows[i].ItemArray.GetValue(indexColumnPrice), importToDB.prod_pc_id, importToDB.prod_qty, importCurrency) /* prod_client_price */,
                                 importToDB.prod_pc_id,
                                 importToDB.prod_id,
                                 (importToDB.prod_pc_id.ToString() == "" && importToDB.prod_id.ToString() == ""),
@@ -945,8 +954,9 @@ namespace PriceUploader
                                 false,
                                 importToDB.prod_qty
                             });
-                
 
+
+                
 
                 ////if ( (countRowsExcel < 50 && i == countRowsExcel) || (i == 50) )
                 //if (i == 0)
