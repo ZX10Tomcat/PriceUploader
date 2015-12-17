@@ -108,6 +108,30 @@ namespace LOffice
             return data != null ? data.Rows.Count : -1;
         }
 
+
+        public int excelFileSaveAs(string pathFileDoc, ref string filenameSaved)
+        {
+            object oExcelApp = null;
+            object oWorkbooks = null;
+            object oWorkbook = null;
+            object oWorksheets = null;
+            object oWorksheet = null;
+            object oRange = null;
+
+            int r = initObj(ref oRange, ref oWorksheet, ref oWorksheets, ref oWorkbook, ref oWorkbooks, ref oExcelApp, pathFileDoc);
+            if (r < 0)
+                return r;
+
+            string ext = Path.GetExtension(pathFileDoc);
+            filenameSaved = string.Format("{0}\\{1}.xls", Path.GetDirectoryName(pathFileDoc), DateTime.Now.Ticks.ToString());
+            cExcelObj.saveAs(ref oWorkbook, filenameSaved, EXCEL_XLFILEFORMAT_XLEXCEL8);
+
+            killExcel(ref oRange, ref oWorksheet, ref oWorksheets, ref oWorkbook, ref oWorkbooks, ref oExcelApp);
+
+            return 0;
+        }
+        
+
         #region public Static Function
 
 

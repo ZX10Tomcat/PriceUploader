@@ -596,8 +596,6 @@ namespace PriceUploader
 
                     if (countRowsExcel > 0)
                     {
-                        
-
                         this.dataGrid_import_excel.DataSource = null;
                         this.dataGrid_import_excel.Rows.Clear();
 
@@ -622,7 +620,7 @@ namespace PriceUploader
                         DataRow importSettings = null;
                         importSettings = importSettingsQuery.FirstOrDefault(s => s.Field<string>("is_name") == format);
 
-                        
+
                         indexColumnName = LetterNumber(importSettings["is_name_col"].ToString()) - 1;
                         indexColumnCode = LetterNumber(importSettings["is_code_col"].ToString()) - 1;
                         indexColumnPrice = LetterNumber(importSettings["is_price_col"].ToString()) - 1;
@@ -636,9 +634,9 @@ namespace PriceUploader
                             Model.ProdActuality = 1;  //just in case
 
 
-                        if (importSettings["is_start_row"] != null 
-                            && !string.IsNullOrEmpty(importSettings["is_start_row"].ToString()) 
-                            && Convert.ToInt32(importSettings["is_start_row"].ToString()) > 0 )
+                        if (importSettings["is_start_row"] != null
+                            && !string.IsNullOrEmpty(importSettings["is_start_row"].ToString())
+                            && Convert.ToInt32(importSettings["is_start_row"].ToString()) > 0)
                             beginRows = Convert.ToInt32(importSettings["is_start_row"].ToString()) - 1;
                         else
                             beginRows = 0;
@@ -663,7 +661,7 @@ namespace PriceUploader
                         int calcRowsCount = countRowsExcel - beginRows;
                         lbl_TotalCount.Text = (calcRowsCount).ToString();
                         lbl_TotalCount.Refresh();
-                        
+
                         //string code = string.Empty;
                         //Product prod = null;
                         //int countFound = 0;
@@ -699,7 +697,7 @@ namespace PriceUploader
                         //}
 
                         timeBeg = DateTime.Now;
-                        AddRows(beginRows, countRowsExcel, indexColumnName, indexColumnCode, indexColumnPrice, 
+                        AddRows(beginRows, countRowsExcel, indexColumnName, indexColumnCode, indexColumnPrice,
                             indexColumnPresense1, indexColumnPresense2, indexColumnCurrency);
 
                         //dataGrid1.SelectionMode = SourceGrid.GridSelectionMode.Row;
@@ -715,12 +713,16 @@ namespace PriceUploader
                             //dataGrid1.RecalcCustomScrollBars();
 
                             // Add datagrid Events
-                            
-                            dataGrid_import_excel.CellContentClick += dataGrid_import_excel_CellContentClick;                            
+
+                            dataGrid_import_excel.CellContentClick += dataGrid_import_excel_CellContentClick;
                             dataGrid_import_excel.SelectionChanged += dataGrid_import_excel_SelectionChanged;
                         }));
 
                         //new Thread(CreateData).Start();
+                    }
+                    else
+                    {
+                        buttonDownloadFile.Enabled = true;
                     }
                 }
                 catch (Exception ex)

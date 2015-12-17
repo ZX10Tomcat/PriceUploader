@@ -1863,11 +1863,20 @@ namespace PriceUploader
 
         public int ImportExcel(string fileName, ref DataTable data)
         {
-            //cExcelObj exl = new cExcelObj();
+            cExcelObj exl = new cExcelObj();
             data = new DataTable();
             //int res = exl.readExcelFileSQL(fileName, ref data);
             //int res = exl.readExcelFileSQLWithSaveAs(fileName, ref data);
-            int res = readExcelFile(fileName, ref data);
+
+            string filenameSaveAs = fileName;
+            if (fileName.IndexOf("DCLink") > 0)
+                exl.excelFileSaveAs(fileName, ref filenameSaveAs);
+
+            int res = readExcelFile(filenameSaveAs, ref data);
+
+            if (fileName != filenameSaveAs)
+                File.Delete(filenameSaveAs);
+
             return res;
         }
 
