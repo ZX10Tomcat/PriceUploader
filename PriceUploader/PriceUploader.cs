@@ -591,7 +591,7 @@ namespace PriceUploader
                     table = new DataTable();
                     tableExcel = new DataTable();
 
-                    countRowsExcel = this.Model.ImportExcel(fileName, ref tableExcel);
+                    countRowsExcel = this.Model.ImportExcel(fileName, ref tableExcel, this.comboBoxFormat.Text);
                     Model.listImportToDB = new List<ImportToDB>();
 
                     if (countRowsExcel > 0)

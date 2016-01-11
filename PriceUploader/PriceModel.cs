@@ -1861,7 +1861,7 @@ namespace PriceUploader
             });
         }
 
-        public int ImportExcel(string fileName, ref DataTable data)
+        public int ImportExcel(string fileName, ref DataTable data, string formatName)
         {
             cExcelObj exl = new cExcelObj();
             data = new DataTable();
@@ -1869,7 +1869,9 @@ namespace PriceUploader
             //int res = exl.readExcelFileSQLWithSaveAs(fileName, ref data);
 
             string filenameSaveAs = fileName;
-            if (fileName.IndexOf("DCLink") > 0)
+            int index = formatName.ToLower().IndexOf("dclink");
+
+            if (index >= 0)
                 exl.excelFileSaveAs(fileName, ref filenameSaveAs);
 
             int res = readExcelFile(filenameSaveAs, ref data);
