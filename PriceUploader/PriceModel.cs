@@ -2018,6 +2018,7 @@ namespace PriceUploader
         public string prod_id = string.Empty;
         public string prod_fixed_price = string.Empty;
         public string prod_qty = string.Empty;
+        public string is_presense = string.Empty;
     }
 
 

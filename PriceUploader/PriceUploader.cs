@@ -954,7 +954,8 @@ namespace PriceUploader
                                 "",
                                 "",
                                 false,
-                                importToDB.prod_qty
+                                importToDB.prod_qty,
+                                presense_found
                             });
 
 
