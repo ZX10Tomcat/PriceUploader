@@ -489,7 +489,7 @@ namespace PriceUploader
 
                     product_fixed_price = 0;
                     if (!string.IsNullOrEmpty(prod_income_price))
-                        product_fixed_price = System.Convert.ToDouble(PriceModel.ConvertSeparator(prod_income_price));
+                        product_fixed_price = Math.Round(System.Convert.ToDouble(PriceModel.ConvertSeparator(prod_income_price)), 2) ;
 
                     string s = CalcClientPrice(ref this.categoryCharge, prod_income_price, GetCategoryChargeIDFromCategories(prod_pc_id), prod_qty, price_type);
                     if (!string.IsNullOrEmpty(s))
@@ -1963,7 +1963,7 @@ namespace PriceUploader
             }
 
             if (res != null)
-                return res.ToString();
+                return Math.Round((double)res, 2).ToString();
 
             return null;
         }

@@ -744,7 +744,18 @@ namespace PriceUploader
                 temp = tbl.Rows[row].ItemArray.GetValue(column) != null ? tbl.Rows[row].ItemArray.GetValue(column).ToString() : string.Empty;
             return temp;
         }
-        
+
+
+        private string GetValueDouble(ref DataTable tbl, int row, int column)
+        {
+            string temp = GetValue(ref tbl, row, column);
+            if (!string.IsNullOrEmpty(temp))
+                temp = Math.Round(Convert.ToDouble(temp), 2).ToString();
+            return temp;
+        }
+
+
+
         private void UpdateTime()
         {
             label_TimeSpan.Invoke(new Action(() =>
@@ -795,7 +806,7 @@ namespace PriceUploader
                         number = i,
                         prod_code = GetValue(ref tableExcel, i, indexColumnCode),
                         prod_name = GetValue(ref tableExcel, i, indexColumnName),
-                        prod_income_price = GetValue(ref tableExcel, i, indexColumnPrice),
+                        prod_income_price = GetValueDouble(ref tableExcel, i, indexColumnPrice),
                         prod_presense1 = GetValue(ref tableExcel, i, indexColumnPresense1),
                         prod_presense2 = GetValue(ref tableExcel, i, indexColumnPresense2),
                         prod_currency = GetValue(ref tableExcel, i, indexColumnCurrency)
@@ -859,7 +870,7 @@ namespace PriceUploader
                     double priceExcel = 0;
                     double priceDB = 0;
 
-                    importToDB.prod_income_price = GetValue(ref tableExcel, i, indexColumnPrice);
+                    importToDB.prod_income_price = GetValueDouble(ref tableExcel, i, indexColumnPrice);
                     
                     if (!string.IsNullOrEmpty(importToDB.prod_income_price))
                     {
@@ -882,7 +893,7 @@ namespace PriceUploader
                     importToDB.prod_pc_id = "";
                     importToDB.prod_id = "";
                     importToDB.prod_qty = "";
-                    importToDB.prod_income_price = GetValue(ref tableExcel, i, indexColumnPrice);  //string.Empty;
+                    importToDB.prod_income_price = GetValueDouble(ref tableExcel, i, indexColumnPrice);  //string.Empty;
                 }
 
                 //object recived_price = tableExcel.Rows[i].ItemArray.GetValue(indexColumnPrice);
