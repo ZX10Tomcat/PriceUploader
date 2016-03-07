@@ -491,7 +491,7 @@ namespace PriceUploader
                     if (!string.IsNullOrEmpty(prod_income_price))
                         product_fixed_price = Math.Round(System.Convert.ToDouble(PriceModel.ConvertSeparator(prod_income_price)), 2) ;
 
-                    string s = CalcClientPrice(ref this.categoryCharge, prod_income_price, GetCategoryChargeIDFromCategories(prod_pc_id), prod_qty, price_type);
+                    string s = CalcClientPrice(ref this.categoryCharge, prod_income_price, GetCategoryChargeIDFromCategories(prod_pc_id), prod_qty, price_type, code);
                     if (!string.IsNullOrEmpty(s))
                         product_client_price = System.Convert.ToDouble(PriceModel.ConvertSeparator(s));
 
@@ -1937,8 +1937,7 @@ namespace PriceUploader
         }
 
 
-
-        public string CalcClientPrice(ref List<CategoryCharge> _categoryCharge, object _recived_price, object prod_pc_id, string prod_qty, string importCurrency)
+        public string CalcClientPrice(ref List<CategoryCharge> _categoryCharge, object _recived_price, object prod_pc_id, string prod_qty, string importCurrency, object prod_code)
         {
             if (importCurrency == RRC)
             {
@@ -1947,19 +1946,28 @@ namespace PriceUploader
                 else
                     return PriceModel.ConvertSeparator(_recived_price.ToString());
             }
-                
+
+            int _prod_pc_id = 0;
+            double price = 0;
 
             int qty = string.IsNullOrEmpty(prod_qty) == false ? System.Convert.ToInt32(prod_qty) : 0;
             double? res = null;
             if (_recived_price != null
                 && _categoryCharge != null
                 && prod_pc_id != null
-                && !string.IsNullOrEmpty(prod_pc_id.ToString())
-                /* && qty > 0 */ )
+                && !string.IsNullOrEmpty(prod_pc_id.ToString()) )
             {
-                int _prod_pc_id = System.Convert.ToInt32(prod_pc_id);
-                double price = System.Convert.ToDouble(PriceModel.ConvertSeparator(_recived_price.ToString()));
+                _prod_pc_id = System.Convert.ToInt32(prod_pc_id);
+                price = System.Convert.ToDouble(PriceModel.ConvertSeparator(_recived_price.ToString()));
                 res = CalcClientPriceSub(ref _categoryCharge, _prod_pc_id, price);
+
+                if (qty > 0)
+                {
+                    Product prod = products.FirstOrDefault(a => a.pa_code == prod_code.ToString());
+                    double? priceDB = System.Convert.ToDouble(PriceModel.ConvertSeparator(prod.prod_client_price.ToString()));
+                    if (priceDB.GetValueOrDefault() > res.GetValueOrDefault())
+                        res = priceDB;
+                }
             }
 
             if (res != null)

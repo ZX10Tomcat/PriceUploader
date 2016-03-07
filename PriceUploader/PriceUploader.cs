@@ -867,23 +867,23 @@ namespace PriceUploader
                     importToDB.prod_qty = prod.prod_qty == null ? "" : prod.prod_qty.ToString();
 
                     //проверка что цена в прайсе больше чем в БД    
-                    double priceExcel = 0;
-                    double priceDB = 0;
+                    //double priceExcel = 0;
+                    //double priceDB = 0;
 
                     importToDB.prod_income_price = GetValueDouble(ref tableExcel, i, indexColumnPrice);
-                    
-                    if (!string.IsNullOrEmpty(importToDB.prod_income_price))
-                    {
-                        priceExcel = System.Convert.ToDouble(PriceModel.ConvertSeparator(importToDB.prod_income_price));
-                    }
 
-                    if (prod.prod_income_price != null)
-                    {
-                        priceDB = System.Convert.ToDouble(PriceModel.ConvertSeparator(prod.prod_income_price.ToString()));
-                    }
+                    //if (!string.IsNullOrEmpty(importToDB.prod_income_price))
+                    //{
+                    //    priceExcel = System.Convert.ToDouble(PriceModel.ConvertSeparator(importToDB.prod_income_price));
+                    //}
 
-                    if (priceDB > priceExcel)
-                        importToDB.prod_income_price = priceDB.ToString();
+                    //if (prod.prod_income_price != null)
+                    //{
+                    //    priceDB = System.Convert.ToDouble(PriceModel.ConvertSeparator(prod.prod_income_price.ToString()));
+                    //}
+
+                    //if (priceDB > priceExcel)
+                    //    importToDB.prod_income_price = priceDB.ToString();
                     
                     //проверка что цена в прайсе больше чем в БД    
                 }
@@ -957,7 +957,7 @@ namespace PriceUploader
                                 importToDB.prod_presense1,
                                 importToDB.prod_presense2,
                                 importToDB.prod_currency,
-                                this.Model.CalcClientPrice(ref Model.categoryCharge, tableExcel.Rows[i].ItemArray.GetValue(indexColumnPrice), importToDB.prod_pc_id, importToDB.prod_qty, importCurrency) /* prod_client_price */,
+                                this.Model.CalcClientPrice(ref Model.categoryCharge, tableExcel.Rows[i].ItemArray.GetValue(indexColumnPrice), importToDB.prod_pc_id, importToDB.prod_qty, importCurrency, prod.pa_code) /* prod_client_price */,
                                 importToDB.prod_pc_id,
                                 importToDB.prod_id,
                                 (importToDB.prod_pc_id.ToString() == "" && importToDB.prod_id.ToString() == ""),
