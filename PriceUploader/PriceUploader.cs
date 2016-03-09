@@ -34,6 +34,7 @@ namespace PriceUploader
         private DateTime timeBeg = DateTime.Now;
         private int beginRows = 0;
         private string tableName = "Table_import_excel";
+        public const string TABLE_IMPORT_SETTINGS = "Table_import_settings";
         FormCode formCode = new FormCode();
         FormCategories formCategories = new FormCategories();
         private string fileName;
@@ -77,7 +78,7 @@ namespace PriceUploader
             ReceiveData.instance.BegQuery();
             Model.Load_import_settings().ContinueWith(res =>
             {
-                SetDataTableByRows(res, "Table_import_settings");
+                SetDataTableByRows(res, TABLE_IMPORT_SETTINGS);
                 SetDataBindings();
                 SetFormatComboBox(res);
                 ReceiveData.instance.EndQuery();
@@ -513,7 +514,7 @@ namespace PriceUploader
             formSetDatabase.ShowDialog();
         }
                 
-        public const string TABLE_IMPORT_SETTINGS = "Table_import_settings";
+        
         private void buttonSave_Click(object sender, EventArgs e)
         {
             //bindingSource__import_settings.MoveNext();
@@ -614,7 +615,7 @@ namespace PriceUploader
                         }
 
                         IEnumerable<DataRow> importSettingsQuery =
-                            from settings in dataSet.Tables["Table_import_settings"].AsEnumerable()
+                            from settings in dataSet.Tables[TABLE_IMPORT_SETTINGS].AsEnumerable()
                             select settings;
 
                         DataRow importSettings = null;
@@ -633,6 +634,7 @@ namespace PriceUploader
                         else
                             Model.ProdActuality = 1;  //just in case
 
+                        Model.GRNsign = importSettings["is_uah_flag"].ToString();
 
                         if (importSettings["is_start_row"] != null
                             && !string.IsNullOrEmpty(importSettings["is_start_row"].ToString())
@@ -1026,7 +1028,6 @@ namespace PriceUploader
 
             dataSet.Tables[tableName].Rows.Add(dr);
             bindingSource__import_settings.MoveLast();
-            
         }
 
         public int LetterNumber(string charValue)

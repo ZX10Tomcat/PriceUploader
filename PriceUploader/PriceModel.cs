@@ -36,14 +36,15 @@ namespace PriceUploader
         public List<ImportToDB> listImportToDB = new List<ImportToDB>();
         public int ProdActuality = 0;
         public string PresenseValue = string.Empty;
+        public string GRNsign = string.Empty;
 
-         //$sql = sprintf("
-         //           SELECT *
-         //           FROM %sproduct_alias
-         //           INNER JOIN %sproduct ON prod_id=pa_prod_id
-         //           LEFT JOIN %sproduct_price ON pp_prod_id=prod_id
-         //           WHERE pa_code='%s'",
-         //           DB_PREFIX, DB_PREFIX, DB_PREFIX, tosql($alias));
+        //$sql = sprintf("
+        //           SELECT *
+        //           FROM %sproduct_alias
+        //           INNER JOIN %sproduct ON prod_id=pa_prod_id
+        //           LEFT JOIN %sproduct_price ON pp_prod_id=prod_id
+        //           WHERE pa_code='%s'",
+        //           DB_PREFIX, DB_PREFIX, DB_PREFIX, tosql($alias));
 
         public List<CategoryCharge> categoryCharge = new List<CategoryCharge>();
         public List<Category> categories = new List<Category>();
@@ -278,8 +279,6 @@ namespace PriceUploader
                 rdr = cmd.ExecuteReader();
                 rdr.Read();
                 string str_euro_rate = rdr.GetString(0);
-                //str_euro_rate = str_euro_rate.Replace(",", ".");
-                //str_euro_rate = str_euro_rate.Replace(".", separator);
                 euro_rate = Convert.ToDouble(PriceModel.ConvertSeparator(str_euro_rate))   /* rdr.GetDouble(0) */;
                 conn.Close();
                 log.Info(sql);
@@ -292,8 +291,6 @@ namespace PriceUploader
                 rdr = cmd.ExecuteReader();
                 rdr.Read();
                 string str_currency_rate_cash = rdr.GetString(0);
-                //str_currency_rate_cash = str_currency_rate_cash.Replace(",", ".");
-                //str_currency_rate_cash = str_currency_rate_cash.Replace(".", separator);
                 currency_rate_cash = Convert.ToDouble(PriceModel.ConvertSeparator(str_currency_rate_cash))   /* rdr.GetDouble(0) */;
                 conn.Close();
                 log.Info(sql);
@@ -452,6 +449,8 @@ namespace PriceUploader
                     string color = row.Field<string>("color");
                     string prod_qty = row.Field<string>("prod_qty");
                     bool is_presence = row.Field<bool>("is_presence");
+                    string prod_currency = row.Field<string>("prod_currency");
+
 
                     if (string.IsNullOrEmpty(color))
                         color = string.Empty;
@@ -491,6 +490,29 @@ namespace PriceUploader
                     if (!string.IsNullOrEmpty(prod_income_price))
                         product_fixed_price = Math.Round(System.Convert.ToDouble(PriceModel.ConvertSeparator(prod_income_price)), 2) ;
 
+                    if (this.GRNsign == prod_currency)
+                    {
+                        double price = 0;
+                        if (!string.IsNullOrEmpty(prod_income_price))
+                            price = Math.Round(System.Convert.ToDouble(PriceModel.ConvertSeparator(prod_income_price)), 2);
+
+                        if (price > 0 && currency_rate_cash > 0)
+                            price = price / currency_rate_cash;
+
+                        prod_income_price = price.ToString();
+                    }
+                    else if (price_type == "EURO" && currency_rate_cash > 0)
+                    {
+                        double price = 0;
+                        if (!string.IsNullOrEmpty(prod_income_price))
+                            price = Math.Round(System.Convert.ToDouble(PriceModel.ConvertSeparator(prod_income_price)), 2);
+
+                        if (price > 0 && currency_rate_cash > 0)
+                            price = price * euro_rate / currency_rate_cash; 
+
+                        prod_income_price = price.ToString();
+                    }
+
                     string s = CalcClientPrice(ref this.categoryCharge, prod_income_price, GetCategoryChargeIDFromCategories(prod_pc_id), prod_qty, price_type, code);
                     if (!string.IsNullOrEmpty(s))
                         product_client_price = System.Convert.ToDouble(PriceModel.ConvertSeparator(s));
@@ -504,7 +526,6 @@ namespace PriceUploader
                             fixed_price = product_fixed_price.ToString();
                             fixed_price = fixed_price.Replace(',', '.');
 
-
                             if (is_presence)
                             {
                                 sql = string.Format("UPDATE product SET prod_price_sup_id={0}, prod_fixed_price={1}, prod_price_update_timestamp={2} WHERE prod_id={2};\n",
@@ -515,7 +536,6 @@ namespace PriceUploader
                                 sql = string.Format("UPDATE product SET prod_price_sup_id={0}, prod_fixed_price={1} WHERE prod_id={2};\n",
                                     supplier_id, fixed_price, product_id);
                             }
-
 
                             if (sql != sqlQuery_product_prev1)
                                 sqlQuery_product = string.Concat(sqlQuery_product, sql);
@@ -533,9 +553,6 @@ namespace PriceUploader
                             //$client_price = $this->get_product_custom_price($price, $product_info['prod_pc_id']);
                             //$sql = sprintf('UPDATE %sproduct SET prod_price_sup_id=%d, prod_price_update_timestamp=%d, prod_income_price=%f, prod_client_price=%f, prod_actuality=%d WHERE prod_id=%d', DB_PREFIX, $supplier, ctime(), $price, $client_price, $preset['is_actuality'], $product_info['prod_id']);
                             //$this->db->query($sql);
-
-                            if (price_type == "EURO" && currency_rate_cash > 0)
-                                product_client_price = currency_rate_cash * euro_rate / currency_rate_cash;
 
                             if (product_client_price > 0)
                             { 
@@ -561,7 +578,6 @@ namespace PriceUploader
                                     sql = string.Format("UPDATE product SET prod_price_sup_id={0}, prod_income_price={1}, prod_client_price={2}, prod_actuality={3} WHERE prod_id={4};\n",
                                         supplier_id, fixed_price, client_price, this.ProdActuality, product_id);
                                 }
-
 
                                 if (sql != sqlQuery_product_prev2)
                                     sqlQuery_product = string.Concat(sqlQuery_product, sql);
