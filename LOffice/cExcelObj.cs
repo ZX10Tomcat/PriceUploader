@@ -378,14 +378,12 @@ namespace LOffice
 
                 in_oWorkbook.GetType().InvokeMember("SaveAs", BindingFlags.InvokeMethod, null, in_oWorkbook, args, cultInfo());
             }
-            catch
+            catch(Exception ex)
             {
+                System.Diagnostics.Debug.Print(ex.StackTrace);
                 return;
             }
         }
-
-
-
 
 
         public static void save(ref object in_oWorkbook)

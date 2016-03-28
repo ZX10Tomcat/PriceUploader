@@ -842,7 +842,7 @@ namespace PriceUploader
             for (int i = indexBeg; i < indexEnd; i++)
             {
                 //if(i==87)
-                //    Debug.Print("i = 87");
+                    Debug.Print("i" + i.ToString());
                 
                 //Debug.Print("i = " + i.ToString());
                 
@@ -949,17 +949,30 @@ namespace PriceUploader
 
                 //if (!presense_found) 
                 //    continue;
-                
-                dataSet.Tables[tableName].Rows.Add(
-                    new object[] {                                                                     
-                                importToDB.prod_name,                                   
+
+
+                object prod_pa_code = null;
+
+                if (prod != null && !string.IsNullOrEmpty(prod.pa_code))
+                    prod_pa_code = prod.pa_code;
+                else
+                    prod_pa_code = string.Empty;
+
+
+                if ( (!string.IsNullOrEmpty(importToDB.prod_name) || !string.IsNullOrWhiteSpace(importToDB.prod_name))
+                    && (!string.IsNullOrEmpty(importToDB.prod_code) || !string.IsNullOrWhiteSpace(importToDB.prod_code))
+                    && (!string.IsNullOrEmpty(importToDB.prod_income_price) || !string.IsNullOrWhiteSpace(importToDB.prod_income_price)) )
+                {
+                    dataSet.Tables[tableName].Rows.Add(
+                        new object[] {
+                                importToDB.prod_name,
                                 importToDB.prod_code,
                                 importToDB.prod_income_price,
-                                importToDB.number +1, 
+                                importToDB.number +1,
                                 importToDB.prod_presense1,
                                 importToDB.prod_presense2,
                                 importToDB.prod_currency,
-                                this.Model.CalcClientPrice(ref Model.categoryCharge, tableExcel.Rows[i].ItemArray.GetValue(indexColumnPrice), importToDB.prod_pc_id, importToDB.prod_qty, importCurrency, prod.pa_code) /* prod_client_price */,
+                                this.Model.CalcClientPrice(ref Model.categoryCharge, tableExcel.Rows[i].ItemArray.GetValue(indexColumnPrice), importToDB.prod_pc_id, importToDB.prod_qty, importCurrency, prod_pa_code) /* prod_client_price */,
                                 importToDB.prod_pc_id,
                                 importToDB.prod_id,
                                 (importToDB.prod_pc_id.ToString() == "" && importToDB.prod_id.ToString() == ""),
@@ -969,10 +982,11 @@ namespace PriceUploader
                                 false,
                                 importToDB.prod_qty,
                                 presense_found
-                            });
+                                });
+                }
 
 
-                
+
 
                 ////if ( (countRowsExcel < 50 && i == countRowsExcel) || (i == 50) )
                 //if (i == 0)

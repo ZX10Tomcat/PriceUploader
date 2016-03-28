@@ -1906,13 +1906,15 @@ namespace PriceUploader
         {
             cExcelObj exl = new cExcelObj();
             data = new DataTable();
+            
             //int res = exl.readExcelFileSQL(fileName, ref data);
             //int res = exl.readExcelFileSQLWithSaveAs(fileName, ref data);
 
             string filenameSaveAs = fileName;
-            int index = formatName.ToLower().IndexOf("dclink");
 
-            if (index >= 0)
+            int index = formatName.ToLower().IndexOf("dclink");
+            FileInfo file = new FileInfo(fileName);
+            if (index >= 0 && file.Extension == ".xls")
                 exl.excelFileSaveAs(fileName, ref filenameSaveAs);
 
             int res = readExcelFile(filenameSaveAs, ref data);
