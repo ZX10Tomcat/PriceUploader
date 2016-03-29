@@ -22,7 +22,8 @@ namespace LOffice
         protected object oRange = null;
         */
 
-        public const int EXCEL_XLFILEFORMAT_XLEXCEL8 = 56; //Excel.XlFileFormat.xlExcel8;
+        public const int EXCEL_XLFILEFORMAT_XLOPENXMLWORKBOOK = 51;     //Excel.XlFileFormat.xlOpenXMLWorkbook = 51
+        public const int EXCEL_XLFILEFORMAT_XLEXCEL8 = 56;              //Excel.XlFileFormat.xlExcel8 = 56
 
         protected int typeAdd = -1;
 
@@ -109,7 +110,14 @@ namespace LOffice
         }
 
 
-        public int excelFileSaveAs(string pathFileDoc, ref string filenameSaved)
+
+        //excelWorkbook.SaveAs(strFullFilePathNoExt, Excel.XlFileFormat.xlOpenXMLWorkbook, Missing.Value,
+        //    Missing.Value, false, false, Excel.XlSaveAsAccessMode.xlNoChange, 
+        //    Excel.XlSaveConflictResolution.xlUserResolution, true, 
+        //    Missing.Value, Missing.Value, Missing.Value);
+        // Excel.XlFileFormat.xlOpenXMLWorkbook = 51
+
+        public int excelFileSaveAs(string pathFileDoc, ref string filenameSaved, int format)
         {
             object oExcelApp = null;
             object oWorkbooks = null;
@@ -123,8 +131,8 @@ namespace LOffice
                 return r;
 
             string ext = Path.GetExtension(pathFileDoc);
-            filenameSaved = string.Format("{0}\\{1}.xls", Path.GetDirectoryName(pathFileDoc), DateTime.Now.Ticks.ToString());
-            cExcelObj.saveAs(ref oWorkbook, filenameSaved, EXCEL_XLFILEFORMAT_XLEXCEL8);
+            filenameSaved = string.Format("{0}\\{1}{2}", Path.GetDirectoryName(pathFileDoc), DateTime.Now.Ticks.ToString(), Path.GetExtension(pathFileDoc));
+            cExcelObj.saveAs(ref oWorkbook, filenameSaved, format);
 
             killExcel(ref oRange, ref oWorksheet, ref oWorksheets, ref oWorkbook, ref oWorkbooks, ref oExcelApp);
 

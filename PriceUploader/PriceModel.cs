@@ -1911,11 +1911,13 @@ namespace PriceUploader
             //int res = exl.readExcelFileSQLWithSaveAs(fileName, ref data);
 
             string filenameSaveAs = fileName;
-
             int index = formatName.ToLower().IndexOf("dclink");
-            FileInfo file = new FileInfo(fileName);
-            if (index >= 0 && file.Extension == ".xls")
-                exl.excelFileSaveAs(fileName, ref filenameSaveAs);
+
+            if (index >= 0)
+                if(Path.GetExtension(fileName) == ".xls")
+                    exl.excelFileSaveAs(fileName, ref filenameSaveAs, cExcelObj.EXCEL_XLFILEFORMAT_XLEXCEL8);
+                else if(Path.GetExtension(fileName) == ".xlsx")
+                    exl.excelFileSaveAs(fileName, ref filenameSaveAs, cExcelObj.EXCEL_XLFILEFORMAT_XLOPENXMLWORKBOOK);
 
             int res = readExcelFile(filenameSaveAs, ref data);
 
@@ -1927,13 +1929,12 @@ namespace PriceUploader
 
         public int readExcelFile(string pathFileDoc, ref DataTable data)
         {
-            var file = new FileInfo(pathFileDoc);
             using (var stream = new FileStream(pathFileDoc, FileMode.Open))
             {
                 IExcelDataReader reader = null;
-                if (file.Extension == ".xls")
+                if (Path.GetExtension(pathFileDoc) == ".xls")
                     reader = ExcelReaderFactory.CreateBinaryReader(stream);
-                else if (file.Extension == ".xlsx")
+                else if (Path.GetExtension(pathFileDoc) == ".xlsx")
                     reader = ExcelReaderFactory.CreateOpenXmlReader(stream);
 
                 if (reader == null)
@@ -1946,9 +1947,7 @@ namespace PriceUploader
 
                 int? countTables = result.Tables.Count;
                 if (countTables != null && countTables > 0)
-                {
                     data = result.Tables[0];
-                }
             } 
             
             return data != null ? data.Rows.Count : -1;
