@@ -116,6 +116,9 @@ namespace PriceUploader
 
             log.Info("Start Model.Load_product_and_alias()");
             ReceiveData.instance.BegQuery();
+
+            Model.LoadCurrency();
+
             Model.Load_product_and_alias().ContinueWith(res =>
             {
                 Model.TableProductAndAlias = res.Result;
@@ -838,6 +841,7 @@ namespace PriceUploader
             //for (int i = indexBeg; i < import.Count() /* indexEnd */; i++)
 
             string importCurrency = comboBoxImportCurrency.Text;
+            
 
             for (int i = indexBeg; i < indexEnd; i++)
             {
@@ -963,29 +967,41 @@ namespace PriceUploader
                     && (!string.IsNullOrEmpty(importToDB.prod_code) || !string.IsNullOrWhiteSpace(importToDB.prod_code))
                     && (!string.IsNullOrEmpty(importToDB.prod_income_price) || !string.IsNullOrWhiteSpace(importToDB.prod_income_price)) )
                 {
+
+                    string calcClientPrice = this.Model.CalcClientPrice(ref Model.categoryCharge, tableExcel.Rows[i].ItemArray.GetValue(indexColumnPrice), importToDB.prod_pc_id, importToDB.prod_qty, importCurrency, prod_pa_code) /* prod_client_price */;
+
+                    if (Model.GRNsign.ToLower() == importToDB.prod_currency.ToLower())
+                    {
+                        double? d = System.Double.Parse(importToDB.prod_income_price);
+                        if (d != null)
+                        {
+                            d = d / Model.Currency_rate_cash;
+                            importToDB.prod_income_price = d.ToString();
+                        }
+                    }
+
+
                     dataSet.Tables[tableName].Rows.Add(
                         new object[] {
-                                importToDB.prod_name,
-                                importToDB.prod_code,
-                                importToDB.prod_income_price,
-                                importToDB.number +1,
-                                importToDB.prod_presense1,
-                                importToDB.prod_presense2,
-                                importToDB.prod_currency,
-                                this.Model.CalcClientPrice(ref Model.categoryCharge, tableExcel.Rows[i].ItemArray.GetValue(indexColumnPrice), importToDB.prod_pc_id, importToDB.prod_qty, importCurrency, prod_pa_code) /* prod_client_price */,
-                                importToDB.prod_pc_id,
-                                importToDB.prod_id,
-                                (importToDB.prod_pc_id.ToString() == "" && importToDB.prod_id.ToString() == ""),
-                                false,
-                                "",
-                                "",
-                                false,
-                                importToDB.prod_qty,
-                                presense_found
-                                });
+                            importToDB.prod_name,
+                            importToDB.prod_code,
+                            importToDB.prod_income_price,
+                            importToDB.number +1,
+                            importToDB.prod_presense1,
+                            importToDB.prod_presense2,
+                            importToDB.prod_currency,
+                            calcClientPrice,
+                            importToDB.prod_pc_id,
+                            importToDB.prod_id,
+                            (importToDB.prod_pc_id.ToString() == "" && importToDB.prod_id.ToString() == ""),
+                            false,
+                            "",
+                            "",
+                            false,
+                            importToDB.prod_qty,
+                            presense_found
+                    });
                 }
-
-
 
 
                 ////if ( (countRowsExcel < 50 && i == countRowsExcel) || (i == 50) )

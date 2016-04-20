@@ -38,6 +38,10 @@ namespace PriceUploader
         public string PresenseValue = string.Empty;
         public string GRNsign = string.Empty;
 
+        public double Euro_rate = 0;
+        public double Currency_rate_cash = 0;
+
+
         //$sql = sprintf("
         //           SELECT *
         //           FROM %sproduct_alias
@@ -262,45 +266,11 @@ namespace PriceUploader
             //select set_value from engine_settings where set_name = 'currency_rate_cash'
             //$price = $price * EURO_RATE / CURRENCY_RATE_CASH;
             
-            double euro_rate = 0;
-            double currency_rate_cash = 0;
 
             int resultExecut = -888;
-            MySqlDataReader rdr = null;
+            //MySqlDataReader rdr = null;
 
             log.Info("MySqlDataReader rdr = null;");
-
-            try
-            {
-                this.conn = GetConn();
-                sql = string.Format("select set_value from engine_settings where set_name = 'euro_rate'");
-                cmd = new MySqlCommand(sql, conn);
-                cmd.CommandTimeout = 0;
-                rdr = cmd.ExecuteReader();
-                rdr.Read();
-                string str_euro_rate = rdr.GetString(0);
-                euro_rate = Convert.ToDouble(PriceModel.ConvertSeparator(str_euro_rate))   /* rdr.GetDouble(0) */;
-                conn.Close();
-                log.Info(sql);
-
-                conn = this.GetConn();
-                sql = string.Format("select set_value from engine_settings where set_name = 'currency_rate_cash'");
-                rdr = null;
-                cmd = new MySqlCommand(sql, conn);
-                cmd.CommandTimeout = 0;
-                rdr = cmd.ExecuteReader();
-                rdr.Read();
-                string str_currency_rate_cash = rdr.GetString(0);
-                currency_rate_cash = Convert.ToDouble(PriceModel.ConvertSeparator(str_currency_rate_cash))   /* rdr.GetDouble(0) */;
-                conn.Close();
-                log.Info(sql);
-            }
-            catch (Exception ex)
-            {
-                conn.Close();
-                string error = ex.Source;
-                throw;
-            }
 
             int rowNumber = 0;
             // Проверка валидности
@@ -311,7 +281,7 @@ namespace PriceUploader
                     InsertDataError(rowNumber + 1, null);
                     return;
                 }
-
+                
                 rowNumber++;
             }
 
@@ -383,7 +353,6 @@ namespace PriceUploader
                             //}
 
                             //conn = this.GetConn();
-
                             
                             sql = string.Format("INSERT INTO product SET prod_pc_id={0}, prod_name='{1}', prod_text='', prod_disabled='Y', prod_vat='Y', prod_actuality={2}, prod_postdate={3}, prod_last_update={4}, prod_last_user_id={5}",
                                 prod_pc_id, prod_name, this.ProdActuality, unixTimestamp, unixTimestamp, 2);
@@ -496,19 +465,19 @@ namespace PriceUploader
                         if (!string.IsNullOrEmpty(prod_income_price))
                             price = Math.Round(System.Convert.ToDouble(PriceModel.ConvertSeparator(prod_income_price)), 2);
 
-                        if (price > 0 && currency_rate_cash > 0)
-                            price = price / currency_rate_cash;
+                        if (price > 0 && this.Currency_rate_cash > 0)
+                            price = price / this.Currency_rate_cash;
 
                         prod_income_price = price.ToString();
                     }
-                    else if (price_type == "EURO" && currency_rate_cash > 0)
+                    else if (price_type == "EURO" && this.Currency_rate_cash > 0)
                     {
                         double price = 0;
                         if (!string.IsNullOrEmpty(prod_income_price))
                             price = Math.Round(System.Convert.ToDouble(PriceModel.ConvertSeparator(prod_income_price)), 2);
 
-                        if (price > 0 && currency_rate_cash > 0)
-                            price = price * euro_rate / currency_rate_cash; 
+                        if (price > 0 && this.Currency_rate_cash > 0)
+                            price = price * this.Euro_rate / this.Currency_rate_cash; 
 
                         prod_income_price = price.ToString();
                     }
@@ -1902,6 +1871,61 @@ namespace PriceUploader
             });
         }
 
+
+        public void LoadCurrency()
+        {
+            try
+            {
+                using (MySqlConnection con = new MySqlConnection(strConn))
+                {
+                    if (con != null)
+                    {
+                        con.Open();
+                        System.Configuration.AppSettingsReader cas = new System.Configuration.AppSettingsReader();
+                        con.ChangeDatabase(cas.GetValue("dataBase", typeof(string)).ToString());
+
+                        string sql = string.Format("select set_value from engine_settings where set_name = 'euro_rate'");
+                        MySqlCommand cmd = new MySqlCommand(sql, con);
+                        cmd.CommandTimeout = 0;
+                        MySqlDataReader rdr = cmd.ExecuteReader();
+                        rdr.Read();
+                        string str_euro_rate = rdr.GetString(0);
+                        this.Euro_rate = Convert.ToDouble(PriceModel.ConvertSeparator(str_euro_rate))   /* rdr.GetDouble(0) */;
+                        log.Info(sql);
+                    }
+                }
+
+
+                using (MySqlConnection con = new MySqlConnection(strConn))
+                {
+                    if (con != null)
+                    {
+                        con.Open();
+                        System.Configuration.AppSettingsReader cas = new System.Configuration.AppSettingsReader();
+                        con.ChangeDatabase(cas.GetValue("dataBase", typeof(string)).ToString());
+
+                        string sql = string.Format("select set_value from engine_settings where set_name = 'currency_rate_cash'");
+                        MySqlCommand cmd = new MySqlCommand(sql, con);
+                        cmd.CommandTimeout = 0;
+                        MySqlDataReader rdr = cmd.ExecuteReader();
+                        rdr.Read();
+                        string str_currency_rate_cash = rdr.GetString(0);
+                        this.Currency_rate_cash = Convert.ToDouble(PriceModel.ConvertSeparator(str_currency_rate_cash))   /* rdr.GetDouble(0) */;
+                        log.Info(sql);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                conn.Close();
+                string error = ex.Source;
+                throw;
+            }
+        }
+
+
+
+
         public int ImportExcel(string fileName, ref DataTable data, string formatName)
         {
             cExcelObj exl = new cExcelObj();
@@ -2015,7 +2039,6 @@ namespace PriceUploader
 
             return res;
         }
-
 
         public static string ConvertSeparator(string val)
         {
