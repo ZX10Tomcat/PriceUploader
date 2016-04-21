@@ -146,6 +146,8 @@ namespace PriceUploader
 
             this.GetStrConn();
             this.conn = GetConn();
+
+            LoadCurrency();
         }
         
         public string GetStrConn()
@@ -316,7 +318,6 @@ namespace PriceUploader
                     string prod_client_price = row.Field<string>("prod_client_price");
                     string prod_pc_id = row.Field<string>("prod_pc_id");
                     string color = row.Field<string>("color");
-                    bool is_presence = row.Field<bool>("is_presence");
 
                     if (string.IsNullOrEmpty(color))
                         color = string.Empty;
@@ -417,8 +418,25 @@ namespace PriceUploader
                     string prod_pc_id = row.Field<string>("prod_pc_id");
                     string color = row.Field<string>("color");
                     string prod_qty = row.Field<string>("prod_qty");
-                    bool is_presence = row.Field<bool>("is_presence");
+                    //bool is_presence = row.Field<bool>("is_presence");
                     string prod_currency = row.Field<string>("prod_currency");
+
+                    string prod_presense1 = row.Field<string>("prod_presense1");
+                    string prod_presense2 = row.Field<string>("prod_presense2");
+
+                    var presenseArray = this.PresenseValue.Split(',');
+                    bool is_presence = false;
+
+                    if(presenseArray != null)
+                        foreach (string item in presenseArray)
+                        {
+                            if (item.Trim().ToLower() == prod_presense1.Trim().ToLower()
+                                || item.Trim().ToLower() == prod_presense2.Trim().ToLower())
+                            {
+                                is_presence = true;
+                                break;
+                            }
+                        }
 
 
                     if (string.IsNullOrEmpty(color))
@@ -462,13 +480,13 @@ namespace PriceUploader
                     if (this.GRNsign == prod_currency)
                     {
                         double price = 0;
-                        if (!string.IsNullOrEmpty(prod_income_price))
-                            price = Math.Round(System.Convert.ToDouble(PriceModel.ConvertSeparator(prod_income_price)), 2);
+                        //if (!string.IsNullOrEmpty(prod_income_price))
+                        //    price = Math.Round(System.Convert.ToDouble(PriceModel.ConvertSeparator(prod_income_price)), 2);
 
-                        if (price > 0 && this.Currency_rate_cash > 0)
-                            price = price / this.Currency_rate_cash;
+                        //if (price > 0 && this.Currency_rate_cash > 0)
+                        //    price = price / this.Currency_rate_cash;
 
-                        prod_income_price = price.ToString();
+                        //sprod_income_price = price.ToString();
                     }
                     else if (price_type == "EURO" && this.Currency_rate_cash > 0)
                     {

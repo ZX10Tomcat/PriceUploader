@@ -117,8 +117,6 @@ namespace PriceUploader
             log.Info("Start Model.Load_product_and_alias()");
             ReceiveData.instance.BegQuery();
 
-            Model.LoadCurrency();
-
             Model.Load_product_and_alias().ContinueWith(res =>
             {
                 Model.TableProductAndAlias = res.Result;
@@ -257,6 +255,8 @@ namespace PriceUploader
 
                 log.Info("Finished Model.Load_supplier()");
             });
+
+            
         }
         
         void Model_OnAddRow(object sender, EventArgs e)
@@ -968,18 +968,17 @@ namespace PriceUploader
                     && (!string.IsNullOrEmpty(importToDB.prod_income_price) || !string.IsNullOrWhiteSpace(importToDB.prod_income_price)) )
                 {
 
-                    string calcClientPrice = this.Model.CalcClientPrice(ref Model.categoryCharge, tableExcel.Rows[i].ItemArray.GetValue(indexColumnPrice), importToDB.prod_pc_id, importToDB.prod_qty, importCurrency, prod_pa_code) /* prod_client_price */;
-
                     if (Model.GRNsign.ToLower() == importToDB.prod_currency.ToLower())
                     {
                         double? d = System.Double.Parse(importToDB.prod_income_price);
                         if (d != null)
                         {
                             d = d / Model.Currency_rate_cash;
-                            importToDB.prod_income_price = d.ToString();
+                            importToDB.prod_income_price = Math.Round(d.GetValueOrDefault(0), 2).ToString();
                         }
                     }
 
+                    string calcClientPrice = this.Model.CalcClientPrice(ref Model.categoryCharge, tableExcel.Rows[i].ItemArray.GetValue(indexColumnPrice), importToDB.prod_pc_id, importToDB.prod_qty, importCurrency, prod_pa_code) /* prod_client_price */;
 
                     dataSet.Tables[tableName].Rows.Add(
                         new object[] {
@@ -1345,11 +1344,16 @@ namespace PriceUploader
         {
             if (!showMessage)
                 return;
-            
-            formLoad.Invoke(new Action(() =>
+
+            try
             {
-                formLoad.CurrentTask = message;
-            }));
+                formLoad.Invoke(new Action(() =>
+                {
+                    formLoad.CurrentTask = message;
+                }));
+            }
+            catch { }
+
         }
         
     }
