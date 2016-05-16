@@ -515,7 +515,7 @@ namespace PriceUploader
 
                             if (is_presence)
                             {
-                                sql = string.Format("UPDATE product SET prod_price_sup_id={0}, prod_fixed_price={1}, prod_price_update_timestamp={2} WHERE prod_id={2};\n",
+                                sql = string.Format("UPDATE product SET prod_price_sup_id={0}, prod_fixed_price={1}, prod_price_update_timestamp={3} WHERE prod_id={2};\n",
                                     supplier_id, fixed_price, product_id, unixTimestamp);
                             }
                             else
