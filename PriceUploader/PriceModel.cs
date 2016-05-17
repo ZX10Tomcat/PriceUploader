@@ -1640,7 +1640,7 @@ namespace PriceUploader
                         con.Open();
                         System.Configuration.AppSettingsReader cas = new System.Configuration.AppSettingsReader();
                         con.ChangeDatabase(cas.GetValue("dataBase", typeof(string)).ToString());
-                        string sql = @"SELECT prod_id, prod_name, prod_income_price, prod_text, prod_client_price, prod_price_col1, prod_price_col2, prod_price_col3, prod_fixed_price, pa_code, prod_pc_id, prod_qty FROM product_alias INNER JOIN product pr ON pr.prod_id=pa_prod_id";
+                        string sql = @"SELECT prod_id, prod_name, prod_income_price, prod_text, prod_client_price, prod_price_col1, prod_price_col2, prod_price_col3, prod_fixed_price, pa_code, prod_pc_id, prod_qty FROM product pr INNER JOIN product_alias ON pr.prod_id=pa_prod_id";
                         using (MySqlDataAdapter da = new MySqlDataAdapter(sql, con))
                         {
                             da.SelectCommand.CommandTimeout = 600;
@@ -1998,7 +1998,7 @@ namespace PriceUploader
 
         public string CalcClientPrice(ref List<CategoryCharge> _categoryCharge, object _recived_price, object prod_pc_id, string prod_qty, string importCurrency, object prod_code)
         {
-            if (importCurrency == RRC)
+            if (importCurrency == PriceModel.RRC)
             {
                 if(string.IsNullOrEmpty(_recived_price.ToString()))
                     return "0";

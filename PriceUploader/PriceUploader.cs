@@ -857,7 +857,7 @@ namespace PriceUploader
                 importToDB.prod_code = GetValue(ref tableExcel, i, indexColumnCode);
 
                 if (!string.IsNullOrEmpty(importToDB.prod_code))
-                    prod = Model.products.FirstOrDefault(a => a.pa_code == importToDB.prod_code);
+                    prod = Model.products.FirstOrDefault(a => (string.IsNullOrEmpty(a.pa_code) == false ? a.pa_code.ToLower() : a.pa_code) == (string.IsNullOrEmpty(importToDB.prod_code) == false ? importToDB.prod_code.ToLower() : string.Empty) );
 
                 importToDB.prod_name = GetValue(ref tableExcel, i, indexColumnName);
                 importToDB.prod_presense1 = GetValue(ref tableExcel, i, indexColumnPresense1);
@@ -962,13 +962,12 @@ namespace PriceUploader
                 else
                     prod_pa_code = string.Empty;
 
-
                 if ( (!string.IsNullOrEmpty(importToDB.prod_name) || !string.IsNullOrWhiteSpace(importToDB.prod_name))
                     && (!string.IsNullOrEmpty(importToDB.prod_code) || !string.IsNullOrWhiteSpace(importToDB.prod_code))
                     && (!string.IsNullOrEmpty(importToDB.prod_income_price) || !string.IsNullOrWhiteSpace(importToDB.prod_income_price)) )
                 {
 
-                    if (Model.GRNsign.ToLower() == importToDB.prod_currency.ToLower())
+                    if (importCurrency != PriceModel.RRC && Model.GRNsign.ToLower() == importToDB.prod_currency.ToLower())
                     {
                         double? d = System.Double.Parse(importToDB.prod_income_price);
                         if (d != null)
