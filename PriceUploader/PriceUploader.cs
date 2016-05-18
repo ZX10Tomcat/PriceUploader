@@ -137,6 +137,7 @@ namespace PriceUploader
                         prod_price_col3 = Model.TableProductAndAlias.Rows[i].ItemArray[7],
                         prod_fixed_price = Model.TableProductAndAlias.Rows[i].ItemArray[8],
                         pa_code = Model.TableProductAndAlias.Rows[i].ItemArray[9] == null ? "" : Model.TableProductAndAlias.Rows[i].ItemArray[9].ToString(),
+                        pa_code_lower = Model.TableProductAndAlias.Rows[i].ItemArray[9] == null ? "" : Model.TableProductAndAlias.Rows[i].ItemArray[9].ToString().ToLower(),
                         prod_pc_id = Model.TableProductAndAlias.Rows[i].ItemArray[10],
                         prod_qty = Model.TableProductAndAlias.Rows[i].ItemArray[11],
                     });
@@ -856,8 +857,11 @@ namespace PriceUploader
                 prod = null;
                 importToDB.prod_code = GetValue(ref tableExcel, i, indexColumnCode);
 
-                if (!string.IsNullOrEmpty(importToDB.prod_code))
-                    prod = Model.products.FirstOrDefault(a => (string.IsNullOrEmpty(a.pa_code) == false ? a.pa_code.ToLower() : a.pa_code) == (string.IsNullOrEmpty(importToDB.prod_code) == false ? importToDB.prod_code.ToLower() : string.Empty) );
+
+                string tmp_prod_code = string.IsNullOrEmpty(importToDB.prod_code) == false ? importToDB.prod_code.ToLower() : string.Empty;
+
+                if (!string.IsNullOrEmpty(tmp_prod_code))
+                    prod = Model.products.FirstOrDefault(a => a.pa_code_lower == tmp_prod_code);
 
                 importToDB.prod_name = GetValue(ref tableExcel, i, indexColumnName);
                 importToDB.prod_presense1 = GetValue(ref tableExcel, i, indexColumnPresense1);

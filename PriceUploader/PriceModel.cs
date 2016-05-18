@@ -2091,6 +2091,7 @@ namespace PriceUploader
         public string pa_code;
         public object prod_pc_id;
         public object prod_qty;
+        public string pa_code_lower;
     }
         
     public class ImportToDB
