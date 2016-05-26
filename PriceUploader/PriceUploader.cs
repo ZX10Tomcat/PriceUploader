@@ -942,7 +942,6 @@ namespace PriceUploader
                 //  if ($presense_found == false) continue;
                 //Check product presense
 
-
                 //Debug.Print("importToDB.prod_code = " + importToDB.prod_code.ToString());
 
                 bool presense_found = false;
@@ -958,7 +957,6 @@ namespace PriceUploader
                 //if (!presense_found) 
                 //    continue;
 
-
                 object prod_pa_code = null;
 
                 if (prod != null && !string.IsNullOrEmpty(prod.pa_code))
@@ -971,7 +969,9 @@ namespace PriceUploader
                     && (!string.IsNullOrEmpty(importToDB.prod_income_price) || !string.IsNullOrWhiteSpace(importToDB.prod_income_price)) )
                 {
 
-                    if (importCurrency != PriceModel.RRC && Model.GRNsign.ToLower() == importToDB.prod_currency.ToLower())
+                    if (importCurrency != PriceModel.RRC 
+                        && Model.GRNsign.ToLower() == importToDB.prod_currency.ToLower()
+                        && !string.IsNullOrEmpty(importToDB.prod_currency))
                     {
                         double? d = System.Double.Parse(importToDB.prod_income_price);
                         if (d != null)

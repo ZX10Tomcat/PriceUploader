@@ -411,6 +411,7 @@ namespace PriceUploader
 
                     string prod_id = row.Field<string>("prod_id");
                     string prod_name = row.Field<string>("prod_name");
+                    //log.Info(string.Format("row number: {0} - name: {1}", rowNumber, prod_name));
                     string code = row.Field<string>("prod_code");
                     string new_code = row.Field<string>("prod_new_code");
                     string prod_income_price = row.Field<string>("prod_income_price");
@@ -427,7 +428,7 @@ namespace PriceUploader
                     var presenseArray = this.PresenseValue.Split(',');
                     bool is_presence = false;
 
-                    if(presenseArray != null)
+                    if (presenseArray != null)
                         foreach (string item in presenseArray)
                         {
                             if (item.Trim().ToLower() == prod_presense1.Trim().ToLower()
@@ -438,7 +439,6 @@ namespace PriceUploader
                             }
                         }
 
-
                     if (string.IsNullOrEmpty(color))
                         color = string.Empty;
 
@@ -447,9 +447,6 @@ namespace PriceUploader
 
                     if (string.IsNullOrEmpty(code))
                         code = new_code;
-
-                    //if (rowNumber == 10)
-                    //    rowNumber = rowNumber;
 
                     if (!string.IsNullOrEmpty(prod_pc_id) && !string.IsNullOrEmpty(code) && ((is_new && is_selected) || (color.ToLower() == "green")))
                     {
@@ -499,7 +496,7 @@ namespace PriceUploader
 
                         prod_income_price = price.ToString();
                     }
-
+                    
                     string s = CalcClientPrice(ref this.categoryCharge, prod_income_price, GetCategoryChargeIDFromCategories(prod_pc_id), prod_qty, price_type, code);
                     if (!string.IsNullOrEmpty(s))
                         product_client_price = System.Convert.ToDouble(PriceModel.ConvertSeparator(s));
@@ -513,12 +510,12 @@ namespace PriceUploader
                             fixed_price = product_fixed_price.ToString();
                             fixed_price = fixed_price.Replace(',', '.');
 
-                            if (is_presence)
-                            {
-                                sql = string.Format("UPDATE product SET prod_price_sup_id={0}, prod_fixed_price={1}, prod_price_update_timestamp={3} WHERE prod_id={2};\n",
-                                    supplier_id, fixed_price, product_id, unixTimestamp);
-                            }
-                            else
+                            //if (is_presence)
+                            //{
+                            //    sql = string.Format("UPDATE product SET prod_price_sup_id={0}, prod_fixed_price={1}, prod_price_update_timestamp={3} WHERE prod_id={2};\n",
+                            //        supplier_id, fixed_price, product_id, unixTimestamp);
+                            //}
+                            //else
                             {
                                 sql = string.Format("UPDATE product SET prod_price_sup_id={0}, prod_fixed_price={1} WHERE prod_id={2};\n",
                                     supplier_id, fixed_price, product_id);
@@ -2022,10 +2019,14 @@ namespace PriceUploader
 
                 if (qty > 0)
                 {
-                    Product prod = products.FirstOrDefault(a => a.pa_code == prod_code.ToString());
-                    double? priceDB = System.Convert.ToDouble(PriceModel.ConvertSeparator(prod.prod_client_price.ToString()));
-                    if (priceDB.GetValueOrDefault() > res.GetValueOrDefault())
-                        res = priceDB;
+                    string tmp = prod_code.ToString().ToLower();
+                    Product prod = products.FirstOrDefault(a => a.pa_code_lower == tmp);
+                    if (prod != null)
+                    {
+                        double? priceDB = System.Convert.ToDouble(PriceModel.ConvertSeparator(prod.prod_client_price.ToString()));
+                        if (priceDB.GetValueOrDefault() > res.GetValueOrDefault())
+                            res = priceDB;
+                    }
                 }
             }
 
