@@ -125,6 +125,7 @@
             // 
             // buttonSave
             // 
+            this.buttonSave.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.buttonSave.Location = new System.Drawing.Point(140, 160);
             this.buttonSave.Name = "buttonSave";
             this.buttonSave.Size = new System.Drawing.Size(75, 23);
@@ -135,6 +136,7 @@
             // 
             // buttonClose
             // 
+            this.buttonClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.buttonClose.Location = new System.Drawing.Point(221, 160);
             this.buttonClose.Name = "buttonClose";
             this.buttonClose.Size = new System.Drawing.Size(75, 23);

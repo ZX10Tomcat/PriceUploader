@@ -33,7 +33,8 @@ namespace PriceUploader
 
         private void buttonClose_Click(object sender, EventArgs e)
         {
-            this.Close();
+            //this.Close();
+            Application.Exit();
         }
 
         private void buttonSave_Click(object sender, EventArgs e)
