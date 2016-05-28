@@ -138,21 +138,20 @@ namespace PriceUploader
 
         public PriceModel() 
         {
-            this.strServer = cAppConfig.GetAppSettings("server");
-            this.strUserId = cAppConfig.GetAppSettings("userId");
-            this.strPassword = cAppConfig.GetAppSettings("password");
-            this.strPort = cAppConfig.GetAppSettings("port");
-            this.strDatabase = cAppConfig.GetAppSettings("database");
+            var config = ConfigurationManager.OpenExeConfiguration(Assembly.GetExecutingAssembly().Location);
+            this.strServer = cAppConfig.GetAppSettings(config, "server");
+            this.strUserId = cAppConfig.GetAppSettings(config, "userId");
+            this.strPassword = cAppConfig.GetAppSettings(config, "password");
+            this.strPort = cAppConfig.GetAppSettings(config, "port");
+            this.strDatabase = cAppConfig.GetAppSettings(config, "database");
 
             this.GetStrConn();
             this.conn = GetConn();
-
-            LoadCurrency();
         }
         
         public string GetStrConn()
         {
-            strConn = string.Format("server={0};user id={1};password={2};port={3};", 
+            this.strConn = string.Format("server={0};user id={1};password={2};port={3};", 
                 strServer, strUserId, strPassword, strPort);
 
             return strConn;
@@ -1932,8 +1931,9 @@ namespace PriceUploader
             }
             catch (Exception ex)
             {
-                conn.Close();
-                string error = ex.Source;
+                if (conn != null)
+                    conn.Close();
+                string error = string.Format("Source: {0},\n message: {1}", ex.Source, ex.Message) ;
                 throw;
             }
         }

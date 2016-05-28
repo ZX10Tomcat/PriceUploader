@@ -67,9 +67,12 @@ namespace PriceUploader
         public void Init()
         {
             Model = new PriceModel();
+            string appPath = Application.ExecutablePath;
             Model.InsertDataError += Model_InsertDataError;
             Model.OnAddRow += Model_OnAddRow;
             Model.OnSaveAll += Model_OnSaveAll;
+
+            Model.LoadCurrency();
 
             DateTime d1 = DateTime.Now;
 

@@ -23,7 +23,6 @@ namespace PriceUploader
         public void Init(ref PriceModel priceModel)
         {
             this.priceModel = priceModel;
-
             this.textBoxDatabase.Text = this.priceModel.StrDatabase;
             this.textBoxPassword.Text = this.priceModel.StrPassword;
             this.textBoxPort.Text = this.priceModel.StrPort;
@@ -33,8 +32,7 @@ namespace PriceUploader
 
         private void buttonClose_Click(object sender, EventArgs e)
         {
-            //this.Close();
-            Application.Exit();
+            this.Close();
         }
 
         private void buttonSave_Click(object sender, EventArgs e)
@@ -59,6 +57,7 @@ namespace PriceUploader
             this.priceModel.StrPort = StrPort;
             this.priceModel.StrServer = StrServer;
             this.priceModel.StrUserId = StrUserId;
+            this.priceModel.GetStrConn();
 
             if (this.priceModel.SaveDatabaseSettings() < 0)
             {

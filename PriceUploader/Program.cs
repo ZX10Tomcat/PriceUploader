@@ -23,8 +23,11 @@ namespace PriceUploader
             formSetDatabase.StartPosition = FormStartPosition.CenterScreen;
             DialogResult dr = formSetDatabase.ShowDialog();
             pm = null;
+
             if (dr == DialogResult.OK)
                 Application.Run(new PriceUploader());
+            else
+                Application.Exit();
         }
     }
 }

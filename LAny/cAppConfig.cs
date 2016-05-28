@@ -9,10 +9,12 @@ namespace LAny
 {
     public class cAppConfig
     {
-        public static string GetAppSettings(string key)
+        public static string GetAppSettings(Configuration configuration, string key)
         {
-            System.Configuration.AppSettingsReader cas = new System.Configuration.AppSettingsReader();
-            return (cas.GetValue(key, typeof(string)).ToString());
+            string res = string.Empty;
+            if (configuration.AppSettings.Settings[key] != null)
+                res = configuration.AppSettings.Settings[key].Value;
+            return (res);
         }
 
         /// <summary>
@@ -25,10 +27,11 @@ namespace LAny
         public static void UpdateAppSetting(Configuration configuration, string key, string value)
         {
             configuration.AppSettings.Settings[key].Value = value;
-            configuration.Save();
-
+            configuration.AppSettings.SectionInformation.ForceSave = true;
+            configuration.Save(ConfigurationSaveMode.Modified);
             ConfigurationManager.RefreshSection("appSettings");
         }
 
     }
 }
+
